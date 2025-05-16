@@ -1,4 +1,3 @@
-import { ConvexProvider, ConvexReactClient } from "convex/react";
 import { Redirect, Tabs } from "expo-router";
 import React from "react";
 import { Platform } from "react-native";
@@ -10,10 +9,6 @@ import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useAuth } from "@clerk/clerk-expo";
 
-const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
-  unsavedChangesWarning: false,
-});
-
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { isSignedIn } = useAuth();
@@ -23,55 +18,48 @@ export default function TabLayout() {
   }
 
   return (
-    <ConvexProvider client={convex}>
-      <Tabs
-        screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-          tabBarInactiveTintColor:
-            Colors[colorScheme ?? "light"].tabIconDefault,
-          tabBarStyle: {
-            borderTopWidth: 0,
-            backgroundColor: "transparent",
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        headerShown: false,
+        tabBarButton: HapticTab,
+        tabBarBackground: TabBarBackground,
+        tabBarStyle: Platform.select({
+          ios: {
+            // Use a transparent background on iOS to show the blur effect
             position: "absolute",
-            height: Platform.OS === "ios" ? 100 : 90,
-            bottom: 0,
-            zIndex: 2,
           },
-          header: () => null,
-          ...(Platform.OS === "ios" && {
-            tabBarBackground: () => TabBarBackground && <TabBarBackground />,
-          }),
+          default: {},
+        }),
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Home",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="house.fill" color={color} />
+          ),
         }}
-        tabBar={(props) => <HapticTab {...props} />}
-      >
-        <Tabs.Screen
-          name="index"
-          options={{
-            title: "Home",
-            tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="house.fill" color={color} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="explore"
-          options={{
-            title: "Explore",
-            tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="paperplane.fill" color={color} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="profile"
-          options={{
-            title: "Profile",
-            tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="person.fill" color={color} />
-            ),
-          }}
-        />
-      </Tabs>
-    </ConvexProvider>
+      />
+      <Tabs.Screen
+        name="explore"
+        options={{
+          title: "Explore",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="paperplane.fill" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="person.fill" color={color} />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }

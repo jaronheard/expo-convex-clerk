@@ -1,6 +1,6 @@
 import { useAuth } from "@clerk/clerk-expo";
 import { Image } from "expo-image";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -15,6 +15,7 @@ import {
 export default function ProfileScreen() {
   const { signOut, userId } = useAuth();
   const [isSigningOut, setIsSigningOut] = useState(false);
+  const router = useRouter();
 
   const handleSignOut = async () => {
     try {
@@ -37,6 +38,12 @@ export default function ProfileScreen() {
             style={styles.userAvatar}
           />
           <Text style={styles.userName}>User</Text>
+          <TouchableOpacity
+            style={styles.editProfileButton}
+            onPress={() => router.push("./profile-update")}
+          >
+            <Text style={styles.editProfileButtonText}>Edit Profile</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.content}>
           <Text style={styles.userBio}>Hello there!</Text>
@@ -100,6 +107,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  editProfileButton: {
+    backgroundColor: "#1976d2",
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    marginTop: 12,
+  },
+  editProfileButtonText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "500",
