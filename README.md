@@ -1,46 +1,75 @@
-# Welcome to your Expo app 👋
+# Soonlist - Profile with Convex and Clerk Integration
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is an [Expo](https://expo.dev) project integrated with [Convex](https://convex.dev) for the backend and [Clerk](https://clerk.com) for authentication.
 
 ## Get started
 
 1. Install dependencies
 
    ```bash
-   npm install
+   pnpm install
    ```
 
-2. Start the app
+2. Set up Convex
+
+   Create a new Convex project at [dashboard.convex.dev](https://dashboard.convex.dev)
 
    ```bash
-   npx expo start
+   npx convex login
+   npx convex init
    ```
 
-In the output, you'll find options to open the app in a
+3. Set up Clerk
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   Create a new Clerk project at [dashboard.clerk.com](https://dashboard.clerk.com)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+   - Create a new Clerk application
+   - Go to API Keys page to get your Publishable Key
+   - Set the JWT template to include `sub` and `useId` in User Claims section
 
-## Get a fresh project
+4. Create a `.env.local` file with the following:
 
-When you're ready, run:
+   ```
+   # Convex
+   EXPO_PUBLIC_CONVEX_URL=your_convex_url
 
-```bash
-npm run reset-project
-```
+   # Clerk
+   EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+   EXPO_PUBLIC_CLERK_FRONTEND_API_URL=your_clerk_frontend_api
+   ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+5. Start development server
+
+   ```bash
+   # In one terminal
+   npx convex dev
+
+   # In another terminal
+   pnpm start
+   ```
+
+## Profile Features
+
+The app includes:
+
+- User profile display with Clerk authentication
+- Profile editing functionality (first name, last name, location, bio)
+- Image upload using expo-image-picker and Convex storage
+- Real-time data synchronization across clients
+
+## Project Structure
+
+- `app/(tabs)/profile.tsx`: Profile display page
+- `app/(tabs)/profile-update.tsx`: Profile editing page
+- `convex/users.ts`: User data management
+- `convex/upload.ts`: File upload handling
+- `convex/schema.ts`: Database schema definition
 
 ## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- [Convex documentation](https://docs.convex.dev/home)
+- [Clerk documentation](https://clerk.com/docs)
+- [Expo documentation](https://docs.expo.dev/)
 
 ## Join the community
 

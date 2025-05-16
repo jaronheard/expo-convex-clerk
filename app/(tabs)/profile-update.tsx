@@ -1,7 +1,10 @@
+import { useMutation, useQuery } from "convex/react";
 import { Image } from "expo-image";
+import * as ImagePicker from "expo-image-picker";
 import { Stack, useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
+  Alert,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -11,22 +14,105 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { api } from "../../convex/_generated/api";
 
 export default function ProfileUpdateScreen() {
   const router = useRouter();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [hometown, setHometown] = useState("");
+  const [location, setLocation] = useState("");
   const [bio, setBio] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [imagePickerAsset, setImagePickerAsset] =
+    useState<ImagePicker.ImagePickerAsset | null>(null);
 
-  const handleSave = () => {
-    setIsSaving(true);
-    setTimeout(() => {
-      setIsSaving(false);
-      router.back();
-    }, 1000);
+  // Convex functions
+  const user = useQuery(api.users.getCurrentUser);
+  const updateProfile = useMutation(api.users.updateProfile);
+  const generateUploadUrl = useMutation(api.upload.generateUploadUrl);
+  const sendImage = useMutation(api.upload.sendImage);
+
+  // Load user data when available
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName || "");
+      setLastName(user.lastName || "");
+      setLocation(user.location || "");
+      setBio(user.bio || "");
+    }
+  }, [user]);
+
+  const handleImagePicker = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== "granted") {
+      Alert.alert(
+        "Permission needed",
+        "Please grant permission to access your photos"
+      );
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+
+    if (!result.canceled) {
+      setImagePickerAsset(result.assets[0]);
+    }
   };
+
+  const handleSave = async () => {
+    try {
+      setIsSaving(true);
+
+      let avatarUrlId = user?.avatarUrlId;
+
+      // Upload image if selected
+      if (imagePickerAsset) {
+        const uploadUrl = await generateUploadUrl();
+
+        // Prepare the image as a blob
+        const response = await fetch(imagePickerAsset.uri);
+        const blob = await response.blob();
+
+        // Upload to Convex storage
+        const result = await fetch(uploadUrl, {
+          method: "POST",
+          headers: { "Content-Type": imagePickerAsset.type || "image/jpeg" },
+          body: blob,
+        });
+
+        const { storageId } = await result.json();
+        await sendImage({ storageId });
+        avatarUrlId = storageId;
+      }
+
+      // Update user profile
+      await updateProfile({
+        firstName,
+        lastName,
+        location,
+        bio,
+        avatarUrlId,
+      });
+
+      router.back();
+    } catch (error) {
+      console.error("Error saving profile:", error);
+      Alert.alert("Error", "Failed to save profile. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const avatarUri =
+    imagePickerAsset?.uri ||
+    user?.avatarUrl ||
+    "https://placehold.co/100x100/e0e0e0/a0a0a0?text=%20";
 
   return (
     <SafeAreaView style={styles.container}>
@@ -67,22 +153,21 @@ export default function ProfileUpdateScreen() {
       />
       <ScrollView contentContainerStyle={styles.content} bounces={false}>
         <View style={styles.avatarSection}>
-          <View style={styles.avatarPlaceholder}>
+          <TouchableOpacity
+            style={styles.avatarPlaceholder}
+            onPress={handleImagePicker}
+          >
             <Image
               source={{
-                uri: "https://placehold.co/100x100/e0e0e0/a0a0a0?text=%20",
+                uri: avatarUri,
               }}
               style={styles.avatarImage}
             />
             <View style={styles.cameraIconPlaceholder}>
               <Text style={{ fontSize: 24 }}>📷</Text>
             </View>
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              /* Handle image picking */
-            }}
-          >
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleImagePicker}>
             <Text style={styles.editAvatarText}>Edit</Text>
           </TouchableOpacity>
         </View>
@@ -105,12 +190,12 @@ export default function ProfileUpdateScreen() {
         </View>
 
         <View style={styles.formGroup}>
-          <Text style={styles.label}>Hometown</Text>
+          <Text style={styles.label}>Location</Text>
           <TextInput
             style={styles.input}
-            value={hometown}
-            onChangeText={setHometown}
-            placeholder="City, State"
+            value={location}
+            onChangeText={setLocation}
+            placeholder="City, Country"
           />
         </View>
 

@@ -1,4 +1,5 @@
 import { useAuth } from "@clerk/clerk-expo";
+import { useQuery } from "convex/react";
 import { Image } from "expo-image";
 import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
@@ -11,11 +12,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { api } from "../../convex/_generated/api";
 
 export default function ProfileScreen() {
   const { signOut, userId } = useAuth();
   const [isSigningOut, setIsSigningOut] = useState(false);
   const router = useRouter();
+  const user = useQuery(api.users.getCurrentUser);
 
   const handleSignOut = async () => {
     try {
@@ -28,6 +31,11 @@ export default function ProfileScreen() {
     }
   };
 
+  const fullName = user
+    ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
+    : "Loading...";
+  const avatarUrl = user?.avatarUrl || "https://placehold.co/200x200?text=User";
+
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Screen
@@ -37,13 +45,10 @@ export default function ProfileScreen() {
       />
       <ScrollView bounces={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.profileHeader}>
-          <Image
-            source={{ uri: "https://placehold.co/200x200?text=User" }}
-            style={styles.userAvatar}
-          />
-          <Text style={styles.userName}>Alex Smith</Text>
-          <Text style={styles.userLocation}>Singapore</Text>
-          <Text style={styles.userBio}>Living that &apos;just do it&apos;</Text>
+          <Image source={{ uri: avatarUrl }} style={styles.userAvatar} />
+          <Text style={styles.userName}>{fullName}</Text>
+          <Text style={styles.userLocation}>{user?.location || ""}</Text>
+          <Text style={styles.userBio}>{user?.bio || ""}</Text>
           <TouchableOpacity
             style={styles.editProfileButton}
             onPress={() => router.push("/profile-update")}
