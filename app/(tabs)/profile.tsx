@@ -30,23 +30,28 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Stack.Screen options={{ title: "Profile" }} />
-      <ScrollView bounces={false}>
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+      />
+      <ScrollView bounces={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.profileHeader}>
           <Image
-            source="https://placehold.co/200x200?text=User"
+            source={{ uri: "https://placehold.co/200x200?text=User" }}
             style={styles.userAvatar}
           />
-          <Text style={styles.userName}>User</Text>
+          <Text style={styles.userName}>Alex Smith</Text>
+          <Text style={styles.userLocation}>Singapore</Text>
+          <Text style={styles.userBio}>Living that &apos;just do it&apos;</Text>
           <TouchableOpacity
             style={styles.editProfileButton}
-            onPress={() => router.push("./profile-update")}
+            onPress={() => router.push("/profile-update")}
           >
             <Text style={styles.editProfileButtonText}>Edit Profile</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.content}>
-          <Text style={styles.userBio}>Hello there!</Text>
           <TouchableOpacity
             style={styles.signOutButton}
             onPress={handleSignOut}
@@ -69,35 +74,63 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+  scrollContent: {
+    flexGrow: 1,
+  },
   profileHeader: {
     alignItems: "center",
-    padding: 24,
-    backgroundColor: "#f5f5f5",
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-  },
-  content: {
-    padding: 16,
-    gap: 16,
+    paddingTop: 60,
+    paddingBottom: 30,
+    paddingHorizontal: 24,
   },
   userAvatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
     marginBottom: 16,
-    borderWidth: 3,
-    borderColor: "#fff",
   },
   userName: {
-    fontSize: 28,
-    fontWeight: "bold",
-    marginBottom: 8,
+    fontSize: 24,
+    fontWeight: "600",
+    marginBottom: 4,
+  },
+  userLocation: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 12,
   },
   userBio: {
     fontSize: 16,
-    color: "#666",
+    color: "#333",
     textAlign: "center",
-    marginBottom: 16,
+    marginBottom: 24,
+    paddingHorizontal: 20,
+  },
+  editProfileButton: {
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 3,
+  },
+  editProfileButtonText: {
+    color: "#000",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  content: {
+    padding: 24,
+    gap: 20,
+    marginTop: 20,
   },
   signOutButton: {
     backgroundColor: "#f44336",
@@ -105,20 +138,10 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: "auto",
+    marginBottom: 20,
   },
   buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  editProfileButton: {
-    backgroundColor: "#1976d2",
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    marginTop: 12,
-  },
-  editProfileButtonText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "500",
