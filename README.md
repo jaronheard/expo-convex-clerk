@@ -1,5 +1,17 @@
 # Soonlist - Profile with Convex and Clerk Integration
 
+## Intentions
+
+- [ ] This is intended to be an app template starting point
+- [ ] It is intended to be used as a starting point for building a mobile app using Expo, Convex, and Clerk
+
+## TODO:
+
+- [ ] Add apple auth
+- [ ] Strip out specific components and make generic
+- [ ] Update readme
+- [ ] Scope out next steps
+
 This is an [Expo](https://expo.dev) project integrated with [Convex](https://convex.dev) for the backend and [Clerk](https://clerk.com) for authentication.
 
 ## Get started
