@@ -13,6 +13,7 @@
   "dependencies": {
     "@clerk/clerk-expo": "^2.11.5",
     "@clerk/clerk-react": "^5.31.4",
+    "@expo/react-native-action-sheet": "^4.1.1",
     "@expo/vector-icons": "^14.1.0",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
@@ -26,6 +27,7 @@
     "expo-image": "~2.1.7",
     "expo-linking": "~7.1.5",
     "expo-router": "~5.0.6",
+    "expo-secure-store": "^14.2.3",
     "expo-splash-screen": "~0.30.8",
     "expo-status-bar": "~2.2.3",
     "expo-symbols": "~0.4.4",
@@ -34,6 +36,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.2",
+    "react-native-error-boundary": "^2.0.0",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
