@@ -1,7 +1,6 @@
 import { useOAuth, useSignIn } from "@clerk/clerk-expo";
-import { useRouter } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -15,8 +14,7 @@ import {
 WebBrowser.maybeCompleteAuthSession();
 
 export default function Intro() {
-  const router = useRouter();
-  const { isLoaded, signIn, setActive } = useSignIn();
+  const { isLoaded } = useSignIn();
   const [isLoading, setIsLoading] = useState<{
     google?: boolean;
     github?: boolean;

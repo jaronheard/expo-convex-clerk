@@ -1,17 +1,12 @@
 import { v } from "convex/values";
 import { mutation, query, QueryCtx } from "./_generated/server";
 
-// Helper function to find user by Clerk ID
-export async function userByTokenIdentifier(
-  ctx: QueryCtx,
-  tokenIdentifier: string
-) {
+export async function userByExternalId(ctx: QueryCtx, externalId: string) {
   return await ctx.db
     .query("users")
-    .withIndex("by_token", (q) => q.eq("tokenIdentifier", tokenIdentifier))
+    .filter((q) => q.eq(q.field("tokenIdentifier"), externalId))
     .unique();
 }
-
 // Update or create user profile
 export const updateProfile = mutation({
   args: {
@@ -20,6 +15,7 @@ export const updateProfile = mutation({
     location: v.optional(v.string()),
     bio: v.optional(v.string()),
     avatarUrlId: v.optional(v.id("_storage")),
+    onboarded: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -27,17 +23,18 @@ export const updateProfile = mutation({
       throw new Error("Not authenticated");
     }
 
-    const user = await userByTokenIdentifier(ctx, identity.tokenIdentifier);
+    const user = await userByExternalId(ctx, identity.tokenIdentifier);
 
     if (user) {
       // Update existing user
-      await ctx.db.patch(user._id, args);
+      await ctx.db.patch(user._id, { ...args, onboarded: true });
       return user._id;
     } else {
       // Create new user
       return await ctx.db.insert("users", {
         ...args,
         tokenIdentifier: identity.tokenIdentifier,
+        onboarded: true,
       });
     }
   },
@@ -48,10 +45,11 @@ export const getCurrentUser = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
+      console.log("Convex client not authenticated");
       return null;
     }
 
-    const user = await userByTokenIdentifier(ctx, identity.tokenIdentifier);
+    const user = await userByExternalId(ctx, identity.tokenIdentifier);
     if (!user) {
       return null;
     }

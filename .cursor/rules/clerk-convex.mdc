@@ -1,0 +1,17 @@
+---
+description: Provides guidance on using Clerk with Convex, ensuring correct components and hooks are used for authentication. Key principles: use Convex's <Authenticated>, <Unauthenticated>, <AuthLoading> instead of Clerk's equivalents, and use useConvexAuth() hook instead of useAuth().
+globs: 
+alwaysApply: false
+---
+When integrating Clerk with Convex for authentication, please follow these guidelines:
+
+1.  **UI Components for Authentication State:**
+    *   Instead of Clerk's `<SignedIn>`, use Convex's `<Authenticated>`.
+    *   Instead of Clerk's `<SignedOut>`, use Convex's `<Unauthenticated>`.
+    *   Instead of Clerk's `<ClerkLoading>`, use Convex's `<AuthLoading>`.
+
+    These Convex components correctly manage UI rendering based on the authentication state within the Convex environment.
+
+2.  **Authentication Hook:**
+    *   It is crucial to use the `useConvexAuth()` hook from Convex instead of Clerk's `useAuth()` hook.
+    *   The `useConvexAuth()` hook ensures that the browser has fetched the necessary auth token for authenticated requests to your Convex backend and that the Convex backend has validated this token. This provides a more reliable authentication status in the context of a Convex application.

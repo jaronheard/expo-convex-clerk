@@ -16,6 +16,7 @@ export default defineSchema({
     bio: v.optional(v.string()),
     tokenIdentifier: v.string(),
     avatarUrlId: v.optional(v.id("_storage")),
+    onboarded: v.optional(v.boolean()),
   }).index("by_token", ["tokenIdentifier"]),
 
   images: defineTable({

@@ -3,7 +3,9 @@ import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { Stack, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
+  ActivityIndicator,
   Alert,
   Platform,
   SafeAreaView,
@@ -15,16 +17,21 @@ import {
   View,
 } from "react-native";
 import { api } from "../../convex/_generated/api";
+import { Id } from "../../convex/_generated/dataModel";
+
+// Define Form Data Type
+interface ProfileFormData {
+  firstName: string;
+  lastName: string;
+  location: string;
+  bio: string;
+}
 
 export default function ProfileUpdateScreen() {
   const router = useRouter();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [location, setLocation] = useState("");
-  const [bio, setBio] = useState("");
-  const [isSaving, setIsSaving] = useState(false);
   const [imagePickerAsset, setImagePickerAsset] =
     useState<ImagePicker.ImagePickerAsset | null>(null);
+  const [loading, setLoading] = useState(false);
 
   // Convex functions
   const user = useQuery(api.users.getCurrentUser);
@@ -32,15 +39,35 @@ export default function ProfileUpdateScreen() {
   const generateUploadUrl = useMutation(api.upload.generateUploadUrl);
   const sendImage = useMutation(api.upload.sendImage);
 
-  // Load user data when available
+  // React Hook Form
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting, errors },
+    watch,
+  } = useForm<ProfileFormData>({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      location: "",
+      bio: "",
+    },
+  });
+
+  const bioValue = watch("bio");
+
+  // Load user data into form when available
   useEffect(() => {
     if (user) {
-      setFirstName(user.firstName || "");
-      setLastName(user.lastName || "");
-      setLocation(user.location || "");
-      setBio(user.bio || "");
+      reset({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        location: user.location || "",
+        bio: user.bio || "",
+      });
     }
-  }, [user]);
+  }, [user, reset]);
 
   const handleImagePicker = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -65,47 +92,41 @@ export default function ProfileUpdateScreen() {
     }
   };
 
-  const handleSave = async () => {
+  const handleUpdate: SubmitHandler<ProfileFormData> = async (data) => {
+    setLoading(true);
+
     try {
-      setIsSaving(true);
+      let avatarUrlId: Id<"_storage"> | undefined;
 
-      let avatarUrlId = user?.avatarUrlId;
-
-      // Upload image if selected
       if (imagePickerAsset) {
-        const uploadUrl = await generateUploadUrl();
-
-        // Prepare the image as a blob
+        const url = await generateUploadUrl();
         const response = await fetch(imagePickerAsset.uri);
         const blob = await response.blob();
 
-        // Upload to Convex storage
-        const result = await fetch(uploadUrl, {
+        const result = await fetch(url, {
           method: "POST",
-          headers: { "Content-Type": imagePickerAsset.type || "image/jpeg" },
+          headers: imagePickerAsset.type
+            ? { "Content-Type": `${imagePickerAsset.type}/*` }
+            : {},
           body: blob,
         });
 
         const { storageId } = await result.json();
         await sendImage({ storageId });
+
         avatarUrlId = storageId;
       }
 
-      // Update user profile
       await updateProfile({
-        firstName,
-        lastName,
-        location,
-        bio,
+        ...data,
         avatarUrlId,
       });
 
-      router.back();
-    } catch (error) {
-      console.error("Error saving profile:", error);
-      Alert.alert("Error", "Failed to save profile. Please try again.");
+      router.navigate("/(tabs)/profile");
+    } catch (e) {
+      console.error(e);
     } finally {
-      setIsSaving(false);
+      setLoading(false);
     }
   };
 
@@ -123,29 +144,36 @@ export default function ProfileUpdateScreen() {
           headerShadowVisible: false,
           headerLeft: () => (
             <TouchableOpacity
-              onPress={() => router.back()}
+              onPress={() => router.navigate("/(tabs)/profile")}
               style={styles.headerButton}
+              disabled={loading}
             >
               <Text style={styles.headerButtonText}>Cancel</Text>
             </TouchableOpacity>
           ),
-          headerRight: () => (
-            <TouchableOpacity
-              onPress={handleSave}
-              disabled={isSaving}
-              style={styles.headerButton}
-            >
-              <Text
-                style={[
-                  styles.headerButtonText,
-                  styles.saveButtonTextHeader,
-                  isSaving && styles.disabledButtonText,
-                ]}
+          headerRight: () =>
+            loading ? (
+              <ActivityIndicator
+                style={styles.headerActivityIndicator}
+                color="#007AFF"
+              />
+            ) : (
+              <TouchableOpacity
+                onPress={handleSubmit(handleUpdate)}
+                disabled={loading}
+                style={styles.headerButton}
               >
-                {isSaving ? "Saving..." : "Save"}
-              </Text>
-            </TouchableOpacity>
-          ),
+                <Text
+                  style={[
+                    styles.headerButtonText,
+                    styles.saveButtonTextHeader,
+                    loading && styles.disabledButtonText,
+                  ]}
+                >
+                  Save
+                </Text>
+              </TouchableOpacity>
+            ),
           headerStyle: {
             backgroundColor: "#fff",
           },
@@ -156,6 +184,7 @@ export default function ProfileUpdateScreen() {
           <TouchableOpacity
             style={styles.avatarPlaceholder}
             onPress={handleImagePicker}
+            disabled={isSubmitting}
           >
             <Image
               source={{
@@ -167,50 +196,90 @@ export default function ProfileUpdateScreen() {
               <Text style={{ fontSize: 24 }}>📷</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleImagePicker}>
+          <TouchableOpacity onPress={handleImagePicker} disabled={isSubmitting}>
             <Text style={styles.editAvatarText}>Edit</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.formGroup}>
-          <TextInput
-            style={styles.input}
-            value={firstName}
-            onChangeText={setFirstName}
-            placeholder="First Name"
+          <Controller
+            control={control}
+            name="firstName"
+            rules={{ required: "First name is required" }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="First Name"
+                editable={!isSubmitting}
+              />
+            )}
           />
+          {errors.firstName && (
+            <Text style={styles.errorText}>{errors.firstName.message}</Text>
+          )}
         </View>
         <View style={styles.formGroup}>
-          <TextInput
-            style={styles.input}
-            value={lastName}
-            onChangeText={setLastName}
-            placeholder="Last Name"
+          <Controller
+            control={control}
+            name="lastName"
+            rules={{ required: "Last name is required" }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Last Name"
+                editable={!isSubmitting}
+              />
+            )}
           />
+          {errors.lastName && (
+            <Text style={styles.errorText}>{errors.lastName.message}</Text>
+          )}
         </View>
 
         <View style={styles.formGroup}>
           <Text style={styles.label}>Location</Text>
-          <TextInput
-            style={styles.input}
-            value={location}
-            onChangeText={setLocation}
-            placeholder="City, Country"
+          <Controller
+            control={control}
+            name="location"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="City, Country"
+                editable={!isSubmitting}
+              />
+            )}
           />
         </View>
 
         <View style={styles.formGroup}>
           <Text style={styles.label}>Bio</Text>
           <View style={styles.bioInputContainer}>
-            <TextInput
-              style={[styles.input, styles.textArea]}
-              value={bio}
-              onChangeText={(text) => setBio(text.slice(0, 150))}
-              placeholder="150 characters"
-              multiline
-              maxLength={150}
+            <Controller
+              control={control}
+              name="bio"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={[styles.input, styles.textArea]}
+                  onBlur={onBlur}
+                  onChangeText={(text) => onChange(text.slice(0, 150))}
+                  value={value}
+                  placeholder="150 characters"
+                  multiline
+                  maxLength={150}
+                  editable={!isSubmitting}
+                />
+              )}
             />
-            <Text style={styles.charCount}>{bio.length}/150</Text>
+            <Text style={styles.charCount}>{(bioValue || "").length}/150</Text>
           </View>
         </View>
       </ScrollView>
@@ -225,6 +294,10 @@ const styles = StyleSheet.create({
   },
   headerButton: {
     paddingHorizontal: Platform.OS === "ios" ? 8 : 16,
+    paddingVertical: 10,
+  },
+  headerActivityIndicator: {
+    marginHorizontal: Platform.OS === "ios" ? 8 : 16,
     paddingVertical: 10,
   },
   headerButtonText: {
@@ -306,5 +379,11 @@ const styles = StyleSheet.create({
     right: 10,
     fontSize: 12,
     color: "#aaa",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginLeft: 4,
+    marginTop: 4,
   },
 });

@@ -38,14 +38,15 @@ const handleErrorConsole = (error: Error, stackTrace: string) => {
 };
 
 export default function RootProvider({ children }: Props): JSX.Element {
-  const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "";
+  const clerkPublishableKey =
+    process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "";
 
-  if (!publishableKey) {
+  if (!clerkPublishableKey) {
     throw new Error("Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY");
   }
 
   return (
-    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+    <ClerkProvider publishableKey={clerkPublishableKey} tokenCache={tokenCache}>
       <ClerkLoaded>
         <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
           <ErrorBoundary

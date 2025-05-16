@@ -15,7 +15,7 @@ import {
 import { api } from "../../convex/_generated/api";
 
 export default function ProfileScreen() {
-  const { signOut, userId } = useAuth();
+  const { signOut } = useAuth();
   const [isSigningOut, setIsSigningOut] = useState(false);
   const router = useRouter();
   const user = useQuery(api.users.getCurrentUser);

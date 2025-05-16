@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { mutation } from "./_generated/server";
-import { userByTokenIdentifier } from "./users";
+import { userByExternalId } from "./users";
 
 // Generate a URL for uploading a file
 export const generateUploadUrl = mutation(async (ctx) => {
@@ -14,16 +14,20 @@ export const generateUploadUrl = mutation(async (ctx) => {
 
 // Save the uploaded image to the database
 export const sendImage = mutation({
-  args: { storageId: v.id("_storage") },
+  args: { storageId: v.optional(v.id("_storage")) },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
       throw new Error("Not authenticated");
     }
 
-    const user = await userByTokenIdentifier(ctx, identity.tokenIdentifier);
+    const user = await userByExternalId(ctx, identity.tokenIdentifier);
     if (!user) {
       throw new Error("User not found");
+    }
+
+    if (!args.storageId) {
+      throw new Error("Storage ID is required");
     }
 
     await ctx.db.insert("images", {
