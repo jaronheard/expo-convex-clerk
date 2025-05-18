@@ -1,6 +1,7 @@
 import { useExpoUpdates } from "@/hooks/useExpoUpdates";
 import { ClerkLoaded, ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ConvexReactClient } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
@@ -93,7 +94,9 @@ export default function RootProvider({ children }: Props): JSX.Element {
               onError={handleErrorConsole}
             >
               <PostHogIdentityTracker />
-              <ActionSheetProvider>{children}</ActionSheetProvider>
+              <BottomSheetModalProvider>
+                <ActionSheetProvider>{children}</ActionSheetProvider>
+              </BottomSheetModalProvider>
             </ErrorBoundary>
           </ConvexProviderWithClerk>
         </ClerkLoaded>

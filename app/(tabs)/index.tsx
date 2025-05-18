@@ -1,16 +1,18 @@
 import { api } from "@/convex/_generated/api";
 import { LegendList } from "@legendapp/list";
 import { useMutation, usePaginatedQuery } from "convex/react";
-import { useState } from "react";
+import { useState, useRef, useMemo } from "react";
 import {
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
   StyleSheet,
   TextInput,
   TouchableOpacity,
   useColorScheme,
 } from "react-native";
+import {
+  BottomSheetModal,
+  BottomSheetView,
+  BottomSheetTextInput,
+} from "@gorhom/bottom-sheet";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -30,7 +32,8 @@ export default function HomeScreen() {
   const inputBackgroundColor =
     colorScheme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)";
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ["50%"], []);
   const [newTaskText, setNewTaskText] = useState("");
   const createTask = useMutation(api.tasks.createTask);
 
@@ -39,7 +42,7 @@ export default function HomeScreen() {
     try {
       await createTask({ text: newTaskText });
       setNewTaskText("");
-      setModalVisible(false);
+      bottomSheetRef.current?.dismiss();
     } catch (error) {
       console.error("Failed to create task:", error);
     }
@@ -85,71 +88,53 @@ export default function HomeScreen() {
 
       <TouchableOpacity
         style={styles.fab}
-        onPress={() => setModalVisible(true)}
+        onPress={() => bottomSheetRef.current?.present()}
       >
         <ThemedText style={styles.fabText}>+</ThemedText>
       </TouchableOpacity>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        index={0}
+        snapPoints={snapPoints}
+        backgroundStyle={{ backgroundColor: modalBackgroundColor }}
       >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.centeredView}
-        >
-          <ThemedView
+        <BottomSheetView style={styles.modalView}>
+          <ThemedText style={styles.modalText}>Add New Task</ThemedText>
+          <BottomSheetTextInput
             style={[
-              styles.modalView,
-              { backgroundColor: modalBackgroundColor },
+              styles.modalInput,
+              { color: textColor, backgroundColor: inputBackgroundColor },
             ]}
-          >
-            <ThemedText style={styles.modalText}>Add New Task</ThemedText>
-            <TextInput
-              style={[
-                styles.modalInput,
-                { color: textColor, backgroundColor: inputBackgroundColor },
-              ]}
-              placeholder="e.g., Study Portuguese every weekday"
-              placeholderTextColor={
-                colorScheme === "dark"
-                  ? "rgba(255, 255, 255, 0.5)"
-                  : "rgba(0, 0, 0, 0.5)"
-              }
-              value={newTaskText}
-              onChangeText={setNewTaskText}
-              autoFocus
-            />
-            <ThemedView style={styles.modalButtons}>
-              <TouchableOpacity
-                onPress={() => setModalVisible(false)}
-                style={styles.modalButton}
+            placeholder="e.g., Study Portuguese every weekday"
+            placeholderTextColor={
+              colorScheme === "dark"
+                ? "rgba(255, 255, 255, 0.5)"
+                : "rgba(0, 0, 0, 0.5)"
+            }
+            value={newTaskText}
+            onChangeText={setNewTaskText}
+          />
+          <ThemedView style={styles.modalButtons}>
+            <TouchableOpacity
+              onPress={() => bottomSheetRef.current?.dismiss()}
+              style={styles.modalButton}
+            >
+              <ThemedText
+                style={[
+                  styles.modalButtonText,
+                  styles.inactiveModalButtonText,
+                ]}
               >
-                <ThemedText
-                  style={[
-                    styles.modalButtonText,
-                    styles.inactiveModalButtonText,
-                  ]}
-                >
-                  Cancel
-                </ThemedText>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleAddTask}
-                style={styles.modalButton}
-              >
-                <ThemedText style={styles.modalButtonText}>
-                  Save Task
-                </ThemedText>
-              </TouchableOpacity>
-            </ThemedView>
+                Cancel
+              </ThemedText>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleAddTask} style={styles.modalButton}>
+              <ThemedText style={styles.modalButtonText}>Save Task</ThemedText>
+            </TouchableOpacity>
           </ThemedView>
-        </KeyboardAvoidingView>
-      </Modal>
+        </BottomSheetView>
+      </BottomSheetModal>
     </ThemedView>
   );
 }
@@ -211,12 +196,6 @@ const styles = StyleSheet.create({
   fabText: {
     fontSize: 24,
     color: "white",
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.4)",
   },
   modalView: {
     width: "100%",
