@@ -1,4 +1,5 @@
 import { useOAuth, useSignIn } from "@clerk/clerk-expo";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import * as WebBrowser from "expo-web-browser";
 import React, { useState } from "react";
 import {
@@ -17,9 +18,11 @@ export default function Intro() {
   const { isLoaded } = useSignIn();
   const [isLoading, setIsLoading] = useState<{
     google?: boolean;
+    apple?: boolean;
   }>({});
 
   const { startOAuthFlow: googleAuth } = useOAuth({ strategy: "oauth_google" });
+  const { startOAuthFlow: appleAuth } = useOAuth({ strategy: "oauth_apple" });
 
   const handleGoogleSignIn = async () => {
     try {
@@ -34,6 +37,22 @@ export default function Intro() {
       console.error("OAuth error:", err);
     } finally {
       setIsLoading({ google: false });
+    }
+  };
+
+  const handleAppleSignIn = async () => {
+    try {
+      setIsLoading({ apple: true });
+
+      const { createdSessionId, setActive } = await appleAuth();
+
+      if (createdSessionId) {
+        await setActive!({ session: createdSessionId });
+      }
+    } catch (err) {
+      console.error("OAuth error:", err);
+    } finally {
+      setIsLoading({ apple: false });
     }
   };
 
@@ -66,6 +85,26 @@ export default function Intro() {
                   style={styles.socialIcon}
                 />
                 <Text style={styles.buttonText}>Continue with Google</Text>
+              </>
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.socialButton}
+            onPress={handleAppleSignIn}
+            disabled={isLoading.apple}
+          >
+            {isLoading.apple ? (
+              <ActivityIndicator color="#000" />
+            ) : (
+              <>
+                <Ionicons
+                  name="logo-apple"
+                  size={24}
+                  color="#000"
+                  style={styles.socialIcon}
+                />
+                <Text style={styles.buttonText}>Continue with Apple</Text>
               </>
             )}
           </TouchableOpacity>
