@@ -1,20 +1,20 @@
+import { Colors } from "@/constants/Colors";
 import { api } from "@/convex/_generated/api";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import {
+  BottomSheetModal,
+  BottomSheetTextInput,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 import { LegendList } from "@legendapp/list";
 import { useMutation, usePaginatedQuery } from "convex/react";
-import { useState, useRef, useMemo } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
   useColorScheme,
 } from "react-native";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Colors } from "@/constants/Colors";
-import {
-  BottomSheetModal,
-  BottomSheetView,
-  BottomSheetTextInput,
-} from "@gorhom/bottom-sheet";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -38,6 +38,7 @@ export default function HomeScreen() {
   const snapPoints = useMemo(() => ["50%"], []);
   const [newTaskText, setNewTaskText] = useState("");
   const createTask = useMutation(api.tasks.createTask);
+  const splitTask = useMutation(api.tasks.splitTask);
   const toggleTask = useMutation(api.tasks.toggleTask);
 
   const handleAddTask = async () => {
@@ -48,6 +49,14 @@ export default function HomeScreen() {
       bottomSheetRef.current?.dismiss();
     } catch (error) {
       console.error("Failed to create task:", error);
+    }
+  };
+
+  const handleSplitTask = async (text: string) => {
+    try {
+      await splitTask({ text });
+    } catch (error) {
+      console.error("Failed to split task:", error);
     }
   };
 
@@ -100,6 +109,12 @@ export default function HomeScreen() {
               >
                 {item.text}
               </ThemedText>
+              <TouchableOpacity
+                onPress={() => handleSplitTask(item.text)}
+                style={styles.splitButton}
+              >
+                <ThemedText style={styles.splitButtonText}>Split</ThemedText>
+              </TouchableOpacity>
             </ThemedView>
           )}
           onEndReached={() => loadMore(20)}
@@ -142,15 +157,15 @@ export default function HomeScreen() {
               style={styles.modalButton}
             >
               <ThemedText
-                style={[
-                  styles.modalButtonText,
-                  styles.inactiveModalButtonText,
-                ]}
+                style={[styles.modalButtonText, styles.inactiveModalButtonText]}
               >
                 Cancel
               </ThemedText>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleAddTask} style={styles.modalButton}>
+            <TouchableOpacity
+              onPress={handleAddTask}
+              style={styles.modalButton}
+            >
               <ThemedText style={styles.modalButtonText}>Save Task</ThemedText>
             </TouchableOpacity>
           </ThemedView>
@@ -201,6 +216,17 @@ const styles = StyleSheet.create({
   completedTask: {
     textDecorationLine: "line-through",
     opacity: 0.7,
+  },
+  splitButton: {
+    marginLeft: "auto",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    backgroundColor: "#007AFF",
+    borderRadius: 4,
+  },
+  splitButtonText: {
+    color: "#fff",
+    fontSize: 12,
   },
   fab: {
     position: "absolute",
