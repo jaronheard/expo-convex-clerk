@@ -10,7 +10,8 @@
 - [x] Add apple auth
 - [x] Strip out specific components and make generic
 - [x] Add expo-updates
-- [ ] Add error handling, log drain, posthog
+- [x] Add posthog
+- [x] Add sentry
 - [ ] Update readme
 - [ ] Scope out next steps
 
