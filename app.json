@@ -8,6 +8,9 @@
     "scheme": "expo-convex-clerk-template",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "updates": {
+      "checkAutomatically": "ON_ERROR_RECOVERY"
+    },
     "ios": {
       "supportsTablet": true
     },
@@ -38,6 +41,9 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "criticalIndex": 0
     }
   }
 }

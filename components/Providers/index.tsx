@@ -7,6 +7,7 @@ import ErrorBoundary from "react-native-error-boundary";
 import FallbackComponent from "react-native-error-boundary/lib/ErrorBoundary/FallbackComponent";
 import { PostHogProvider, usePostHog } from 'posthog-react-native';
 import { useEffect } from "react";
+import { useExpoUpdates } from "@/hooks/useExpoUpdates";
 
 // Custom token cache for Clerk
 const tokenCache = {
@@ -51,6 +52,8 @@ export default function RootProvider({ children }: Props): JSX.Element {
       posthog.identify(userId);
     }
   }, [posthog, userId]);
+
+  useExpoUpdates();
 
   if (!clerkPublishableKey) {
     throw new Error("Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY");
