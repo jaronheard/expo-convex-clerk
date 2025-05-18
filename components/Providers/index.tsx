@@ -5,6 +5,7 @@ import { ConvexProviderWithClerk } from "convex/react-clerk";
 import * as SecureStore from "expo-secure-store";
 import ErrorBoundary from "react-native-error-boundary";
 import FallbackComponent from "react-native-error-boundary/lib/ErrorBoundary/FallbackComponent";
+import { useExpoUpdates } from "@/hooks/useExpoUpdates";
 
 // Custom token cache for Clerk
 const tokenCache = {
@@ -40,6 +41,8 @@ const handleErrorConsole = (error: Error, stackTrace: string) => {
 export default function RootProvider({ children }: Props): JSX.Element {
   const clerkPublishableKey =
     process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "";
+
+  useExpoUpdates();
 
   if (!clerkPublishableKey) {
     throw new Error("Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY");
