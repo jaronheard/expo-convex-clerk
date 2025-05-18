@@ -6,6 +6,7 @@ import * as SecureStore from "expo-secure-store";
 import ErrorBoundary from "react-native-error-boundary";
 import FallbackComponent from "react-native-error-boundary/lib/ErrorBoundary/FallbackComponent";
 import { useExpoUpdates } from "@/hooks/useExpoUpdates";
+import { PostHogProvider } from 'posthog-react-native';
 
 // Custom token cache for Clerk
 const tokenCache = {
@@ -49,17 +50,26 @@ export default function RootProvider({ children }: Props): JSX.Element {
   }
 
   return (
-    <ClerkProvider publishableKey={clerkPublishableKey} tokenCache={tokenCache}>
-      <ClerkLoaded>
-        <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-          <ErrorBoundary
-            FallbackComponent={FallbackComponent}
-            onError={handleErrorConsole}
-          >
-            <ActionSheetProvider>{children}</ActionSheetProvider>
-          </ErrorBoundary>
-        </ConvexProviderWithClerk>
-      </ClerkLoaded>
-    </ClerkProvider>
+    <PostHogProvider
+      apiKey="phc_xFdnzXhdRoS2sHiQziB8NZvDZ3u9VCeJ44eEft1taA3"
+      options={{
+        host: 'https://us.i.posthog.com',
+        enableSessionReplay: true,
+      }}
+      autocapture
+    >
+      <ClerkProvider publishableKey={clerkPublishableKey} tokenCache={tokenCache}>
+        <ClerkLoaded>
+          <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+            <ErrorBoundary
+              FallbackComponent={FallbackComponent}
+              onError={handleErrorConsole}
+            >
+              <ActionSheetProvider>{children}</ActionSheetProvider>
+            </ErrorBoundary>
+          </ConvexProviderWithClerk>
+        </ClerkLoaded>
+      </ClerkProvider>
+    </PostHogProvider>
   );
 }
