@@ -16,6 +16,13 @@ export const createTask = mutation({
   },
 });
 
+export const toggleTask = mutation({
+  args: { id: v.id("tasks"), isCompleted: v.boolean() },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, { isCompleted: args.isCompleted });
+  },
+});
+
 export const search = query({
   args: {
     searchQuery: v.string(),
