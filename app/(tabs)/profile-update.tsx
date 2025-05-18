@@ -1,22 +1,22 @@
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 import { useMutation, useQuery } from "convex/react";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { Stack, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
 import { usePostHog } from "posthog-react-native";
+import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
   Alert,
   Platform,
-  SafeAreaView,
-  ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
-  View,
+  useColorScheme,
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 
@@ -34,6 +34,14 @@ export default function ProfileUpdateScreen() {
     useState<ImagePicker.ImagePickerAsset | null>(null);
   const [loading, setLoading] = useState(false);
   const posthog = usePostHog();
+  const colorScheme = useColorScheme();
+
+  // Define dynamic colors based on colorScheme
+  const textColor = colorScheme === "dark" ? "#fff" : "#000";
+  const inputBackgroundColor =
+    colorScheme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)";
+  const placeholderTextColor =
+    colorScheme === "dark" ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)";
 
   // Convex functions
   const user = useQuery(api.users.getCurrentUser);
@@ -138,8 +146,14 @@ export default function ProfileUpdateScreen() {
     user?.avatarUrl ||
     "https://placehold.co/100x100/e0e0e0/a0a0a0?text=%20";
 
+  // Adjusted headerStyle to use dynamic background color or be transparent
+  const headerStyle =
+    colorScheme === "dark"
+      ? { backgroundColor: "#1c1c1e" }
+      : { backgroundColor: "#f2f2f7" };
+
   return (
-    <SafeAreaView style={styles.container}>
+    <ThemedView style={styles.container}>
       <Stack.Screen
         options={{
           headerShown: true,
@@ -151,7 +165,9 @@ export default function ProfileUpdateScreen() {
               style={styles.headerButton}
               disabled={loading}
             >
-              <Text style={styles.headerButtonText}>Cancel</Text>
+              <ThemedText style={styles.cancelHeaderButtonText}>
+                Cancel
+              </ThemedText>
             </TouchableOpacity>
           ),
           headerRight: () =>
@@ -166,7 +182,7 @@ export default function ProfileUpdateScreen() {
                 disabled={loading}
                 style={styles.headerButton}
               >
-                <Text
+                <ThemedText
                   style={[
                     styles.headerButtonText,
                     styles.saveButtonTextHeader,
@@ -174,16 +190,14 @@ export default function ProfileUpdateScreen() {
                   ]}
                 >
                   Save
-                </Text>
+                </ThemedText>
               </TouchableOpacity>
             ),
-          headerStyle: {
-            backgroundColor: "#fff",
-          },
+          headerStyle: headerStyle,
         }}
       />
       <ScrollView contentContainerStyle={styles.content} bounces={false}>
-        <View style={styles.avatarSection}>
+        <ThemedView style={styles.avatarSection}>
           <TouchableOpacity
             style={styles.avatarPlaceholder}
             onPress={handleImagePicker}
@@ -195,105 +209,127 @@ export default function ProfileUpdateScreen() {
               }}
               style={styles.avatarImage}
             />
-            <View style={styles.cameraIconPlaceholder}>
-              <Text style={{ fontSize: 24 }}>📷</Text>
-            </View>
+            <ThemedView style={styles.cameraIconPlaceholder}>
+              <ThemedText style={{ fontSize: 24 }}>📷</ThemedText>
+            </ThemedView>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleImagePicker} disabled={isSubmitting}>
-            <Text style={styles.editAvatarText}>Edit</Text>
+            <ThemedText style={styles.editAvatarText}>Edit</ThemedText>
           </TouchableOpacity>
-        </View>
+        </ThemedView>
 
-        <View style={styles.formGroup}>
+        <ThemedView style={styles.formGroup}>
           <Controller
             control={control}
             name="firstName"
             rules={{ required: "First name is required" }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  { color: textColor, backgroundColor: inputBackgroundColor },
+                ]}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
                 placeholder="First Name"
+                placeholderTextColor={placeholderTextColor}
                 editable={!isSubmitting}
               />
             )}
           />
           {errors.firstName && (
-            <Text style={styles.errorText}>{errors.firstName.message}</Text>
+            <ThemedText style={styles.errorText}>
+              {errors.firstName.message}
+            </ThemedText>
           )}
-        </View>
-        <View style={styles.formGroup}>
+        </ThemedView>
+        <ThemedView style={styles.formGroup}>
           <Controller
             control={control}
             name="lastName"
             rules={{ required: "Last name is required" }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  { color: textColor, backgroundColor: inputBackgroundColor },
+                ]}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
                 placeholder="Last Name"
+                placeholderTextColor={placeholderTextColor}
                 editable={!isSubmitting}
               />
             )}
           />
           {errors.lastName && (
-            <Text style={styles.errorText}>{errors.lastName.message}</Text>
+            <ThemedText style={styles.errorText}>
+              {errors.lastName.message}
+            </ThemedText>
           )}
-        </View>
+        </ThemedView>
 
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Location</Text>
+        <ThemedView style={styles.formGroup}>
+          <ThemedText style={styles.label}>Location</ThemedText>
           <Controller
             control={control}
             name="location"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  { color: textColor, backgroundColor: inputBackgroundColor },
+                ]}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
                 placeholder="City, Country"
+                placeholderTextColor={placeholderTextColor}
                 editable={!isSubmitting}
               />
             )}
           />
-        </View>
+        </ThemedView>
 
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Bio</Text>
-          <View style={styles.bioInputContainer}>
+        <ThemedView style={styles.formGroup}>
+          <ThemedText style={styles.label}>Bio</ThemedText>
+          <ThemedView style={styles.bioInputContainer}>
             <Controller
               control={control}
               name="bio"
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  style={[styles.input, styles.textArea]}
+                  style={[
+                    styles.input,
+                    styles.textArea,
+                    { color: textColor, backgroundColor: inputBackgroundColor },
+                  ]}
                   onBlur={onBlur}
                   onChangeText={(text) => onChange(text.slice(0, 150))}
                   value={value}
                   placeholder="150 characters"
+                  placeholderTextColor={placeholderTextColor}
                   multiline
                   maxLength={150}
                   editable={!isSubmitting}
                 />
               )}
             />
-            <Text style={styles.charCount}>{(bioValue || "").length}/150</Text>
-          </View>
-        </View>
+            <ThemedText style={styles.charCount}>
+              {(bioValue || "").length}/150
+            </ThemedText>
+          </ThemedView>
+        </ThemedView>
       </ScrollView>
-    </SafeAreaView>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
   },
   headerButton: {
     paddingHorizontal: Platform.OS === "ios" ? 8 : 16,
@@ -307,6 +343,10 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: "#007AFF",
   },
+  cancelHeaderButtonText: {
+    fontSize: 17,
+    color: "#8e8e93",
+  },
   saveButtonTextHeader: {
     fontWeight: "600",
   },
@@ -314,7 +354,7 @@ const styles = StyleSheet.create({
     color: "#BDBDBD",
   },
   content: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     paddingTop: 20,
     paddingBottom: 40,
     gap: 16,
@@ -322,12 +362,12 @@ const styles = StyleSheet.create({
   avatarSection: {
     alignItems: "center",
     marginBottom: 24,
+    backgroundColor: "transparent",
   },
   avatarPlaceholder: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: "#f0f0f0",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 8,
@@ -344,7 +384,7 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.1)",
+    backgroundColor: "rgba(0,0,0,0.2)",
     borderRadius: 50,
   },
   editAvatarText: {
@@ -352,22 +392,20 @@ const styles = StyleSheet.create({
     color: "#007AFF",
     fontWeight: "500",
   },
-  formGroup: {},
+  formGroup: {
+    backgroundColor: "transparent",
+  },
   label: {
     fontSize: 14,
     fontWeight: "400",
-    color: "#666",
     marginBottom: 6,
     marginLeft: 4,
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#E0E0E0",
-    borderRadius: 8,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
+    borderRadius: 10,
+    padding: 15,
     fontSize: 16,
-    backgroundColor: "#fff",
+    width: "100%",
   },
   textArea: {
     height: 120,
@@ -375,13 +413,13 @@ const styles = StyleSheet.create({
   },
   bioInputContainer: {
     position: "relative",
+    backgroundColor: "transparent",
   },
   charCount: {
     position: "absolute",
     bottom: 10,
     right: 10,
     fontSize: 12,
-    color: "#aaa",
   },
   errorText: {
     color: "red",

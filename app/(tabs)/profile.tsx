@@ -1,18 +1,13 @@
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 import { useAuth } from "@clerk/clerk-expo";
 import { useQuery } from "convex/react";
 import { Image } from "expo-image";
 import { Stack, useRouter } from "expo-router";
 import { usePostHog } from "posthog-react-native";
 import { useState } from "react";
-import {
-  ActivityIndicator,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, StyleSheet, TouchableOpacity } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { api } from "../../convex/_generated/api";
 
 export default function ProfileScreen() {
@@ -40,116 +35,113 @@ export default function ProfileScreen() {
   const avatarUrl = user?.avatarUrl || "https://placehold.co/200x200?text=User";
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ThemedView style={styles.container}>
       <Stack.Screen
         options={{
           headerShown: false,
         }}
       />
       <ScrollView bounces={false} contentContainerStyle={styles.scrollContent}>
-        <View style={styles.profileHeader}>
+        <ThemedView style={styles.profileHeader}>
           <Image source={{ uri: avatarUrl }} style={styles.userAvatar} />
-          <Text style={styles.userName}>{fullName}</Text>
-          <Text style={styles.userLocation}>{user?.location || ""}</Text>
-          <Text style={styles.userBio}>{user?.bio || ""}</Text>
+          <ThemedText style={styles.userName}>{fullName}</ThemedText>
+          <ThemedText style={styles.userLocation}>
+            {user?.location || ""}
+          </ThemedText>
+          <ThemedText style={styles.userBio}>{user?.bio || ""}</ThemedText>
           <TouchableOpacity
             style={styles.editProfileButton}
             onPress={() => router.push("/profile-update")}
           >
-            <Text style={styles.editProfileButtonText}>Edit Profile</Text>
+            <ThemedText style={styles.editProfileButtonText}>
+              Edit Profile
+            </ThemedText>
           </TouchableOpacity>
-        </View>
-        <View style={styles.content}>
+        </ThemedView>
+        <ThemedView style={styles.content}>
           <TouchableOpacity
             style={styles.signOutButton}
             onPress={handleSignOut}
             disabled={isSigningOut}
           >
             {isSigningOut ? (
-              <ActivityIndicator color="#fff" />
+              <ActivityIndicator color="#FF3B30" />
             ) : (
-              <Text style={styles.buttonText}>Sign Out</Text>
+              <ThemedText style={styles.buttonText}>Sign Out</ThemedText>
             )}
           </TouchableOpacity>
-        </View>
+        </ThemedView>
       </ScrollView>
-    </SafeAreaView>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
   },
   scrollContent: {
     flexGrow: 1,
+    padding: 16,
   },
   profileHeader: {
-    alignItems: "center",
-    paddingTop: 60,
-    paddingBottom: 30,
-    paddingHorizontal: 24,
+    paddingTop: 40,
+    paddingBottom: 20,
   },
   userAvatar: {
     width: 100,
     height: 100,
     borderRadius: 50,
     marginBottom: 16,
+    alignSelf: "center",
   },
   userName: {
     fontSize: 24,
     fontWeight: "600",
     marginBottom: 4,
+    textAlign: "center",
   },
   userLocation: {
     fontSize: 16,
-    color: "#666",
     marginBottom: 12,
+    textAlign: "center",
   },
   userBio: {
     fontSize: 16,
-    color: "#333",
     textAlign: "center",
     marginBottom: 24,
     paddingHorizontal: 20,
   },
   editProfileButton: {
-    backgroundColor: "#fff",
-    borderRadius: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 3,
+    backgroundColor: "rgba(0, 122, 255, 0.1)",
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    marginTop: 10,
+    width: "100%",
+    alignItems: "center",
   },
   editProfileButtonText: {
-    color: "#000",
+    color: "#007AFF",
     fontSize: 16,
     fontWeight: "500",
   },
   content: {
-    padding: 24,
-    marginTop: 20,
+    marginTop: 10,
   },
   signOutButton: {
-    backgroundColor: "#f44336",
+    backgroundColor: "rgba(255, 59, 48, 0.1)",
     borderRadius: 8,
-    padding: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: "auto",
+    marginTop: 10,
     marginBottom: 20,
+    width: "100%",
   },
   buttonText: {
-    color: "#fff",
+    color: "#FF3B30",
     fontSize: 16,
     fontWeight: "500",
   },
