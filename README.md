@@ -2,19 +2,19 @@
 
 ## Intentions
 
-- [ ] This is intended to be an app template starting point
-- [ ] It is intended to be used as a starting point for building a mobile app using Expo, Convex, and Clerk
+- [x] This is an app template starting point
+- [x] Use it as the foundation for building a mobile app with Expo, Convex, and Clerk
 
 ## TODO:
 
 - [ ] Add apple auth
-- [ ] Strip out specific components and make generic
+- [x] Strip out specific components and make generic
 - [ ] Add expo-updates
 - [ ] Add error handling, log drain, posthog
 - [ ] Update readme
 - [ ] Scope out next steps
 
-This is an [Expo](https://expo.dev) project integrated with [Convex](https://convex.dev) for the backend and [Clerk](https://clerk.com) for authentication.
+This template integrates [Expo](https://expo.dev) for the client, [Convex](https://convex.dev) for the backend, and [Clerk](https://clerk.com) for authentication.
 
 ## Get started
 
@@ -62,9 +62,9 @@ This is an [Expo](https://expo.dev) project integrated with [Convex](https://con
    pnpm start
    ```
 
-## Profile Features
+## Example Profile Features
 
-The app includes:
+The template includes example code for:
 
 - User profile display with Clerk authentication
 - Profile editing functionality (first name, last name, location, bio)

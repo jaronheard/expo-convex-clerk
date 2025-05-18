@@ -48,8 +48,8 @@ export default function Intro() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>SoonList</Text>
-        <Text style={styles.subtitle}>Track what you want to do soon</Text>
+        <Text style={styles.title}>Welcome</Text>
+        <Text style={styles.subtitle}>Sign in to get started</Text>
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity

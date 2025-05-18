@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "soonlist",
-    "slug": "soonlist",
+    "name": "Expo Convex Clerk Template",
+    "slug": "expo-convex-clerk-template",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "soonlist",
+    "scheme": "expo-convex-clerk-template",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
