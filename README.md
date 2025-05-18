@@ -1,4 +1,4 @@
-# Soonlist - Profile with Convex and Clerk Integration
+# Expo + Convex + Clerk Template
 
 ## Intentions
 
@@ -9,6 +9,8 @@
 
 - [ ] Add apple auth
 - [ ] Strip out specific components and make generic
+- [ ] Add expo-updates
+- [ ] Add error handling, log drain, posthog
 - [ ] Update readme
 - [ ] Scope out next steps
 
