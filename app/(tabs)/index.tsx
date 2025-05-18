@@ -1,12 +1,8 @@
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
+import { LegendList } from "@legendapp/list";
+import { usePaginatedQuery } from "convex/react";
 import { useState } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  useColorScheme,
-} from "react-native";
+import { StyleSheet, TextInput, useColorScheme } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -14,17 +10,18 @@ import { useDebounce } from "@/hooks/useDebounce";
 
 export default function HomeScreen() {
   const [searchInput, setSearchInput] = useState("");
-  const debouncedSearch = useDebounce(searchInput, 200);
-  const tasks = useQuery(api.tasks.search, { searchQuery: debouncedSearch });
+  const debouncedSearch = useDebounce(searchInput, 300);
+  const { results, status, loadMore } = usePaginatedQuery(
+    api.tasks.search,
+    { searchQuery: debouncedSearch },
+    { initialNumItems: 20 }
+  );
   const colorScheme = useColorScheme();
   const textColor = colorScheme === "dark" ? "#fff" : "#000";
 
   return (
     <ThemedView style={styles.wrapper}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
+      <ThemedView style={styles.contentContainer}>
         <ThemedView style={styles.titleContainer}>
           <ThemedText type="title">Tasks</ThemedText>
         </ThemedView>
@@ -43,18 +40,21 @@ export default function HomeScreen() {
           />
         </ThemedView>
 
-        <ThemedView style={styles.tasksContainer}>
-          {tasks?.map(({ _id, text, isCompleted }) => (
-            <ThemedView key={_id} style={styles.taskItem}>
+        <LegendList
+          data={results}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <ThemedView style={styles.taskItem}>
               <ThemedText
-                style={isCompleted ? styles.completedTask : undefined}
+                style={item.isCompleted ? styles.completedTask : undefined}
               >
-                {text}
+                {item.text}
               </ThemedText>
             </ThemedView>
-          ))}
-        </ThemedView>
-      </ScrollView>
+          )}
+          onEndReached={() => loadMore(20)}
+        />
+      </ThemedView>
     </ThemedView>
   );
 }
@@ -85,14 +85,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     fontSize: 16,
   },
-  tasksContainer: {
-    gap: 8,
-    marginBottom: 16,
-  },
   taskItem: {
-    padding: 12,
+    padding: 16,
     borderRadius: 8,
     backgroundColor: "rgba(255, 255, 255, 0.1)",
+    marginBottom: 8,
   },
   completedTask: {
     textDecorationLine: "line-through",
