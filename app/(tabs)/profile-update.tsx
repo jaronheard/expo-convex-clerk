@@ -3,6 +3,7 @@ import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { Stack, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
+import { usePostHog } from "posthog-react-native";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
@@ -32,6 +33,7 @@ export default function ProfileUpdateScreen() {
   const [imagePickerAsset, setImagePickerAsset] =
     useState<ImagePicker.ImagePickerAsset | null>(null);
   const [loading, setLoading] = useState(false);
+  const posthog = usePostHog();
 
   // Convex functions
   const user = useQuery(api.users.getCurrentUser);
@@ -121,6 +123,7 @@ export default function ProfileUpdateScreen() {
         ...data,
         avatarUrlId,
       });
+      posthog?.capture("profile_updated");
 
       router.navigate("/(tabs)/profile");
     } catch (e) {

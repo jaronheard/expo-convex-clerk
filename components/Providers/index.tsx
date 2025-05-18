@@ -5,7 +5,8 @@ import { ConvexProviderWithClerk } from "convex/react-clerk";
 import * as SecureStore from "expo-secure-store";
 import ErrorBoundary from "react-native-error-boundary";
 import FallbackComponent from "react-native-error-boundary/lib/ErrorBoundary/FallbackComponent";
-import { PostHogProvider } from 'posthog-react-native';
+import { PostHogProvider, usePostHog } from 'posthog-react-native';
+import { useEffect } from "react";
 
 // Custom token cache for Clerk
 const tokenCache = {
@@ -41,6 +42,15 @@ const handleErrorConsole = (error: Error, stackTrace: string) => {
 export default function RootProvider({ children }: Props): JSX.Element {
   const clerkPublishableKey =
     process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "";
+
+  const { userId } = useAuth();
+  const posthog = usePostHog();
+
+  useEffect(() => {
+    if (posthog && userId) {
+      posthog.identify(userId);
+    }
+  }, [posthog, userId]);
 
   if (!clerkPublishableKey) {
     throw new Error("Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY");

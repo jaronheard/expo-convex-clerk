@@ -1,5 +1,6 @@
 import { useAuth } from "@clerk/clerk-expo";
 import { useQuery } from "convex/react";
+import { usePostHog } from "posthog-react-native";
 import { Image } from "expo-image";
 import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
@@ -19,11 +20,13 @@ export default function ProfileScreen() {
   const [isSigningOut, setIsSigningOut] = useState(false);
   const router = useRouter();
   const user = useQuery(api.users.getCurrentUser);
+  const posthog = usePostHog();
 
   const handleSignOut = async () => {
     try {
       setIsSigningOut(true);
       await signOut();
+      posthog?.capture("sign_out");
     } catch (error) {
       console.error("Error signing out:", error);
     } finally {
