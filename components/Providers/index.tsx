@@ -7,6 +7,8 @@ import ErrorBoundary from "react-native-error-boundary";
 import FallbackComponent from "react-native-error-boundary/lib/ErrorBoundary/FallbackComponent";
 import { PostHogProvider, usePostHog } from 'posthog-react-native';
 import { useEffect } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 import { useExpoUpdates } from "@/hooks/useExpoUpdates";
 
 // Custom token cache for Clerk
@@ -59,13 +61,20 @@ export default function RootProvider({ children }: Props): JSX.Element {
     throw new Error("Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY");
   }
 
+  const posthogOptions: Record<string, unknown> = {
+    host: 'https://us.i.posthog.com',
+    enableSessionReplay: true,
+  };
+
+  if (Platform.OS === 'web' || Platform.OS === 'macos') {
+    posthogOptions.persistence = 'asyncStorage';
+    posthogOptions.storage = AsyncStorage;
+  }
+
   return (
     <PostHogProvider
       apiKey="phc_xFdnzXhdRoS2sHiQziB8NZvDZ3u9VCeJ44eEft1taA3"
-      options={{
-        host: 'https://us.i.posthog.com',
-        enableSessionReplay: true,
-      }}
+      options={posthogOptions}
       autocapture
     >
       <ClerkProvider publishableKey={clerkPublishableKey} tokenCache={tokenCache}>
