@@ -10,11 +10,13 @@ import { LegendList } from "@legendapp/list";
 import { useMutation, usePaginatedQuery } from "convex/react";
 import { useMemo, useRef, useState } from "react";
 import {
+  ActivityIndicator,
   StyleSheet,
   TextInput,
   TouchableOpacity,
   useColorScheme,
 } from "react-native";
+import type { Id } from "@/convex/_generated/dataModel";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -40,6 +42,9 @@ export default function HomeScreen() {
   const createTask = useMutation(api.tasks.createTask);
   const splitTask = useMutation(api.tasks.splitTask);
   const toggleTask = useMutation(api.tasks.toggleTask);
+  const [splittingTaskId, setSplittingTaskId] = useState<Id<"tasks"> | null>(
+    null
+  );
 
   const handleAddTask = async () => {
     if (newTaskText.trim() === "") return;
@@ -52,11 +57,14 @@ export default function HomeScreen() {
     }
   };
 
-  const handleSplitTask = async (text: string) => {
+  const handleSplitTask = async (id: Id<"tasks">, text: string) => {
     try {
+      setSplittingTaskId(id);
       await splitTask({ text });
     } catch (error) {
       console.error("Failed to split task:", error);
+    } finally {
+      setSplittingTaskId(null);
     }
   };
 
@@ -110,10 +118,15 @@ export default function HomeScreen() {
                 {item.text}
               </ThemedText>
               <TouchableOpacity
-                onPress={() => handleSplitTask(item.text)}
+                onPress={() => handleSplitTask(item._id, item.text)}
                 style={styles.splitButton}
+                disabled={splittingTaskId === item._id}
               >
-                <ThemedText style={styles.splitButtonText}>Split</ThemedText>
+                {splittingTaskId === item._id ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <ThemedText style={styles.splitButtonText}>Split</ThemedText>
+                )}
               </TouchableOpacity>
             </ThemedView>
           )}
