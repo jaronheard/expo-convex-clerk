@@ -1,15 +1,15 @@
+import { useExpoUpdates } from "@/hooks/useExpoUpdates";
 import { ClerkLoaded, ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ConvexReactClient } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import * as SecureStore from "expo-secure-store";
+import { PostHogProvider, usePostHog } from "posthog-react-native";
+import { useEffect } from "react";
+import { Platform } from "react-native";
 import ErrorBoundary from "react-native-error-boundary";
 import FallbackComponent from "react-native-error-boundary/lib/ErrorBoundary/FallbackComponent";
-import { PostHogProvider, usePostHog } from 'posthog-react-native';
-import { useEffect } from "react";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform } from 'react-native';
-import { useExpoUpdates } from "@/hooks/useExpoUpdates";
 
 // Custom token cache for Clerk
 const tokenCache = {
@@ -42,18 +42,23 @@ const handleErrorConsole = (error: Error, stackTrace: string) => {
   console.error("Error occurred:", error, stackTrace);
 };
 
-export default function RootProvider({ children }: Props): JSX.Element {
-  const clerkPublishableKey =
-    process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "";
-
-  const { userId } = useAuth();
+// Separate component for PostHog identity tracking that runs after auth is loaded
+function PostHogIdentityTracker() {
   const posthog = usePostHog();
+  const { userId } = useAuth();
 
   useEffect(() => {
     if (posthog && userId) {
       posthog.identify(userId);
     }
   }, [posthog, userId]);
+
+  return null;
+}
+
+export default function RootProvider({ children }: Props): JSX.Element {
+  const clerkPublishableKey =
+    process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "";
 
   useExpoUpdates();
 
@@ -62,12 +67,12 @@ export default function RootProvider({ children }: Props): JSX.Element {
   }
 
   const posthogOptions: Record<string, unknown> = {
-    host: 'https://us.i.posthog.com',
+    host: "https://us.i.posthog.com",
     enableSessionReplay: true,
   };
 
-  if (Platform.OS === 'web' || Platform.OS === 'macos') {
-    posthogOptions.persistence = 'asyncStorage';
+  if (Platform.OS === "web" || Platform.OS === "macos") {
+    posthogOptions.persistence = "asyncStorage";
     posthogOptions.storage = AsyncStorage;
   }
 
@@ -77,13 +82,17 @@ export default function RootProvider({ children }: Props): JSX.Element {
       options={posthogOptions}
       autocapture
     >
-      <ClerkProvider publishableKey={clerkPublishableKey} tokenCache={tokenCache}>
+      <ClerkProvider
+        publishableKey={clerkPublishableKey}
+        tokenCache={tokenCache}
+      >
         <ClerkLoaded>
           <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
             <ErrorBoundary
               FallbackComponent={FallbackComponent}
               onError={handleErrorConsole}
             >
+              <PostHogIdentityTracker />
               <ActionSheetProvider>{children}</ActionSheetProvider>
             </ErrorBoundary>
           </ConvexProviderWithClerk>
