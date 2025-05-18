@@ -1,18 +1,20 @@
+import { Colors } from "@/constants/Colors";
 import { api } from "@/convex/_generated/api";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import {
+  BottomSheetModal,
+  BottomSheetTextInput,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 import { LegendList } from "@legendapp/list";
 import { useMutation, usePaginatedQuery } from "convex/react";
-import { useState, useRef, useMemo } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
   useColorScheme,
 } from "react-native";
-import {
-  BottomSheetModal,
-  BottomSheetView,
-  BottomSheetTextInput,
-} from "@gorhom/bottom-sheet";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -37,6 +39,7 @@ export default function HomeScreen() {
   const [newTaskText, setNewTaskText] = useState("");
   const createTask = useMutation(api.tasks.createTask);
   const splitTask = useMutation(api.tasks.splitTask);
+  const toggleTask = useMutation(api.tasks.toggleTask);
 
   const handleAddTask = async () => {
     if (newTaskText.trim() === "") return;
@@ -83,6 +86,24 @@ export default function HomeScreen() {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <ThemedView style={styles.taskItem}>
+              <TouchableOpacity
+                onPress={() =>
+                  toggleTask({ id: item._id, isCompleted: !item.isCompleted })
+                }
+                style={styles.checkbox}
+              >
+                <MaterialIcons
+                  name={
+                    item.isCompleted ? "check-box" : "check-box-outline-blank"
+                  }
+                  size={24}
+                  color={
+                    colorScheme === "dark"
+                      ? Colors.dark.icon
+                      : Colors.light.icon
+                  }
+                />
+              </TouchableOpacity>
               <ThemedText
                 style={item.isCompleted ? styles.completedTask : undefined}
               >
@@ -136,15 +157,15 @@ export default function HomeScreen() {
               style={styles.modalButton}
             >
               <ThemedText
-                style={[
-                  styles.modalButtonText,
-                  styles.inactiveModalButtonText,
-                ]}
+                style={[styles.modalButtonText, styles.inactiveModalButtonText]}
               >
                 Cancel
               </ThemedText>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleAddTask} style={styles.modalButton}>
+            <TouchableOpacity
+              onPress={handleAddTask}
+              style={styles.modalButton}
+            >
               <ThemedText style={styles.modalButtonText}>Save Task</ThemedText>
             </TouchableOpacity>
           </ThemedView>
@@ -188,6 +209,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     flexDirection: "row",
     alignItems: "center",
+  },
+  checkbox: {
+    marginRight: 12,
   },
   completedTask: {
     textDecorationLine: "line-through",
