@@ -17,23 +17,15 @@ export default function Intro() {
   const { isLoaded } = useSignIn();
   const [isLoading, setIsLoading] = useState<{
     google?: boolean;
-    github?: boolean;
   }>({});
 
   const { startOAuthFlow: googleAuth } = useOAuth({ strategy: "oauth_google" });
-  const { startOAuthFlow: githubAuth } = useOAuth({ strategy: "oauth_github" });
 
-  const handleSocialSignIn = async (
-    strategy: "oauth_google" | "oauth_github"
-  ) => {
+  const handleGoogleSignIn = async () => {
     try {
-      const strategyKey = strategy === "oauth_google" ? "google" : "github";
-      setIsLoading({ ...isLoading, [strategyKey]: true });
+      setIsLoading({ google: true });
 
-      const startOAuthFlow =
-        strategy === "oauth_google" ? googleAuth : githubAuth;
-
-      const { createdSessionId, setActive } = await startOAuthFlow();
+      const { createdSessionId, setActive } = await googleAuth();
 
       if (createdSessionId) {
         await setActive!({ session: createdSessionId });
@@ -41,8 +33,7 @@ export default function Intro() {
     } catch (err) {
       console.error("OAuth error:", err);
     } finally {
-      const strategyKey = strategy === "oauth_google" ? "google" : "github";
-      setIsLoading({ ...isLoading, [strategyKey]: false });
+      setIsLoading({ google: false });
     }
   };
 
@@ -63,7 +54,7 @@ export default function Intro() {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.socialButton}
-            onPress={() => handleSocialSignIn("oauth_google")}
+            onPress={handleGoogleSignIn}
             disabled={isLoading.google}
           >
             {isLoading.google ? (
@@ -79,23 +70,6 @@ export default function Intro() {
             )}
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.socialButton}
-            onPress={() => handleSocialSignIn("oauth_github")}
-            disabled={isLoading.github}
-          >
-            {isLoading.github ? (
-              <ActivityIndicator color="#000" />
-            ) : (
-              <>
-                <Image
-                  source={require("../../assets/images/github.png")}
-                  style={styles.socialIcon}
-                />
-                <Text style={styles.buttonText}>Continue with GitHub</Text>
-              </>
-            )}
-          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
