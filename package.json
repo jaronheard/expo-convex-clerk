@@ -1,14 +1,13 @@
 {
-  "name": "soonlist",
+  "name": "expo-convex-clerk-template",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "lint": "expo lint"
+    "start": "npx expo start",
+    "android": "npx expo start --android",
+    "ios": "npx expo start --ios",
+    "web": "npx expo start --web",
+    "lint": "npx expo lint"
   },
   "dependencies": {
     "@clerk/clerk-expo": "^2.11.5",
