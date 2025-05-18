@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   useColorScheme,
 } from "react-native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Colors } from "@/constants/Colors";
 import {
   BottomSheetModal,
   BottomSheetView,
@@ -36,6 +38,7 @@ export default function HomeScreen() {
   const snapPoints = useMemo(() => ["50%"], []);
   const [newTaskText, setNewTaskText] = useState("");
   const createTask = useMutation(api.tasks.createTask);
+  const toggleTask = useMutation(api.tasks.toggleTask);
 
   const handleAddTask = async () => {
     if (newTaskText.trim() === "") return;
@@ -74,6 +77,24 @@ export default function HomeScreen() {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <ThemedView style={styles.taskItem}>
+              <TouchableOpacity
+                onPress={() =>
+                  toggleTask({ id: item._id, isCompleted: !item.isCompleted })
+                }
+                style={styles.checkbox}
+              >
+                <MaterialIcons
+                  name={
+                    item.isCompleted ? "check-box" : "check-box-outline-blank"
+                  }
+                  size={24}
+                  color={
+                    colorScheme === "dark"
+                      ? Colors.dark.icon
+                      : Colors.light.icon
+                  }
+                />
+              </TouchableOpacity>
               <ThemedText
                 style={item.isCompleted ? styles.completedTask : undefined}
               >
@@ -171,6 +192,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     marginBottom: 8,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  checkbox: {
+    marginRight: 12,
   },
   completedTask: {
     textDecorationLine: "line-through",
