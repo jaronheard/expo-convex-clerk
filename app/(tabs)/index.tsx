@@ -39,22 +39,22 @@ export default function HomeScreen() {
             onChangeText={setSearchInput}
           />
         </ThemedView>
-      </ThemedView>
 
-      <LegendList
-        data={results}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => (
-          <ThemedView style={styles.taskItem}>
-            <ThemedText
-              style={item.isCompleted ? styles.completedTask : undefined}
-            >
-              {item.text}
-            </ThemedText>
-          </ThemedView>
-        )}
-        onEndReached={() => loadMore(20)}
-      />
+        <LegendList
+          data={results}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <ThemedView style={styles.taskItem}>
+              <ThemedText
+                style={item.isCompleted ? styles.completedTask : undefined}
+              >
+                {item.text}
+              </ThemedText>
+            </ThemedView>
+          )}
+          onEndReached={() => loadMore(20)}
+        />
+      </ThemedView>
     </ThemedView>
   );
 }
@@ -86,9 +86,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   taskItem: {
-    padding: 12,
+    padding: 16,
     borderRadius: 8,
     backgroundColor: "rgba(255, 255, 255, 0.1)",
+    marginBottom: 8,
   },
   completedTask: {
     textDecorationLine: "line-through",
