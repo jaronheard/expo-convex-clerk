@@ -36,6 +36,7 @@ export default function HomeScreen() {
   const snapPoints = useMemo(() => ["50%"], []);
   const [newTaskText, setNewTaskText] = useState("");
   const createTask = useMutation(api.tasks.createTask);
+  const splitTask = useMutation(api.tasks.splitTask);
 
   const handleAddTask = async () => {
     if (newTaskText.trim() === "") return;
@@ -45,6 +46,14 @@ export default function HomeScreen() {
       bottomSheetRef.current?.dismiss();
     } catch (error) {
       console.error("Failed to create task:", error);
+    }
+  };
+
+  const handleSplitTask = async (text: string) => {
+    try {
+      await splitTask({ text });
+    } catch (error) {
+      console.error("Failed to split task:", error);
     }
   };
 
@@ -79,6 +88,12 @@ export default function HomeScreen() {
               >
                 {item.text}
               </ThemedText>
+              <TouchableOpacity
+                onPress={() => handleSplitTask(item.text)}
+                style={styles.splitButton}
+              >
+                <ThemedText style={styles.splitButtonText}>Split</ThemedText>
+              </TouchableOpacity>
             </ThemedView>
           )}
           onEndReached={() => loadMore(20)}
@@ -171,10 +186,23 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     marginBottom: 8,
+    flexDirection: "row",
+    alignItems: "center",
   },
   completedTask: {
     textDecorationLine: "line-through",
     opacity: 0.7,
+  },
+  splitButton: {
+    marginLeft: "auto",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    backgroundColor: "#007AFF",
+    borderRadius: 4,
+  },
+  splitButtonText: {
+    color: "#fff",
+    fontSize: 12,
   },
   fab: {
     position: "absolute",

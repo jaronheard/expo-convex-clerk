@@ -1,6 +1,8 @@
 import { paginationOptsValidator } from "convex/server";
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { workflow } from "./workflow";
+import { internal } from "./_generated/server";
 
 export const get = query({
   args: {},
@@ -29,5 +31,14 @@ export const search = query({
         .paginate(paginationOpts);
     }
     return await q.order("desc").paginate(paginationOpts);
+  },
+});
+
+export const splitTask = mutation({
+  args: { text: v.string() },
+  handler: async (ctx, args) => {
+    await workflow.start(ctx, internal.splitTaskWorkflow.splitTaskWorkflow, {
+      text: args.text,
+    });
   },
 });
