@@ -9,7 +9,7 @@
 
 - [x] Add apple auth
 - [x] Strip out specific components and make generic
-- [ ] Add expo-updates
+- [x] Add expo-updates
 - [ ] Add error handling, log drain, posthog
 - [ ] Update readme
 - [ ] Scope out next steps
@@ -61,6 +61,11 @@ This template integrates [Expo](https://expo.dev) for the client, [Convex](https
    # In another terminal
    pnpm start
    ```
+
+The template uses **expo-updates** to deliver over-the-air updates. The app
+automatically checks for updates every 10 minutes while running and will
+immediately download and launch a new update if it contains a higher
+`criticalIndex` than the currently running version.
 
 ## Example Profile Features
 
