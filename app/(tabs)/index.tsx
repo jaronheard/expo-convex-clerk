@@ -1,8 +1,7 @@
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
+import { usePaginatedQuery } from "convex/react";
 import { useState } from "react";
 import {
-  ScrollView,
   StyleSheet,
   TextInput,
   useColorScheme,
@@ -10,21 +9,23 @@ import {
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { LegendList } from "@/components/LegendList";
 import { useDebounce } from "@/hooks/useDebounce";
 
 export default function HomeScreen() {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce(searchInput, 200);
-  const tasks = useQuery(api.tasks.search, { searchQuery: debouncedSearch });
+  const { results, status, loadMore } = usePaginatedQuery(
+    api.tasks.search,
+    { searchQuery: debouncedSearch },
+    { initialNumItems: 20 }
+  );
   const colorScheme = useColorScheme();
   const textColor = colorScheme === "dark" ? "#fff" : "#000";
 
   return (
     <ThemedView style={styles.wrapper}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
+      <ThemedView style={styles.contentContainer}>
         <ThemedView style={styles.titleContainer}>
           <ThemedText type="title">Tasks</ThemedText>
         </ThemedView>
@@ -42,19 +43,23 @@ export default function HomeScreen() {
             onChangeText={setSearchInput}
           />
         </ThemedView>
+      </ThemedView>
 
-        <ThemedView style={styles.tasksContainer}>
-          {tasks?.map(({ _id, text, isCompleted }) => (
-            <ThemedView key={_id} style={styles.taskItem}>
-              <ThemedText
-                style={isCompleted ? styles.completedTask : undefined}
-              >
-                {text}
-              </ThemedText>
-            </ThemedView>
-          ))}
-        </ThemedView>
-      </ScrollView>
+      <LegendList
+        data={results}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <ThemedView style={styles.taskItem}>
+            <ThemedText
+              style={item.isCompleted ? styles.completedTask : undefined}
+            >
+              {item.text}
+            </ThemedText>
+          </ThemedView>
+        )}
+        onEndReached={() => loadMore(20)}
+        isDone={status === "Exhausted"}
+      />
     </ThemedView>
   );
 }
@@ -84,10 +89,6 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     fontSize: 16,
-  },
-  tasksContainer: {
-    gap: 8,
-    marginBottom: 16,
   },
   taskItem: {
     padding: 12,
