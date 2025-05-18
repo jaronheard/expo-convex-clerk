@@ -5,12 +5,19 @@ import {
 } from "@react-navigation/native";
 import * as Sentry from "@sentry/react-native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useNavigationContainerRef } from "expo-router";
+import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
+import { isRunningInExpoGo } from "expo";
 
 import Providers from "@/components/Providers";
 import { useColorScheme } from "@/hooks/useColorScheme";
+
+// Construct a new integration instance to track navigation with Sentry
+const navigationIntegration = Sentry.reactNavigationIntegration({
+  enableTimeToInitialDisplay: !isRunningInExpoGo(),
+});
 
 // Initialize Sentry
 Sentry.init({
@@ -22,10 +29,18 @@ Sentry.init({
   tracesSampleRate: 0.2, // Lower in production
   // Capture profiles for 100% of transactions
   profilesSampleRate: 0.1, // Lower in production
+  integrations: [navigationIntegration],
+  enableNativeFramesTracking: !isRunningInExpoGo(),
 });
 
 function RootLayout() {
   const colorScheme = useColorScheme();
+  const ref = useNavigationContainerRef();
+  useEffect(() => {
+    if (ref?.current) {
+      navigationIntegration.registerNavigationContainer(ref);
+    }
+  }, [ref]);
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
