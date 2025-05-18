@@ -7,7 +7,7 @@
 
 ## TODO:
 
-- [ ] Add apple auth
+- [x] Add apple auth
 - [ ] Strip out specific components and make generic
 - [ ] Add expo-updates
 - [ ] Add error handling, log drain, posthog
