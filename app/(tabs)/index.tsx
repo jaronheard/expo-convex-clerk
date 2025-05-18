@@ -1,11 +1,13 @@
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
-import { Image } from "expo-image";
 import { useState } from "react";
-import { StyleSheet, TextInput, useColorScheme } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  useColorScheme,
+} from "react-native";
 
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -18,50 +20,61 @@ export default function HomeScreen() {
   const textColor = colorScheme === "dark" ? "#fff" : "#000";
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <Image
-          source={require("@/assets/images/partial-react-logo.png")}
-          style={styles.reactLogo}
-        />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Tasks</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.searchContainer}>
-        <TextInput
-          style={[styles.searchInput, { color: textColor }]}
-          placeholder="Search tasks..."
-          placeholderTextColor={
-            colorScheme === "dark"
-              ? "rgba(255, 255, 255, 0.5)"
-              : "rgba(0, 0, 0, 0.5)"
-          }
-          value={searchInput}
-          onChangeText={setSearchInput}
-        />
-      </ThemedView>
-      <ThemedView style={styles.tasksContainer}>
-        {tasks?.map(({ _id, text, isCompleted }) => (
-          <ThemedView key={_id} style={styles.taskItem}>
-            <ThemedText style={isCompleted ? styles.completedTask : undefined}>
-              {text}
-            </ThemedText>
-          </ThemedView>
-        ))}
-      </ThemedView>
-    </ParallaxScrollView>
+    <ThemedView style={styles.wrapper}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+      >
+        <ThemedView style={styles.titleContainer}>
+          <ThemedText type="title">Tasks</ThemedText>
+        </ThemedView>
+
+        <ThemedView style={styles.searchContainer}>
+          <TextInput
+            style={[styles.searchInput, { color: textColor }]}
+            placeholder="Search tasks..."
+            placeholderTextColor={
+              colorScheme === "dark"
+                ? "rgba(255, 255, 255, 0.5)"
+                : "rgba(0, 0, 0, 0.5)"
+            }
+            value={searchInput}
+            onChangeText={setSearchInput}
+          />
+        </ThemedView>
+
+        <ThemedView style={styles.tasksContainer}>
+          {tasks?.map(({ _id, text, isCompleted }) => (
+            <ThemedView key={_id} style={styles.taskItem}>
+              <ThemedText
+                style={isCompleted ? styles.completedTask : undefined}
+              >
+                {text}
+              </ThemedText>
+            </ThemedView>
+          ))}
+        </ThemedView>
+      </ScrollView>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+  },
+  contentContainer: {
+    padding: 16,
+  },
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+    marginTop: 16,
+    marginBottom: 16,
   },
   searchContainer: {
     marginVertical: 16,
@@ -74,7 +87,7 @@ const styles = StyleSheet.create({
   },
   tasksContainer: {
     gap: 8,
-    marginBottom: 8,
+    marginBottom: 16,
   },
   taskItem: {
     padding: 12,
@@ -84,12 +97,5 @@ const styles = StyleSheet.create({
   completedTask: {
     textDecorationLine: "line-through",
     opacity: 0.7,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
   },
 });

@@ -1,8 +1,8 @@
 import { useAuth } from "@clerk/clerk-expo";
 import { useQuery } from "convex/react";
-import { usePostHog } from "posthog-react-native";
 import { Image } from "expo-image";
 import { Stack, useRouter } from "expo-router";
+import { usePostHog } from "posthog-react-native";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 24,
-    gap: 20,
     marginTop: 20,
   },
   signOutButton: {
