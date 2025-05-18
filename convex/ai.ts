@@ -1,7 +1,7 @@
-import { internalAction } from "./_generated/server";
 import { v } from "convex/values";
+import { action } from "./_generated/server";
 
-export const generateSteps = internalAction({
+export const generateSteps = action({
   args: { text: v.string() },
   handler: async (ctx, args): Promise<string[]> => {
     const apiKey = process.env.OPENAI_API_KEY;
@@ -16,7 +16,7 @@ export const generateSteps = internalAction({
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
+        model: "gpt-4o-mini",
         messages: [
           {
             role: "system",

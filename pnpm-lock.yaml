@@ -14,6 +14,9 @@ importers:
       '@clerk/clerk-react':
         specifier: ^5.31.4
         version: 5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@convex-dev/workflow':
+        specifier: ^0.1.0
+        version: 0.1.5(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))
       '@expo/react-native-action-sheet':
         specifier: ^4.1.1
         version: 4.1.1(react@19.0.0)
@@ -723,6 +726,11 @@ packages:
 
   '@coinbase/wallet-sdk@4.3.0':
     resolution: {integrity: sha512-T3+SNmiCw4HzDm4we9wCHCxlP0pqCiwKe4sOwPH3YAK2KSKjxPRydKu6UQJrdONFVLG7ujXvbd/6ZqmvJb8rkw==}
+
+  '@convex-dev/workflow@0.1.5':
+    resolution: {integrity: sha512-1M/AiEid8cPD/XxujDpPl9rX35/JBiKNh6PgLQ+8qTnukz7cQ87dhFrfI0d+ocv00xDnJ7EEClfjkzByXKBmHg==}
+    peerDependencies:
+      convex: ~1.16.5 || >=1.17.0 <1.25.0
 
   '@egjs/hammerjs@2.0.17':
     resolution: {integrity: sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==}
@@ -1828,6 +1836,9 @@ packages:
 
   asap@2.0.6:
     resolution: {integrity: sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==}
+
+  async-channel@0.2.0:
+    resolution: {integrity: sha512-BJyjI/sfKlyijaBt2hbOSxT28xGNtLR0QLzAKO1Hlnv5BULY7sAoYoTPW3lfr1ZIC7y+FxabxO9T8GXpyoofGg==}
 
   async-function@1.0.0:
     resolution: {integrity: sha512-hsU18Ae8CDTR6Kgu9DYf0EbCr/a5iGL0rytQDobUcdpYOKokk8LEjVphnXkDkgpi0wYVsqrXuP0bZxJaTqdgoA==}
@@ -5549,6 +5560,11 @@ snapshots:
       eventemitter3: 5.0.1
       preact: 10.26.6
 
+  '@convex-dev/workflow@0.1.5(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))':
+    dependencies:
+      async-channel: 0.2.0
+      convex: 1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+
   '@egjs/hammerjs@2.0.17':
     dependencies:
       '@types/hammerjs': 2.0.46
@@ -6928,6 +6944,8 @@ snapshots:
       is-array-buffer: 3.0.5
 
   asap@2.0.6: {}
+
+  async-channel@0.2.0: {}
 
   async-function@1.0.0: {}
 
