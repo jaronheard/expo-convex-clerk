@@ -1,20 +1,16 @@
 import { api } from "@/convex/_generated/api";
+import { LegendList } from "@legendapp/list";
 import { usePaginatedQuery } from "convex/react";
 import { useState } from "react";
-import {
-  StyleSheet,
-  TextInput,
-  useColorScheme,
-} from "react-native";
+import { StyleSheet, TextInput, useColorScheme } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { LegendList } from "@/components/LegendList";
 import { useDebounce } from "@/hooks/useDebounce";
 
 export default function HomeScreen() {
   const [searchInput, setSearchInput] = useState("");
-  const debouncedSearch = useDebounce(searchInput, 200);
+  const debouncedSearch = useDebounce(searchInput, 300);
   const { results, status, loadMore } = usePaginatedQuery(
     api.tasks.search,
     { searchQuery: debouncedSearch },
@@ -58,7 +54,6 @@ export default function HomeScreen() {
           </ThemedView>
         )}
         onEndReached={() => loadMore(20)}
-        isDone={status === "Exhausted"}
       />
     </ThemedView>
   );

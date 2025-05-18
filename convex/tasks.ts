@@ -1,5 +1,6 @@
+import { paginationOptsValidator } from "convex/server";
 import { v } from "convex/values";
-import { query, paginationOptsValidator } from "./_generated/server";
+import { query } from "./_generated/server";
 
 export const get = query({
   args: {},
@@ -11,15 +12,15 @@ export const get = query({
 export const search = query({
   args: {
     searchQuery: v.string(),
-    paginationOpts: v.optional(paginationOptsValidator),
+    paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, { searchQuery, paginationOpts }) => {
     let q = ctx.db.query("tasks");
     if (searchQuery.trim().length > 0) {
-      q = q.withSearchIndex("search_text", (q2) =>
-        q2.search("text", searchQuery)
-      );
+      return await q
+        .withSearchIndex("search_text", (q2) => q2.search("text", searchQuery))
+        .paginate(paginationOpts);
     }
-    return await q.paginate(paginationOpts);
+    return await q.order("desc").paginate(paginationOpts);
   },
 });
