@@ -1,3 +1,4 @@
+import { vWorkflowId, WorkflowId } from "@convex-dev/workflow";
 import { paginationOptsValidator } from "convex/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
@@ -43,9 +44,20 @@ export const search = query({
 
 export const splitTask = mutation({
   args: { text: v.string() },
+  handler: async (ctx, args): Promise<WorkflowId> => {
+    return await workflow.start(
+      ctx,
+      internal.splitTaskWorkflow.splitTaskWorkflow,
+      {
+        text: args.text,
+      }
+    );
+  },
+});
+
+export const getTaskSplitWorkflowStatus = query({
+  args: { workflowId: vWorkflowId },
   handler: async (ctx, args) => {
-    await workflow.start(ctx, internal.splitTaskWorkflow.splitTaskWorkflow, {
-      text: args.text,
-    });
+    return await workflow.status(ctx, args.workflowId);
   },
 });

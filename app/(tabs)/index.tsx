@@ -1,6 +1,4 @@
-import { Colors } from "@/constants/Colors";
 import { api } from "@/convex/_generated/api";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import {
   BottomSheetModal,
   BottomSheetTextInput,
@@ -16,6 +14,7 @@ import {
   useColorScheme,
 } from "react-native";
 
+import { TaskItem } from "@/components/TaskItem";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -38,8 +37,6 @@ export default function HomeScreen() {
   const snapPoints = useMemo(() => ["50%"], []);
   const [newTaskText, setNewTaskText] = useState("");
   const createTask = useMutation(api.tasks.createTask);
-  const splitTask = useMutation(api.tasks.splitTask);
-  const toggleTask = useMutation(api.tasks.toggleTask);
 
   const handleAddTask = async () => {
     if (newTaskText.trim() === "") return;
@@ -49,14 +46,6 @@ export default function HomeScreen() {
       bottomSheetRef.current?.dismiss();
     } catch (error) {
       console.error("Failed to create task:", error);
-    }
-  };
-
-  const handleSplitTask = async (text: string) => {
-    try {
-      await splitTask({ text });
-    } catch (error) {
-      console.error("Failed to split task:", error);
     }
   };
 
@@ -85,37 +74,11 @@ export default function HomeScreen() {
           data={results}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-            <ThemedView style={styles.taskItem}>
-              <TouchableOpacity
-                onPress={() =>
-                  toggleTask({ id: item._id, isCompleted: !item.isCompleted })
-                }
-                style={styles.checkbox}
-              >
-                <MaterialIcons
-                  name={
-                    item.isCompleted ? "check-box" : "check-box-outline-blank"
-                  }
-                  size={24}
-                  color={
-                    colorScheme === "dark"
-                      ? Colors.dark.icon
-                      : Colors.light.icon
-                  }
-                />
-              </TouchableOpacity>
-              <ThemedText
-                style={item.isCompleted ? styles.completedTask : undefined}
-              >
-                {item.text}
-              </ThemedText>
-              <TouchableOpacity
-                onPress={() => handleSplitTask(item.text)}
-                style={styles.splitButton}
-              >
-                <ThemedText style={styles.splitButtonText}>Split</ThemedText>
-              </TouchableOpacity>
-            </ThemedView>
+            <TaskItem
+              id={item._id}
+              text={item.text}
+              isCompleted={item.isCompleted}
+            />
           )}
           onEndReached={() => loadMore(20)}
           contentContainerStyle={{ paddingBottom: 80 }}
@@ -201,32 +164,6 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     fontSize: 16,
-  },
-  taskItem: {
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    marginBottom: 8,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  checkbox: {
-    marginRight: 12,
-  },
-  completedTask: {
-    textDecorationLine: "line-through",
-    opacity: 0.7,
-  },
-  splitButton: {
-    marginLeft: "auto",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    backgroundColor: "#007AFF",
-    borderRadius: 4,
-  },
-  splitButtonText: {
-    color: "#fff",
-    fontSize: 12,
   },
   fab: {
     position: "absolute",

@@ -15,8 +15,8 @@ importers:
         specifier: ^5.31.4
         version: 5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@convex-dev/workflow':
-        specifier: ^0.1.0
-        version: 0.1.5(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))
+        specifier: ^0.2.4
+        version: 0.2.4(@convex-dev/workpool@0.2.10(convex-helpers@0.1.86(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.3)(zod@3.24.4))(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)))(convex-helpers@0.1.86(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.3)(zod@3.24.4))(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))
       '@expo/react-native-action-sheet':
         specifier: ^4.1.1
         version: 4.1.1(react@19.0.0)
@@ -727,10 +727,18 @@ packages:
   '@coinbase/wallet-sdk@4.3.0':
     resolution: {integrity: sha512-T3+SNmiCw4HzDm4we9wCHCxlP0pqCiwKe4sOwPH3YAK2KSKjxPRydKu6UQJrdONFVLG7ujXvbd/6ZqmvJb8rkw==}
 
-  '@convex-dev/workflow@0.1.5':
-    resolution: {integrity: sha512-1M/AiEid8cPD/XxujDpPl9rX35/JBiKNh6PgLQ+8qTnukz7cQ87dhFrfI0d+ocv00xDnJ7EEClfjkzByXKBmHg==}
+  '@convex-dev/workflow@0.2.4':
+    resolution: {integrity: sha512-KfUWxYmdM29qD4xRFAoKduN54xOsU4Gso3reU3Av4X0kHLGfPRsQ0EKFiEFYTuk7eo7AqTBvRNuGrKQxWCPpQA==}
     peerDependencies:
-      convex: ~1.16.5 || >=1.17.0 <1.25.0
+      '@convex-dev/workpool': ^0.2.9
+      convex: '>=1.21.0 <1.35.0'
+      convex-helpers: ^0.1.77
+
+  '@convex-dev/workpool@0.2.10':
+    resolution: {integrity: sha512-BUqSVy0YJB+1OFoEn3lyvivU/FX6qZ8v/vUr8fiKaVFKKdy5HhTy1Xo0flQPqJVPpHuAz/bEuwMoqWhgoHjskw==}
+    peerDependencies:
+      convex: '>=1.17.0 <1.25.0'
+      convex-helpers: ^0.1.71
 
   '@egjs/hammerjs@2.0.17':
     resolution: {integrity: sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==}
@@ -2130,6 +2138,25 @@ packages:
 
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
+
+  convex-helpers@0.1.86:
+    resolution: {integrity: sha512-ZJBrVykJpM2XJhlLTpejTFKDxGooEce6n+g/3BbTfhiBHBJkf97Je+VKMtKFfKS50quzc3lqGrt3XIUlhyyZNQ==}
+    hasBin: true
+    peerDependencies:
+      convex: ^1.13.0
+      hono: ^4.0.5
+      react: ^17.0.2 || ^18.0.0 || ^19.0.0
+      typescript: ^5.5
+      zod: ^3.22.4
+    peerDependenciesMeta:
+      hono:
+        optional: true
+      react:
+        optional: true
+      typescript:
+        optional: true
+      zod:
+        optional: true
 
   convex@1.24.1:
     resolution: {integrity: sha512-LucaIBktohO7KuKKsxLXxGhKoxYqcLUFqOXoC2p0HU4f8lWKNmDv1ackTB4DU5u/thnh/tIOvySEVNdoAdGXAw==}
@@ -5560,10 +5587,17 @@ snapshots:
       eventemitter3: 5.0.1
       preact: 10.26.6
 
-  '@convex-dev/workflow@0.1.5(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))':
+  '@convex-dev/workflow@0.2.4(@convex-dev/workpool@0.2.10(convex-helpers@0.1.86(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.3)(zod@3.24.4))(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)))(convex-helpers@0.1.86(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.3)(zod@3.24.4))(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))':
     dependencies:
+      '@convex-dev/workpool': 0.2.10(convex-helpers@0.1.86(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.3)(zod@3.24.4))(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))
       async-channel: 0.2.0
       convex: 1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+      convex-helpers: 0.1.86(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.3)(zod@3.24.4)
+
+  '@convex-dev/workpool@0.2.10(convex-helpers@0.1.86(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.3)(zod@3.24.4))(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))':
+    dependencies:
+      convex: 1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+      convex-helpers: 0.1.86(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.3)(zod@3.24.4)
 
   '@egjs/hammerjs@2.0.17':
     dependencies:
@@ -7312,6 +7346,14 @@ snapshots:
   convert-source-map@1.9.0: {}
 
   convert-source-map@2.0.0: {}
+
+  convex-helpers@0.1.86(convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.3)(zod@3.24.4):
+    dependencies:
+      convex: 1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+    optionalDependencies:
+      react: 19.0.0
+      typescript: 5.8.3
+      zod: 3.24.4
 
   convex@1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0):
     dependencies:
