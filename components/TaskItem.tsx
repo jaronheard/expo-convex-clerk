@@ -39,9 +39,10 @@ export function TaskItem({ id, text, isCompleted }: TaskItemProps) {
     }
   };
 
-  const isLoading = Boolean(
+  const isWorkflowLoading = Boolean(
     workflowId && (!workflowStatus || workflowStatus.type === "inProgress")
   );
+  const isWorkflowCompleted = workflowStatus?.type === "completed";
 
   return (
     <ThemedView style={styles.taskItem}>
@@ -59,13 +60,18 @@ export function TaskItem({ id, text, isCompleted }: TaskItemProps) {
         {text}
       </ThemedText>
       <TouchableOpacity
-        onPress={handleSplitTask}
-        style={[styles.splitButton, isLoading && styles.splitButtonLoading]}
-        disabled={isLoading}
+        onPress={() => handleSplitTask()}
+        style={[
+          styles.splitButton,
+          isWorkflowLoading && styles.splitButtonLoading,
+        ]}
+        disabled={isWorkflowLoading}
       >
-        {isLoading ? (
-          <ActivityIndicator size="small" color="#fff" />
-        ) : (
+        {isWorkflowLoading && <ActivityIndicator size="small" color="#fff" />}
+        {isWorkflowCompleted && (
+          <ThemedText style={styles.splitButtonText}>Completed</ThemedText>
+        )}
+        {!isWorkflowLoading && !isWorkflowCompleted && (
           <ThemedText style={styles.splitButtonText}>Split</ThemedText>
         )}
       </TouchableOpacity>

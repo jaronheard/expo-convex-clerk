@@ -73,6 +73,7 @@ export default function HomeScreen() {
         <LegendList
           data={results}
           keyExtractor={(item) => item._id}
+          recycleItems={false}
           renderItem={({ item }) => (
             <TaskItem
               id={item._id}
@@ -82,6 +83,7 @@ export default function HomeScreen() {
           )}
           onEndReached={() => loadMore(20)}
           contentContainerStyle={{ paddingBottom: 80 }}
+          maintainVisibleContentPosition
         />
       </ThemedView>
 
