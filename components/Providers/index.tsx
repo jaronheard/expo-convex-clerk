@@ -88,6 +88,7 @@ export default function RootProvider({ children }: Props): JSX.Element {
         tokenCache={tokenCache}
       >
         <ClerkLoaded>
+          {/* eslint-disable-next-line react-compiler/react-compiler */}
           <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
             <ErrorBoundary
               FallbackComponent={FallbackComponent}
