@@ -1,7 +1,7 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useAuth } from "@clerk/clerk-expo";
-import { useQuery } from "convex/react";
+import { useQuery } from "convex-helpers/react/cache";
 import { Image } from "expo-image";
 import { Stack, useRouter } from "expo-router";
 import { usePostHog } from "posthog-react-native";

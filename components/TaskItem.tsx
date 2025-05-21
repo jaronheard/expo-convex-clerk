@@ -3,7 +3,8 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { WorkflowId } from "@convex-dev/workflow";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
+import { useQuery } from "convex-helpers/react/cache";
 import { useState } from "react";
 import {
   ActivityIndicator,

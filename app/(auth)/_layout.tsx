@@ -1,9 +1,5 @@
-import {
-  Authenticated,
-  Unauthenticated,
-  useConvexAuth,
-  useQuery,
-} from "convex/react";
+import { Authenticated, Unauthenticated, useConvexAuth } from "convex/react";
+import { useQuery } from "convex-helpers/react/cache";
 import { Redirect, Stack } from "expo-router";
 import React from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";

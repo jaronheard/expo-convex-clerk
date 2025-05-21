@@ -5,6 +5,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ConvexReactClient } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
+import { ConvexQueryCacheProvider } from "convex-helpers/react/cache";
 import * as SecureStore from "expo-secure-store";
 import { PostHogProvider, usePostHog } from "posthog-react-native";
 import { useEffect } from "react";
@@ -90,15 +91,17 @@ export default function RootProvider({ children }: Props): JSX.Element {
         <ClerkLoaded>
           {/* eslint-disable-next-line react-compiler/react-compiler */}
           <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-            <ErrorBoundary
-              FallbackComponent={FallbackComponent}
-              onError={handleErrorConsole}
-            >
-              <PostHogIdentityTracker />
-              <BottomSheetModalProvider>
-                <ActionSheetProvider>{children}</ActionSheetProvider>
-              </BottomSheetModalProvider>
-            </ErrorBoundary>
+            <ConvexQueryCacheProvider>
+              <ErrorBoundary
+                FallbackComponent={FallbackComponent}
+                onError={handleErrorConsole}
+              >
+                <PostHogIdentityTracker />
+                <BottomSheetModalProvider>
+                  <ActionSheetProvider>{children}</ActionSheetProvider>
+                </BottomSheetModalProvider>
+              </ErrorBoundary>
+            </ConvexQueryCacheProvider>
           </ConvexProviderWithClerk>
         </ClerkLoaded>
       </ClerkProvider>
