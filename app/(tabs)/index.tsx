@@ -4,10 +4,10 @@ import {
   BottomSheetTextInput,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { LegendList } from "@legendapp/list";
 import { useMutation, usePaginatedQuery } from "convex/react";
 import { useMemo, useRef, useState } from "react";
 import {
+  FlatList,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -70,10 +70,9 @@ export default function HomeScreen() {
           />
         </ThemedView>
 
-        <LegendList
+        <FlatList
           data={results}
           keyExtractor={(item) => item._id}
-          recycleItems={false}
           renderItem={({ item }) => (
             <TaskItem
               id={item._id}
@@ -83,7 +82,6 @@ export default function HomeScreen() {
           )}
           onEndReached={() => loadMore(20)}
           contentContainerStyle={{ paddingBottom: 80 }}
-          maintainVisibleContentPosition
         />
       </ThemedView>
 
