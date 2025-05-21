@@ -1,5 +1,8 @@
 ---
-description:
-globs:
-alwaysApply: false
+description: 
+globs: 
+alwaysApply: true
 ---
+Always use Expo-aware commands:
+	•	Install deps: npx expo install --pnpm <package> (never pnpm add)
+	•	Run tasks: npx expo <command> (never raw react-native or global CLIs)

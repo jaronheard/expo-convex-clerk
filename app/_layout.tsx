@@ -4,12 +4,13 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import * as Sentry from "@sentry/react-native";
+import { isRunningInExpoGo } from "expo";
 import { useFonts } from "expo-font";
 import { Stack, useNavigationContainerRef } from "expo-router";
-import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
+import * as Updates from "expo-updates";
+import { useEffect } from "react";
 import "react-native-reanimated";
-import { isRunningInExpoGo } from "expo";
 
 import Providers from "@/components/Providers";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -32,6 +33,31 @@ Sentry.init({
   integrations: [navigationIntegration],
   enableNativeFramesTracking: !isRunningInExpoGo(),
 });
+
+// Add update-related metadata to Sentry scope
+const manifest = Updates.manifest;
+const metadata = "metadata" in manifest ? manifest.metadata : undefined;
+const extra = "extra" in manifest ? manifest.extra : undefined;
+const updateGroup =
+  metadata && "updateGroup" in metadata ? metadata.updateGroup : undefined;
+
+const scope = Sentry.getGlobalScope();
+
+scope.setTag("expo-update-id", Updates.updateId);
+scope.setTag("expo-is-embedded-update", Updates.isEmbeddedLaunch);
+
+if (typeof updateGroup === "string") {
+  scope.setTag("expo-update-group-id", updateGroup);
+
+  const owner = extra?.expoClient?.owner ?? "[account]";
+  const slug = extra?.expoClient?.slug ?? "[project]";
+  scope.setTag(
+    "expo-update-debug-url",
+    `https://expo.dev/accounts/${owner}/projects/${slug}/updates/${updateGroup}`,
+  );
+} else if (Updates.isEmbeddedLaunch) {
+  scope.setTag("expo-update-debug-url", "not applicable for embedded updates");
+}
 
 function RootLayout() {
   const colorScheme = useColorScheme();
