@@ -20,9 +20,37 @@ interface TaskItemProps {
   isCompleted: boolean;
 }
 
+interface TaskType {
+  _id: Id<"tasks">;
+  _creationTime: number;
+  text: string;
+  isCompleted: boolean;
+}
+
 export function TaskItem({ id, text, isCompleted }: TaskItemProps) {
   const colorScheme = useColorScheme();
-  const toggleTask = useMutation(api.tasks.toggleTask);
+  const toggleTask = useMutation(api.tasks.toggleTask).withOptimisticUpdate(
+    (localStore, args) => {
+      const { id, isCompleted } = args;
+
+      // We need to handle all possible search queries that might be active
+      // First, try with empty search query (default view)
+      const defaultQueries = localStore.getAllQueries(api.tasks.search);
+
+      for (const { args: queryArgs, value } of defaultQueries) {
+        if (value && value.page) {
+          const updatedResults = {
+            ...value,
+            page: value.page.map((task: TaskType) =>
+              task._id === id ? { ...task, isCompleted } : task,
+            ),
+          };
+
+          localStore.setQuery(api.tasks.search, queryArgs, updatedResults);
+        }
+      }
+    },
+  );
   const splitTask = useMutation(api.tasks.splitTask);
   const [workflowId, setWorkflowId] = useState<WorkflowId | null>(null);
   const workflowStatus = useQuery(
