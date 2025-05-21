@@ -22,7 +22,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 export default function HomeScreen() {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce(searchInput, 300);
-  const { results, status, loadMore } = usePaginatedQuery(
+  const { results, loadMore } = usePaginatedQuery(
     api.tasks.search,
     { searchQuery: debouncedSearch },
     { initialNumItems: 20 }
