@@ -24,6 +24,7 @@
     "@react-navigation/native": "^7.1.6",
     "@sentry/react-native": "^6.14.0",
     "convex": "^1.24.1",
+    "convex-helpers": "^0.1.87",
     "expo": "~53.0.9",
     "expo-application": "~6.1.4",
     "expo-blur": "~14.1.4",
