@@ -44,9 +44,6 @@ importers:
       '@sentry/react-native':
         specifier: ^6.14.0
         version: 6.14.0(expo@53.0.9(@babel/core@7.27.1)(@expo/metro-runtime@5.0.4(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0)))(babel-plugin-react-compiler@19.0.0-beta-af1b7da-20250417)(react-native-webview@13.13.5(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
-      babel-plugin-react-compiler:
-        specifier: 19.0.0-beta-af1b7da-20250417
-        version: 19.0.0-beta-af1b7da-20250417
       convex:
         specifier: ^1.24.1
         version: 1.24.1(@clerk/clerk-react@5.31.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
@@ -119,9 +116,6 @@ importers:
       react:
         specifier: 19.0.0
         version: 19.0.0
-      react-compiler-runtime:
-        specifier: 19.0.0-beta-af1b7da-20250417
-        version: 19.0.0-beta-af1b7da-20250417(react@19.0.0)
       react-dom:
         specifier: 19.0.0
         version: 19.0.0(react@19.0.0)
@@ -4103,11 +4097,6 @@ packages:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
     hasBin: true
 
-  react-compiler-runtime@19.0.0-beta-af1b7da-20250417:
-    resolution: {integrity: sha512-1x7EFeLOerr3UbtPyQaF0h16CM1CSqmuf2HRJjRblud+d8xuyBUuEmBzcKyMwNGBmEFsr43Y8/krM/hodT0ywg==}
-    peerDependencies:
-      react: ^17.0.0 || ^18.0.0 || ^19.0.0 || ^0.0.0-experimental
-
   react-devtools-core@6.1.2:
     resolution: {integrity: sha512-ldFwzufLletzCikNJVYaxlxMLu7swJ3T2VrGfzXlMsVhZhPDKXA38DEROidaYZVgMAmQnIjymrmqto5pyfrwPA==}
 
@@ -7163,6 +7152,7 @@ snapshots:
   babel-plugin-react-compiler@19.0.0-beta-af1b7da-20250417:
     dependencies:
       '@babel/types': 7.27.1
+    optional: true
 
   babel-plugin-react-native-web@0.19.13: {}
 
@@ -9633,10 +9623,6 @@ snapshots:
       ini: 1.3.8
       minimist: 1.2.8
       strip-json-comments: 2.0.1
-
-  react-compiler-runtime@19.0.0-beta-af1b7da-20250417(react@19.0.0):
-    dependencies:
-      react: 19.0.0
 
   react-devtools-core@6.1.2:
     dependencies:
