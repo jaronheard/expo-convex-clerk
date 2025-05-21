@@ -8,14 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "update": "eas update --branch preview && npx sentry-expo-upload-sourcemaps dist",
-    "build:preview": "eas build --profile preview --platform ios",
-    "build:production": "eas build --profile production --platform ios",
-    "submit:production": "eas submit --platform ios",
-    "update:preview": "eas update --branch preview",
-    "update:production": "eas update --branch production",
-    "build:local": "eas build --profile development --platform ios --local",
-    "build:configure": "eas build:configure"
+    "update": "eas update --branch preview && npx sentry-expo-upload-sourcemaps dist"
   },
   "dependencies": {
     "@clerk/clerk-expo": "^2.11.5",
