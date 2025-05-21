@@ -22,7 +22,23 @@ interface TaskItemProps {
 
 export function TaskItem({ id, text, isCompleted }: TaskItemProps) {
   const colorScheme = useColorScheme();
-  const toggleTask = useMutation(api.tasks.toggleTask);
+  const toggleTask = useMutation(api.tasks.toggleTask).withOptimisticUpdate(
+    (localStore, args) => {
+      const { id, isCompleted } = args;
+      const existing = localStore.getQuery(api.tasks.search, {
+        searchQuery: "",
+      });
+      if (existing !== undefined) {
+        localStore.setQuery(
+          api.tasks.search,
+          { searchQuery: "" },
+          existing.map((task) =>
+            task._id === id ? { ...task, isCompleted } : task,
+          ),
+        );
+      }
+    },
+  );
   const splitTask = useMutation(api.tasks.splitTask);
   const [workflowId, setWorkflowId] = useState<WorkflowId | null>(null);
   const workflowStatus = useQuery(
