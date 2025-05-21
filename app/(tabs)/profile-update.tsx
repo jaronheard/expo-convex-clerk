@@ -85,7 +85,7 @@ export default function ProfileUpdateScreen() {
     if (status !== "granted") {
       Alert.alert(
         "Permission needed",
-        "Please grant permission to access your photos"
+        "Please grant permission to access your photos",
       );
       return;
     }

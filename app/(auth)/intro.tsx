@@ -108,7 +108,6 @@ export default function Intro() {
               </>
             )}
           </TouchableOpacity>
-
         </View>
       </View>
     </SafeAreaView>

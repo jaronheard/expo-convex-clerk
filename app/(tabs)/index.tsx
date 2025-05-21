@@ -25,7 +25,7 @@ export default function HomeScreen() {
   const { results, loadMore } = usePaginatedQuery(
     api.tasks.search,
     { searchQuery: debouncedSearch },
-    { initialNumItems: 20 }
+    { initialNumItems: 20 },
   );
   const colorScheme = useColorScheme();
   const textColor = colorScheme === "dark" ? "#fff" : "#000";

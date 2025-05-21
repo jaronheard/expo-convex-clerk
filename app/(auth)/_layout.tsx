@@ -16,7 +16,7 @@ export default function AuthLayout() {
   // Pass "skip" to useQuery to prevent it from running if not authenticated.
   const user = useQuery(
     api.users.getCurrentUser,
-    isAuthenticated ? {} : "skip"
+    isAuthenticated ? {} : "skip",
   );
 
   if (isLoading) {

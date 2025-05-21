@@ -27,7 +27,7 @@ export function TaskItem({ id, text, isCompleted }: TaskItemProps) {
   const [workflowId, setWorkflowId] = useState<WorkflowId | null>(null);
   const workflowStatus = useQuery(
     api.tasks.getTaskSplitWorkflowStatus,
-    workflowId ? { workflowId } : "skip"
+    workflowId ? { workflowId } : "skip",
   );
 
   const handleSplitTask = async () => {
@@ -40,7 +40,7 @@ export function TaskItem({ id, text, isCompleted }: TaskItemProps) {
   };
 
   const isWorkflowLoading = Boolean(
-    workflowId && (!workflowStatus || workflowStatus.type === "inProgress")
+    workflowId && (!workflowStatus || workflowStatus.type === "inProgress"),
   );
   const isWorkflowCompleted = workflowStatus?.type === "completed";
 
