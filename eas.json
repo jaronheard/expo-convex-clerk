@@ -1,0 +1,25 @@
+{
+  "cli": {
+    "version": ">= 3.13.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "dotenv": ".env.local"
+    },
+    "development-device": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": { "simulator": false },
+      "dotenv": ".env.local"
+    },
+    "production": {
+      "channel": "production",
+      "dotenv": ".env.production"
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

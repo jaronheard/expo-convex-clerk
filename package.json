@@ -7,11 +7,24 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "build": "pnpm run deploy:convex",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
-    "update": "eas update --branch preview && npx sentry-expo-upload-sourcemaps dist",
-    "deploy:convex": "npx convex deploy --prod --yes",
-    "build": "pnpm run deploy:convex"
+    "eas:build.dev.device.ios": "pnpm with-env eas build --profile development-device --platform ios",
+    "eas:build.dev.device": "pnpm with-env eas build --profile development-device --platform ios --platform android",
+    "eas:build.dev.sim.android": "pnpm with-env eas build --profile development --platform android",
+    "eas:build.dev.sim.ios": "pnpm with-env eas build --profile development --platform ios",
+    "eas:build.dev.sim": "pnpm with-env eas build --profile development --platform ios --platform android",
+    "eas:build.prod.android": "pnpm with-env:production eas build --profile production --platform android",
+    "eas:build.prod.ios": "pnpm with-env:production eas build --profile production --platform ios",
+    "eas:install.sim.latest.android": "pnpm with-env:production eas build:run -p android --latest",
+    "eas:install.sim.latest.ios": "pnpm with-env:production eas build:run -p ios --latest",
+    "eas:metadata:pull": "pnpm with-env:production eas metadata:pull",
+    "eas:metadata:push": "pnpm with-env:production eas metadata:push",
+    "eas:submit.prod.ios": "pnpm with-env:production eas submit --platform ios",
+    "eas:update.preview": "pnpm with-env eas update --branch preview && npx sentry-expo-upload-sourcemaps dist",
+    "eas:update.prod": "pnpm with-env:production eas update --branch production --clear-cache && npx sentry-expo-upload-sourcemaps dist",
+    "deploy:convex": "npx convex deploy --prod --yes"
   },
   "dependencies": {
     "@clerk/clerk-expo": "^2.11.5",
@@ -83,7 +96,8 @@
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "prettier": "^3.5.3",
     "ts-node": "^10.9.2",
-    "typescript": "~5.8.3"
+    "typescript": "~5.8.3",
+    "with-env": "^1.1.1"
   },
   "private": true
 }
