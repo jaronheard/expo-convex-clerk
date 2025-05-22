@@ -1,3 +1,4 @@
+import { useColorScheme as useNativewindColorScheme } from "nativewind";
 import { useEffect, useState } from "react";
 import { useColorScheme as useRNColorScheme } from "react-native";
 
@@ -6,16 +7,37 @@ import { useColorScheme as useRNColorScheme } from "react-native";
  */
 export function useColorScheme() {
   const [hasHydrated, setHasHydrated] = useState(false);
+  const { colorScheme, setColorScheme, toggleColorScheme } =
+    useNativewindColorScheme();
+  const systemColorScheme = useRNColorScheme();
 
   useEffect(() => {
     setHasHydrated(true);
   }, []);
 
-  const colorScheme = useRNColorScheme();
+  // Sync the NativeWind theme with the system setting
+  useEffect(() => {
+    if (
+      systemColorScheme &&
+      (!colorScheme || colorScheme !== systemColorScheme)
+    ) {
+      setColorScheme(systemColorScheme);
+    }
+  }, [systemColorScheme, colorScheme, setColorScheme]);
 
-  if (hasHydrated) {
-    return colorScheme;
+  if (!hasHydrated) {
+    return {
+      colorScheme: "light",
+      isDarkColorScheme: false,
+      setColorScheme,
+      toggleColorScheme,
+    };
   }
 
-  return "light";
+  return {
+    colorScheme: colorScheme ?? "light",
+    isDarkColorScheme: colorScheme === "dark",
+    setColorScheme,
+    toggleColorScheme,
+  };
 }
