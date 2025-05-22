@@ -7,6 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "build": "pnpm run deploy:convex",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
     "eas:build.dev.device.ios": "pnpm with-env eas build --profile development-device --platform ios",
@@ -23,6 +24,7 @@
     "eas:submit.prod.ios": "pnpm with-env:production eas submit --platform ios",
     "eas:update.preview": "pnpm with-env eas update --branch preview && npx sentry-expo-upload-sourcemaps dist",
     "eas:update.prod": "pnpm with-env:production eas update --branch production --clear-cache && npx sentry-expo-upload-sourcemaps dist"
+    "deploy:convex": "npx convex deploy --prod --yes"
   },
   "dependencies": {
     "@clerk/clerk-expo": "^2.11.5",
