@@ -10,7 +10,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { useAuth } from "@clerk/clerk-expo";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const { isSignedIn } = useAuth();
 
   if (!isSignedIn) {

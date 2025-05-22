@@ -1,6 +1,8 @@
+import "@/global.css";
 import {
   DarkTheme,
   DefaultTheme,
+  Theme,
   ThemeProvider,
 } from "@react-navigation/native";
 import * as Sentry from "@sentry/react-native";
@@ -9,12 +11,13 @@ import { useFonts } from "expo-font";
 import { Stack, useNavigationContainerRef } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as Updates from "expo-updates";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Platform } from "react-native";
 import "react-native-reanimated";
-import "../global.css";
 
 import Providers from "@/components/Providers";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { NAV_THEME } from "@/lib/constants";
 
 // Construct a new integration instance to track navigation with Sentry
 const navigationIntegration = Sentry.reactNavigationIntegration({
@@ -60,40 +63,74 @@ if (typeof updateGroup === "string") {
   scope.setTag("expo-update-debug-url", "not applicable for embedded updates");
 }
 
+const LIGHT_THEME: Theme = {
+  ...DefaultTheme,
+  colors: NAV_THEME.light,
+};
+const DARK_THEME: Theme = {
+  ...DarkTheme,
+  colors: NAV_THEME.dark,
+};
+
+export {
+  // Catch any errors thrown by the Layout component.
+  ErrorBoundary,
+} from "expo-router";
+
+const useIsomorphicLayoutEffect =
+  Platform.OS === "web" && typeof window === "undefined"
+    ? useEffect
+    : useLayoutEffect;
+
 function RootLayout() {
-  const colorScheme = useColorScheme();
+  const { colorScheme, isDarkColorScheme } = useColorScheme();
   const ref = useNavigationContainerRef();
+  const hasMounted = useRef(false);
+  const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
+
+  const [loaded, error] = useFonts({
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+  });
+
+  useEffect(() => {
+    if (error) throw error;
+  }, [error]);
+
+  useIsomorphicLayoutEffect(() => {
+    if (hasMounted.current) {
+      return;
+    }
+
+    if (Platform.OS === "web") {
+      // Adds the background color to the html element to prevent white background on overscroll.
+      document.documentElement.classList.add("bg-background");
+    }
+    setIsColorSchemeLoaded(true);
+    hasMounted.current = true;
+  }, []);
+
   useEffect(() => {
     if (ref?.current) {
       navigationIntegration.registerNavigationContainer(ref);
     }
   }, [ref]);
-  const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-  });
 
-  if (!loaded) {
+  if (!loaded || !isColorSchemeLoaded) {
     return null;
   }
 
   return (
     <Providers>
-      <RootLayoutNav colorScheme={colorScheme || "light"} />
+      <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+        <Stack ref={ref} screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </ThemeProvider>
     </Providers>
   );
 }
 
 export default Sentry.wrap(RootLayout);
-
-function RootLayoutNav({ colorScheme }: { colorScheme: "light" | "dark" }) {
-  return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
-}
