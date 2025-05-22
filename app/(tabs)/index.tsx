@@ -8,7 +8,6 @@ import { useMutation, usePaginatedQuery } from "convex/react";
 import { useMemo, useRef, useState } from "react";
 import {
   FlatList,
-  StyleSheet,
   TextInput,
   TouchableOpacity,
   useColorScheme,
@@ -52,15 +51,16 @@ export default function HomeScreen() {
   };
 
   return (
-    <ThemedView style={styles.wrapper}>
-      <ThemedView style={styles.contentContainer}>
-        <ThemedView style={styles.titleContainer}>
+    <ThemedView className="flex-1">
+      <ThemedView className="flex-1 p-4">
+        <ThemedView className="mt-4 mb-4 flex-row items-center gap-2">
           <Text className="text-3xl font-bold">Tasks</Text>
         </ThemedView>
 
-        <ThemedView style={styles.searchContainer}>
+        <ThemedView className="my-4">
           <TextInput
-            style={[styles.searchInput, { color: textColor }]}
+            className="rounded-lg p-3 text-base"
+            style={{ backgroundColor: "rgba(255, 255, 255, 0.1)", color: textColor }}
             placeholder="Search tasks..."
             placeholderTextColor={
               colorScheme === "dark"
@@ -88,10 +88,11 @@ export default function HomeScreen() {
       </ThemedView>
 
       <TouchableOpacity
-        style={[styles.fab, { backgroundColor: themeColors.primary }]}
+        className="absolute right-4 bottom-4 m-4 h-14 w-14 items-center justify-center rounded-full shadow"
+        style={{ backgroundColor: themeColors.primary }}
         onPress={() => bottomSheetRef.current?.present()}
       >
-        <Text style={styles.fabText}>+</Text>
+        <Text className="text-2xl">+</Text>
       </TouchableOpacity>
 
       <BottomSheetModal
@@ -100,13 +101,11 @@ export default function HomeScreen() {
         snapPoints={snapPoints}
         backgroundStyle={{ backgroundColor: modalBackgroundColor }}
       >
-        <BottomSheetView style={styles.modalView}>
-          <Text style={styles.modalText}>Add New Task</Text>
+        <BottomSheetView className="w-full items-center rounded-t-2xl p-6" style={{shadowColor: '#000', shadowOffset:{width:0,height:-2}, shadowOpacity:0.25, shadowRadius:4, elevation:5}}>
+          <Text className="mb-5 text-center text-xl font-bold">Add New Task</Text>
           <BottomSheetTextInput
-            style={[
-              styles.modalInput,
-              { color: textColor, backgroundColor: inputBackgroundColor },
-            ]}
+            className="mb-[25px] w-full rounded-xl p-4 text-base"
+            style={{ color: textColor, backgroundColor: inputBackgroundColor }}
             placeholder="e.g., Study Portuguese every weekday"
             placeholderTextColor={
               colorScheme === "dark"
@@ -116,22 +115,18 @@ export default function HomeScreen() {
             value={newTaskText}
             onChangeText={setNewTaskText}
           />
-          <ThemedView style={styles.modalButtons}>
+          <ThemedView className="w-full flex-row justify-between">
             <TouchableOpacity
               onPress={() => bottomSheetRef.current?.dismiss()}
-              style={styles.modalButton}
+              className="rounded-lg px-5 py-2.5"
             >
-              <Text
-                style={[styles.modalButtonText, styles.inactiveModalButtonText]}
-              >
-                Cancel
-              </Text>
+              <Text className="text-base font-semibold text-[#8e8e93]">Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleAddTask}
-              style={styles.modalButton}
+              className="rounded-lg px-5 py-2.5"
             >
-              <Text style={styles.modalButtonText}>Save Task</Text>
+              <Text className="text-base font-semibold text-[#007AFF]">Save Task</Text>
             </TouchableOpacity>
           </ThemedView>
         </BottomSheetView>
@@ -140,97 +135,3 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-  },
-  contentContainer: {
-    padding: 16,
-    flex: 1,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginTop: 16,
-    marginBottom: 16,
-  },
-  searchContainer: {
-    marginVertical: 16,
-  },
-  searchInput: {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    padding: 12,
-    borderRadius: 8,
-    fontSize: 16,
-  },
-  fab: {
-    position: "absolute",
-    margin: 16,
-    right: 16,
-    bottom: 16,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    justifyContent: "center",
-    alignItems: "center",
-    elevation: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  fabText: {
-    fontSize: 24,
-  },
-  modalView: {
-    width: "100%",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 24,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: -2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalText: {
-    marginBottom: 20,
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  modalInput: {
-    width: "100%",
-    padding: 15,
-    borderRadius: 10,
-    fontSize: 16,
-    marginBottom: 25,
-  },
-  modalButtons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-    backgroundColor: "transparent",
-  },
-  modalButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-  },
-  modalButtonText: {
-    color: "#007AFF",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  inactiveModalButtonText: {
-    color: "#8e8e93",
-  },
-});

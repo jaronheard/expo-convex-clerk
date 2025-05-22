@@ -1,43 +1,19 @@
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView } from "react-native";
 
 import { ThemedView } from "@/components/ThemedView";
 import { Text } from "@/components/ui/text";
 
 export default function ExploreScreen() {
   return (
-    <ThemedView style={styles.wrapper}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
-        <ThemedView style={styles.titleContainer}>
+    <ThemedView className="flex-1">
+      <ScrollView className="flex-1" contentContainerStyle={{ padding: 16 }}>
+        <ThemedView className="mt-4 mb-4 flex-row gap-2">
           <Text className="text-3xl font-bold">Explore</Text>
         </ThemedView>
-        <ThemedView style={styles.contentBox}>
+        <ThemedView className="mb-4">
           <Text>This is the explore tab. Add your content here.</Text>
         </ThemedView>
       </ScrollView>
     </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-  },
-  contentContainer: {
-    padding: 16,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    gap: 8,
-    marginTop: 16,
-    marginBottom: 16,
-  },
-  contentBox: {
-    marginBottom: 16,
-  },
-});
