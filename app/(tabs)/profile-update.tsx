@@ -1,7 +1,7 @@
-import { Text } from "@/components";
 import { ThemedView } from "@/components/ThemedView";
-import { useMutation } from "convex/react";
+import { Text } from "@/components/ui/text";
 import { useQuery } from "convex-helpers/react/cache";
+import { useMutation } from "convex/react";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { Stack, useRouter } from "expo-router";

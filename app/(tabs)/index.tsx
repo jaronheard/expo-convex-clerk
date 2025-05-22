@@ -15,8 +15,8 @@ import {
 } from "react-native";
 
 import { TaskItem } from "@/components/TaskItem";
-import { Text } from "@/components";
 import { ThemedView } from "@/components/ThemedView";
+import { Text } from "@/components/ui/text";
 import { useDebounce } from "@/hooks/useDebounce";
 
 export default function HomeScreen() {
@@ -53,7 +53,7 @@ export default function HomeScreen() {
     <ThemedView style={styles.wrapper}>
       <ThemedView style={styles.contentContainer}>
         <ThemedView style={styles.titleContainer}>
-        <Text className="text-3xl font-bold">Tasks</Text>
+          <Text className="text-3xl font-bold">Tasks</Text>
         </ThemedView>
 
         <ThemedView style={styles.searchContainer}>
