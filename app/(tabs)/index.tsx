@@ -78,10 +78,10 @@ export default function HomeScreen() {
 
       <TouchableOpacity
         className="absolute m-4 right-4 bottom-4 w-14 h-14 rounded-full justify-center items-center shadow-lg"
-        style={{ backgroundColor: themeColors.primary }}
+        style={{ backgroundColor: "#007AFF" }}
         onPress={() => bottomSheetRef.current?.present()}
       >
-        <Text className="text-2xl">+</Text>
+        <Text className="text-2xl text-foreground">+</Text>
       </TouchableOpacity>
 
       <BottomSheetModal
