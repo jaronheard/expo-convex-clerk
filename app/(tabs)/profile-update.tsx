@@ -9,11 +9,11 @@ import { Stack, useRouter } from "expo-router";
 import { usePostHog } from "posthog-react-native";
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { cn } from "@/lib/utils";
 import {
   ActivityIndicator,
   Alert,
   Platform,
-  StyleSheet,
   TextInput,
   TouchableOpacity,
   View,
@@ -153,7 +153,7 @@ export default function ProfileUpdateScreen() {
   const headerStyle = { backgroundColor: Colors[theme].background };
 
   return (
-    <View className="bg-background" style={styles.container}>
+    <View className="bg-background flex-1">
       <Stack.Screen
         options={{
           headerShown: true,
@@ -162,30 +162,38 @@ export default function ProfileUpdateScreen() {
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => router.navigate("/(tabs)/profile")}
-              style={styles.headerButton}
+              className={cn(
+                "py-[10px]",
+                Platform.OS === "ios" ? "px-2" : "px-4",
+              )}
               disabled={loading}
             >
-              <Text style={styles.cancelHeaderButtonText}>Cancel</Text>
+              <Text className="text-[17px] text-[#8e8e93]">Cancel</Text>
             </TouchableOpacity>
           ),
           headerRight: () =>
             loading ? (
               <ActivityIndicator
-                style={styles.headerActivityIndicator}
+                className={cn(
+                  Platform.OS === "ios" ? "mx-2" : "mx-4",
+                  "py-[10px]",
+                )}
                 color="#007AFF"
               />
             ) : (
               <TouchableOpacity
                 onPress={handleSubmit(handleUpdate)}
                 disabled={loading}
-                style={styles.headerButton}
+                className={cn(
+                  "py-[10px]",
+                  Platform.OS === "ios" ? "px-2" : "px-4",
+                )}
               >
                 <Text
-                  style={[
-                    styles.headerButtonText,
-                    styles.saveButtonTextHeader,
-                    loading && styles.disabledButtonText,
-                  ]}
+                  className={cn(
+                    "text-[17px] text-[#007AFF] font-semibold",
+                    loading && "text-[#BDBDBD]",
+                  )}
                 >
                   Save
                 </Text>
@@ -194,10 +202,17 @@ export default function ProfileUpdateScreen() {
           headerStyle: headerStyle,
         }}
       />
-      <ScrollView contentContainerStyle={styles.content} bounces={false}>
-        <View className="bg-background" style={styles.avatarSection}>
+      <ScrollView
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          paddingTop: 20,
+          paddingBottom: 40,
+        }}
+        bounces={false}
+      >
+        <View className="bg-background items-center mb-6">
           <TouchableOpacity
-            style={styles.avatarPlaceholder}
+            className="relative w-[100px] h-[100px] rounded-full justify-center items-center mb-2"
             onPress={handleImagePicker}
             disabled={isSubmitting}
           >
@@ -205,31 +220,29 @@ export default function ProfileUpdateScreen() {
               source={{
                 uri: avatarUri,
               }}
-              style={styles.avatarImage}
+              className="w-[100px] h-[100px] rounded-full"
             />
-            <View
-              className="bg-background"
-              style={styles.cameraIconPlaceholder}
-            >
-              <Text style={{ fontSize: 24 }}>📷</Text>
+            <View className="absolute w-full h-full justify-center items-center bg-[rgba(0,0,0,0.2)] rounded-full">
+              <Text className="text-[24px]">📷</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleImagePicker} disabled={isSubmitting}>
-            <Text style={styles.editAvatarText}>Edit</Text>
+            <Text className="text-base font-medium text-[#007AFF]">Edit</Text>
           </TouchableOpacity>
         </View>
 
-        <View className="bg-background" style={styles.formGroup}>
+        <View className="bg-background">
           <Controller
             control={control}
             name="firstName"
             rules={{ required: "First name is required" }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                style={[
-                  styles.input,
-                  { color: textColor, backgroundColor: inputBackgroundColor },
-                ]}
+                className="w-full rounded-[10px] p-[15px] text-base"
+                style={{
+                  color: textColor,
+                  backgroundColor: inputBackgroundColor,
+                }}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -240,20 +253,23 @@ export default function ProfileUpdateScreen() {
             )}
           />
           {errors.firstName && (
-            <Text style={styles.errorText}>{errors.firstName.message}</Text>
+            <Text className="text-red-600 text-xs ml-1 mt-1">
+              {errors.firstName.message}
+            </Text>
           )}
         </View>
-        <View className="bg-background" style={styles.formGroup}>
+        <View className="bg-background">
           <Controller
             control={control}
             name="lastName"
             rules={{ required: "Last name is required" }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                style={[
-                  styles.input,
-                  { color: textColor, backgroundColor: inputBackgroundColor },
-                ]}
+                className="w-full rounded-[10px] p-[15px] text-base"
+                style={{
+                  color: textColor,
+                  backgroundColor: inputBackgroundColor,
+                }}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -264,21 +280,23 @@ export default function ProfileUpdateScreen() {
             )}
           />
           {errors.lastName && (
-            <Text style={styles.errorText}>{errors.lastName.message}</Text>
+            <Text className="text-red-600 text-xs ml-1 mt-1">
+              {errors.lastName.message}
+            </Text>
           )}
         </View>
-
-        <View className="bg-background" style={styles.formGroup}>
-          <Text style={styles.label}>Location</Text>
+        <View className="bg-background">
+          <Text className="text-sm font-normal mb-1.5 ml-1">Location</Text>
           <Controller
             control={control}
             name="location"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                style={[
-                  styles.input,
-                  { color: textColor, backgroundColor: inputBackgroundColor },
-                ]}
+                className="w-full rounded-[10px] p-[15px] text-base"
+                style={{
+                  color: textColor,
+                  backgroundColor: inputBackgroundColor,
+                }}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -289,20 +307,20 @@ export default function ProfileUpdateScreen() {
             )}
           />
         </View>
-
-        <View className="bg-background" style={styles.formGroup}>
-          <Text style={styles.label}>Bio</Text>
-          <View className="bg-background" style={styles.bioInputContainer}>
+        <View className="bg-background">
+          <Text className="text-sm font-normal mb-1.5 ml-1">Bio</Text>
+          <View className="bg-background relative">
             <Controller
               control={control}
               name="bio"
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  style={[
-                    styles.input,
-                    styles.textArea,
-                    { color: textColor, backgroundColor: inputBackgroundColor },
-                  ]}
+                  className="w-full rounded-[10px] p-[15px] text-base h-[120px]"
+                  style={{
+                    color: textColor,
+                    backgroundColor: inputBackgroundColor,
+                    textAlignVertical: "top",
+                  }}
                   onBlur={onBlur}
                   onChangeText={(text) => onChange(text.slice(0, 150))}
                   value={value}
@@ -314,112 +332,12 @@ export default function ProfileUpdateScreen() {
                 />
               )}
             />
-            <Text style={styles.charCount}>{(bioValue || "").length}/150</Text>
+            <Text className="absolute bottom-[10px] right-[10px] text-xs">
+              {(bioValue || "").length}/150
+            </Text>
           </View>
         </View>
       </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  headerButton: {
-    paddingHorizontal: Platform.OS === "ios" ? 8 : 16,
-    paddingVertical: 10,
-  },
-  headerActivityIndicator: {
-    marginHorizontal: Platform.OS === "ios" ? 8 : 16,
-    paddingVertical: 10,
-  },
-  headerButtonText: {
-    fontSize: 17,
-    color: "#007AFF",
-  },
-  cancelHeaderButtonText: {
-    fontSize: 17,
-    color: "#8e8e93",
-  },
-  saveButtonTextHeader: {
-    fontWeight: "600",
-  },
-  disabledButtonText: {
-    color: "#BDBDBD",
-  },
-  content: {
-    paddingHorizontal: 16,
-    paddingTop: 20,
-    paddingBottom: 40,
-    gap: 16,
-  },
-  avatarSection: {
-    alignItems: "center",
-    marginBottom: 24,
-    backgroundColor: "transparent",
-  },
-  avatarPlaceholder: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 8,
-    position: "relative",
-  },
-  avatarImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  cameraIconPlaceholder: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.2)",
-    borderRadius: 50,
-  },
-  editAvatarText: {
-    fontSize: 16,
-    color: "#007AFF",
-    fontWeight: "500",
-  },
-  formGroup: {
-    backgroundColor: "transparent",
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "400",
-    marginBottom: 6,
-    marginLeft: 4,
-  },
-  input: {
-    borderRadius: 10,
-    padding: 15,
-    fontSize: 16,
-    width: "100%",
-  },
-  textArea: {
-    height: 120,
-    textAlignVertical: "top",
-  },
-  bioInputContainer: {
-    position: "relative",
-    backgroundColor: "transparent",
-  },
-  charCount: {
-    position: "absolute",
-    bottom: 10,
-    right: 10,
-    fontSize: 12,
-  },
-  errorText: {
-    color: "red",
-    fontSize: 12,
-    marginLeft: 4,
-    marginTop: 4,
-  },
-});

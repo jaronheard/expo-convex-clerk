@@ -4,7 +4,7 @@ import { Button, View } from "react-native";
 
 export function SentryTest() {
   return (
-    <View style={{ padding: 10 }}>
+    <View className="p-[10px]">
       <Button
         title="Test Sentry Error"
         onPress={() => {
