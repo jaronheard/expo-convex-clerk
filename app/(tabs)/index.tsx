@@ -6,15 +6,10 @@ import {
 } from "@gorhom/bottom-sheet";
 import { useMutation, usePaginatedQuery } from "convex/react";
 import { useMemo, useRef, useState } from "react";
-import {
-  FlatList,
-  TextInput,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from "react-native";
+import { FlatList, TouchableOpacity, useColorScheme, View } from "react-native";
 
 import { TaskItem } from "@/components/TaskItem";
+import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { useDebounce } from "@/hooks/useDebounce";
 import { NAV_THEME } from "@/lib/constants";
@@ -58,18 +53,9 @@ export default function HomeScreen() {
         </View>
 
         <View className="bg-background my-4">
-          <TextInput
-            className="rounded-lg p-3 text-base"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-              color: textColor,
-            }}
+          <Input
+            className="w-full"
             placeholder="Search tasks..."
-            placeholderTextColor={
-              colorScheme === "dark"
-                ? "rgba(255, 255, 255, 0.5)"
-                : "rgba(0, 0, 0, 0.5)"
-            }
             value={searchInput}
             onChangeText={setSearchInput}
           />

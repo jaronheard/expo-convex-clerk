@@ -1,10 +1,11 @@
-import { useMutation } from "convex/react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
 import { useQuery } from "convex-helpers/react/cache";
+import { useMutation } from "convex/react";
 import { Stack, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
-import { SafeAreaView, TextInput, View } from "react-native";
-import { Text } from "@/components/ui/text";
-import { Button } from "@/components/ui/button";
+import { SafeAreaView, View } from "react-native";
 import { api } from "../../convex/_generated/api";
 
 export default function OnboardingLocation() {
@@ -36,8 +37,8 @@ export default function OnboardingLocation() {
           name="location"
           rules={{ required: "Location is required" }}
           render={({ field: { onChange, value } }) => (
-            <TextInput
-              className="mb-3 w-full rounded-lg border border-gray-300 p-4 text-lg"
+            <Input
+              className="mb-3 w-full"
               placeholder="City, Country"
               value={value}
               onChangeText={onChange}

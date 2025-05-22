@@ -1,6 +1,8 @@
+import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { cn } from "@/lib/utils";
 import { useQuery } from "convex-helpers/react/cache";
 import { useMutation } from "convex/react";
 import { Image } from "expo-image";
@@ -9,12 +11,10 @@ import { Stack, useRouter } from "expo-router";
 import { usePostHog } from "posthog-react-native";
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { cn } from "@/lib/utils";
 import {
   ActivityIndicator,
   Alert,
   Platform,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -37,13 +37,6 @@ export default function ProfileUpdateScreen() {
   const [loading, setLoading] = useState(false);
   const posthog = usePostHog();
   const { colorScheme } = useColorScheme();
-
-  // Define dynamic colors based on colorScheme
-  const textColor = colorScheme === "dark" ? "#fff" : "#000";
-  const inputBackgroundColor =
-    colorScheme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)";
-  const placeholderTextColor =
-    colorScheme === "dark" ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)";
 
   // Convex functions
   const user = useQuery(api.users.getCurrentUser);
@@ -237,17 +230,12 @@ export default function ProfileUpdateScreen() {
             name="firstName"
             rules={{ required: "First name is required" }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                className="w-full rounded-[10px] p-[15px] text-base"
-                style={{
-                  color: textColor,
-                  backgroundColor: inputBackgroundColor,
-                }}
+              <Input
+                className="w-full mb-3"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
                 placeholder="First Name"
-                placeholderTextColor={placeholderTextColor}
                 editable={!isSubmitting}
               />
             )}
@@ -264,17 +252,12 @@ export default function ProfileUpdateScreen() {
             name="lastName"
             rules={{ required: "Last name is required" }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                className="w-full rounded-[10px] p-[15px] text-base"
-                style={{
-                  color: textColor,
-                  backgroundColor: inputBackgroundColor,
-                }}
+              <Input
+                className="w-full mb-3"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
                 placeholder="Last Name"
-                placeholderTextColor={placeholderTextColor}
                 editable={!isSubmitting}
               />
             )}
@@ -291,17 +274,12 @@ export default function ProfileUpdateScreen() {
             control={control}
             name="location"
             render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                className="w-full rounded-[10px] p-[15px] text-base"
-                style={{
-                  color: textColor,
-                  backgroundColor: inputBackgroundColor,
-                }}
+              <Input
+                className="w-full mb-3"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
                 placeholder="City, Country"
-                placeholderTextColor={placeholderTextColor}
                 editable={!isSubmitting}
               />
             )}
@@ -314,18 +292,12 @@ export default function ProfileUpdateScreen() {
               control={control}
               name="bio"
               render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  className="w-full rounded-[10px] p-[15px] text-base h-[120px]"
-                  style={{
-                    color: textColor,
-                    backgroundColor: inputBackgroundColor,
-                    textAlignVertical: "top",
-                  }}
+                <Input
+                  className="w-full h-[120px]"
                   onBlur={onBlur}
-                  onChangeText={(text) => onChange(text.slice(0, 150))}
+                  onChangeText={(text: string) => onChange(text.slice(0, 150))}
                   value={value}
                   placeholder="150 characters"
-                  placeholderTextColor={placeholderTextColor}
                   multiline
                   maxLength={150}
                   editable={!isSubmitting}
