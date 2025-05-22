@@ -87,9 +87,9 @@ export function TaskItem({ id, text, isCompleted }: TaskItemProps) {
         {isWorkflowLoading ? (
           <ActivityIndicator size="small" color="#fff" />
         ) : isWorkflowCompleted ? (
-          "Completed"
+          <Text>Completed</Text>
         ) : (
-          "Split"
+          <Text>Split</Text>
         )}
       </Button>
     </View>
