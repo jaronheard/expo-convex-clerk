@@ -1,6 +1,6 @@
+import * as Updates from "expo-updates";
 import { useEffect } from "react";
 import { AppState } from "react-native";
-import * as Updates from "expo-updates";
 
 const TEN_MINUTES = 10 * 60 * 1000;
 
@@ -24,18 +24,21 @@ async function checkAndApplyUpdate() {
 
 export function useExpoUpdates(interval: number = TEN_MINUTES) {
   useEffect(() => {
-    checkAndApplyUpdate();
+    // Only check for updates in production mode
+    if (!__DEV__) {
+      checkAndApplyUpdate();
 
-    const subscription = AppState.addEventListener("change", (state) => {
-      if (state === "active") {
-        checkAndApplyUpdate();
-      }
-    });
+      const subscription = AppState.addEventListener("change", (state) => {
+        if (state === "active") {
+          checkAndApplyUpdate();
+        }
+      });
 
-    const id = setInterval(checkAndApplyUpdate, interval);
-    return () => {
-      clearInterval(id);
-      subscription.remove();
-    };
+      const id = setInterval(checkAndApplyUpdate, interval);
+      return () => {
+        clearInterval(id);
+        subscription.remove();
+      };
+    }
   }, [interval]);
 }
