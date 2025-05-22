@@ -23,7 +23,7 @@
     "eas:metadata:push": "pnpm with-env:production eas metadata:push",
     "eas:submit.prod.ios": "pnpm with-env:production eas submit --platform ios",
     "eas:update.preview": "pnpm with-env eas update --branch preview && npx sentry-expo-upload-sourcemaps dist",
-    "eas:update.prod": "pnpm with-env:production eas update --branch production --clear-cache && npx sentry-expo-upload-sourcemaps dist"
+    "eas:update.prod": "pnpm with-env:production eas update --branch production --clear-cache && npx sentry-expo-upload-sourcemaps dist",
     "deploy:convex": "npx convex deploy --prod --yes"
   },
   "dependencies": {
