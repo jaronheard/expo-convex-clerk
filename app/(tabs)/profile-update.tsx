@@ -1,13 +1,6 @@
-import {
-  View,
-  ActivityIndicator,
-  Alert,
-  Platform,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
 import { Text } from "@/components/ui/text";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
 import { useQuery } from "convex-helpers/react/cache";
 import { useMutation } from "convex/react";
 import { Image } from "expo-image";
@@ -16,6 +9,15 @@ import { Stack, useRouter } from "expo-router";
 import { usePostHog } from "posthog-react-native";
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import {
+  ActivityIndicator,
+  Alert,
+  Platform,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
@@ -34,7 +36,7 @@ export default function ProfileUpdateScreen() {
     useState<ImagePicker.ImagePickerAsset | null>(null);
   const [loading, setLoading] = useState(false);
   const posthog = usePostHog();
-  const { colorScheme } = useAppColorScheme();
+  const { colorScheme } = useColorScheme();
 
   // Define dynamic colors based on colorScheme
   const textColor = colorScheme === "dark" ? "#fff" : "#000";
