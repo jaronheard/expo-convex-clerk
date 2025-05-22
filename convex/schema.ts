@@ -5,9 +5,12 @@ export default defineSchema({
   tasks: defineTable({
     text: v.string(),
     isCompleted: v.boolean(),
-  }).searchIndex("search_text", {
-    searchField: "text",
-  }),
+    ownerToken: v.optional(v.string()),
+  })
+    .searchIndex("search_text", {
+      searchField: "text",
+    })
+    .index("by_owner", ["ownerToken"]),
 
   users: defineTable({
     firstName: v.optional(v.string()),
