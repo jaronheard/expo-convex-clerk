@@ -9,7 +9,6 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
-    "update": "eas update --branch preview && npx sentry-expo-upload-sourcemaps dist",
     "eas:build.dev.device.ios": "pnpm with-env eas build --profile development-device --platform ios",
     "eas:build.dev.device": "pnpm with-env eas build --profile development-device --platform ios --platform android",
     "eas:build.dev.sim.android": "pnpm with-env eas build --profile development --platform android",
@@ -22,7 +21,8 @@
     "eas:metadata:pull": "pnpm with-env:production eas metadata:pull",
     "eas:metadata:push": "pnpm with-env:production eas metadata:push",
     "eas:submit.prod.ios": "pnpm with-env:production eas submit --platform ios",
-    "eas:update.prod.ios": "pnpm with-env:production eas update --platform ios --branch production --clear-cache"
+    "eas:update.preview": "pnpm with-env eas update --branch preview && npx sentry-expo-upload-sourcemaps dist",
+    "eas:update.prod": "pnpm with-env:production eas update --branch production --clear-cache && npx sentry-expo-upload-sourcemaps dist"
   },
   "dependencies": {
     "@clerk/clerk-expo": "^2.11.5",
@@ -94,7 +94,8 @@
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "prettier": "^3.5.3",
     "ts-node": "^10.9.2",
-    "typescript": "~5.8.3"
+    "typescript": "~5.8.3",
+    "with-env": "^1.1.1"
   },
   "private": true
 }
