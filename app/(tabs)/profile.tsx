@@ -1,4 +1,3 @@
-import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -35,12 +34,6 @@ export default function ProfileScreen() {
     ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
     : "Loading...";
   const avatarUrl = user?.avatarUrl;
-  const initials = fullName
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
 
   return (
     <ThemedView className="flex-1">
@@ -60,15 +53,15 @@ export default function ProfileScreen() {
               <ActivityIndicator color="white" />
             </AvatarFallback>
           </Avatar>
-          <ThemedText className="mb-1 text-center text-2xl font-semibold">
+          <Text className="mb-1 text-center text-2xl font-semibold">
             {fullName}
-          </ThemedText>
-          <ThemedText className="mb-3 text-center text-base">
+          </Text>
+          <Text className="mb-3 text-center text-base">
             {user?.location || ""}
-          </ThemedText>
-          <ThemedText className="mb-6 text-center text-base px-5">
+          </Text>
+          <Text className="mb-6 text-center text-base px-5">
             {user?.bio || ""}
-          </ThemedText>
+          </Text>
           <Button
             variant="outline"
             className="w-full"

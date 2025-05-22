@@ -1,7 +1,7 @@
-import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useMutation } from "convex/react";
+import { Text } from "@/components/ui/text";
 import { useQuery } from "convex-helpers/react/cache";
+import { useMutation } from "convex/react";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { Stack, useRouter } from "expo-router";
@@ -166,9 +166,7 @@ export default function ProfileUpdateScreen() {
               style={styles.headerButton}
               disabled={loading}
             >
-              <ThemedText style={styles.cancelHeaderButtonText}>
-                Cancel
-              </ThemedText>
+              <Text style={styles.cancelHeaderButtonText}>Cancel</Text>
             </TouchableOpacity>
           ),
           headerRight: () =>
@@ -183,7 +181,7 @@ export default function ProfileUpdateScreen() {
                 disabled={loading}
                 style={styles.headerButton}
               >
-                <ThemedText
+                <Text
                   style={[
                     styles.headerButtonText,
                     styles.saveButtonTextHeader,
@@ -191,7 +189,7 @@ export default function ProfileUpdateScreen() {
                   ]}
                 >
                   Save
-                </ThemedText>
+                </Text>
               </TouchableOpacity>
             ),
           headerStyle: headerStyle,
@@ -211,11 +209,11 @@ export default function ProfileUpdateScreen() {
               style={styles.avatarImage}
             />
             <ThemedView style={styles.cameraIconPlaceholder}>
-              <ThemedText style={{ fontSize: 24 }}>📷</ThemedText>
+              <Text style={{ fontSize: 24 }}>📷</Text>
             </ThemedView>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleImagePicker} disabled={isSubmitting}>
-            <ThemedText style={styles.editAvatarText}>Edit</ThemedText>
+            <Text style={styles.editAvatarText}>Edit</Text>
           </TouchableOpacity>
         </ThemedView>
 
@@ -240,9 +238,7 @@ export default function ProfileUpdateScreen() {
             )}
           />
           {errors.firstName && (
-            <ThemedText style={styles.errorText}>
-              {errors.firstName.message}
-            </ThemedText>
+            <Text style={styles.errorText}>{errors.firstName.message}</Text>
           )}
         </ThemedView>
         <ThemedView style={styles.formGroup}>
@@ -266,14 +262,12 @@ export default function ProfileUpdateScreen() {
             )}
           />
           {errors.lastName && (
-            <ThemedText style={styles.errorText}>
-              {errors.lastName.message}
-            </ThemedText>
+            <Text style={styles.errorText}>{errors.lastName.message}</Text>
           )}
         </ThemedView>
 
         <ThemedView style={styles.formGroup}>
-          <ThemedText style={styles.label}>Location</ThemedText>
+          <Text style={styles.label}>Location</Text>
           <Controller
             control={control}
             name="location"
@@ -295,7 +289,7 @@ export default function ProfileUpdateScreen() {
         </ThemedView>
 
         <ThemedView style={styles.formGroup}>
-          <ThemedText style={styles.label}>Bio</ThemedText>
+          <Text style={styles.label}>Bio</Text>
           <ThemedView style={styles.bioInputContainer}>
             <Controller
               control={control}
@@ -318,9 +312,7 @@ export default function ProfileUpdateScreen() {
                 />
               )}
             />
-            <ThemedText style={styles.charCount}>
-              {(bioValue || "").length}/150
-            </ThemedText>
+            <Text style={styles.charCount}>{(bioValue || "").length}/150</Text>
           </ThemedView>
         </ThemedView>
       </ScrollView>
