@@ -62,6 +62,9 @@ This template integrates [Expo](https://expo.dev) for the client, [Convex](https
    # Optional API keys
    OPENAI_API_KEY=your_openai_api_key
 
+   # Optional: enable push notifications with OneSignal
+   EXPO_PUBLIC_ONESIGNAL_APP_ID=your_onesignal_app_id
+
    # Optional: override Expo platform detection
    EXPO_OS=ios
    ```

@@ -12,6 +12,8 @@ import { JSX, useEffect } from "react";
 import { Platform } from "react-native";
 import ErrorBoundary from "react-native-error-boundary";
 import FallbackComponent from "react-native-error-boundary/lib/ErrorBoundary/FallbackComponent";
+// eslint-disable-next-line import/no-unresolved
+import OneSignal from "react-native-onesignal";
 
 // Custom token cache for Clerk
 const tokenCache = {
@@ -63,6 +65,14 @@ export default function RootProvider({ children }: Props): JSX.Element {
     process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "";
 
   useExpoUpdates();
+
+  useEffect(() => {
+    const appId = process.env.EXPO_PUBLIC_ONESIGNAL_APP_ID;
+    if (appId) {
+      OneSignal.initialize(appId);
+      OneSignal.Notifications.requestPermission(true);
+    }
+  }, []);
 
   if (!clerkPublishableKey) {
     throw new Error("Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY");
