@@ -9,7 +9,20 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
-    "update": "eas update --branch preview && npx sentry-expo-upload-sourcemaps dist"
+    "update": "eas update --branch preview && npx sentry-expo-upload-sourcemaps dist",
+    "eas:build.dev.device.ios": "pnpm with-env eas build --profile development-device --platform ios",
+    "eas:build.dev.device": "pnpm with-env eas build --profile development-device --platform ios --platform android",
+    "eas:build.dev.sim.android": "pnpm with-env eas build --profile development --platform android",
+    "eas:build.dev.sim.ios": "pnpm with-env eas build --profile development --platform ios",
+    "eas:build.dev.sim": "pnpm with-env eas build --profile development --platform ios --platform android",
+    "eas:build.prod.android": "pnpm with-env:production eas build --profile production --platform android",
+    "eas:build.prod.ios": "pnpm with-env:production eas build --profile production --platform ios",
+    "eas:install.sim.latest.android": "pnpm with-env:production eas build:run -p android --latest",
+    "eas:install.sim.latest.ios": "pnpm with-env:production eas build:run -p ios --latest",
+    "eas:metadata:pull": "pnpm with-env:production eas metadata:pull",
+    "eas:metadata:push": "pnpm with-env:production eas metadata:push",
+    "eas:submit.prod.ios": "pnpm with-env:production eas submit --platform ios",
+    "eas:update.prod.ios": "pnpm with-env:production eas update --platform ios --branch production --clear-cache"
   },
   "dependencies": {
     "@clerk/clerk-expo": "^2.11.5",
