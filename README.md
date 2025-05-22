@@ -74,7 +74,14 @@ This template integrates [Expo](https://expo.dev) for the client, [Convex](https
 
    # In another terminal
    pnpm start
-   ```
+```
+
+## Deploying Convex to Vercel
+
+1. Set the `CONVEX_DEPLOY_KEY` secret in your Vercel project.
+2. Commit `vercel.json` and a `build` script that runs `pnpm run deploy:convex`.
+3. Push your repository to Vercel and it will deploy Convex using the build command.
+
 
 The template uses **expo-updates** to deliver over-the-air updates. The app
 automatically checks for updates every 10 minutes while running and will
