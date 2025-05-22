@@ -12,7 +12,11 @@
       "checkAutomatically": "ON_ERROR_RECOVERY"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jaronheard.expoconvexclerktemplate",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -50,7 +54,11 @@
       "typedRoutes": true
     },
     "extra": {
-      "criticalIndex": 0
+      "criticalIndex": 0,
+      "router": {},
+      "eas": {
+        "projectId": "c69d86f9-5820-4628-aca5-37c5b69a46ca"
+      }
     }
   }
 }
