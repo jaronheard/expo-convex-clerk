@@ -9,7 +9,9 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
-    "update": "eas update --branch preview && npx sentry-expo-upload-sourcemaps dist"
+    "update": "eas update --branch preview && npx sentry-expo-upload-sourcemaps dist",
+    "deploy:convex": "npx convex deploy --prod --yes",
+    "build": "pnpm run deploy:convex"
   },
   "dependencies": {
     "@clerk/clerk-expo": "^2.11.5",
