@@ -1,4 +1,4 @@
-import { ThemedView } from "@/components/ThemedView";
+import { View, ActivityIndicator } from "react-native";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -7,7 +7,6 @@ import { useQuery } from "convex-helpers/react/cache";
 import { Stack, useRouter } from "expo-router";
 import { usePostHog } from "posthog-react-native";
 import { useState } from "react";
-import { ActivityIndicator } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { api } from "../../convex/_generated/api";
 
@@ -36,14 +35,14 @@ export default function ProfileScreen() {
   const avatarUrl = user?.avatarUrl;
 
   return (
-    <ThemedView className="flex-1">
+    <View className="flex-1 bg-background">
       <Stack.Screen
         options={{
           headerShown: false,
         }}
       />
       <ScrollView bounces={false} className="flex-grow p-4">
-        <ThemedView className="pb-5 pt-10">
+        <View className="pb-5 pt-10 bg-background">
           <Avatar
             alt={`${fullName}'s avatar`}
             className="h-24 w-24 self-center mb-4"
@@ -69,8 +68,8 @@ export default function ProfileScreen() {
           >
             <Text>Edit Profile</Text>
           </Button>
-        </ThemedView>
-        <ThemedView className="mt-2">
+        </View>
+        <View className="mt-2 bg-background">
           <Button
             variant="destructive"
             className="w-full"
@@ -83,8 +82,8 @@ export default function ProfileScreen() {
               <Text>Sign Out</Text>
             )}
           </Button>
-        </ThemedView>
+        </View>
       </ScrollView>
-    </ThemedView>
+    </View>
   );
 }

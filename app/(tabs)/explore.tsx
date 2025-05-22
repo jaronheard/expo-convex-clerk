@@ -1,23 +1,22 @@
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
-import { ThemedView } from "@/components/ThemedView";
 import { Text } from "@/components/ui/text";
 
 export default function ExploreScreen() {
   return (
-    <ThemedView style={styles.wrapper}>
+    <View className="bg-background" style={styles.wrapper}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
       >
-        <ThemedView style={styles.titleContainer}>
+        <View className="bg-background" style={styles.titleContainer}>
           <Text className="text-3xl font-bold">Explore</Text>
-        </ThemedView>
-        <ThemedView style={styles.contentBox}>
+        </View>
+        <View className="bg-background" style={styles.contentBox}>
           <Text>This is the explore tab. Add your content here.</Text>
-        </ThemedView>
+        </View>
       </ScrollView>
-    </ThemedView>
+    </View>
   );
 }
 

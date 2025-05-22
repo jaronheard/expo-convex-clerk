@@ -1,7 +1,6 @@
-import { ThemedView } from "@/components/ThemedView";
 import { Text } from "@/components/ui/text";
-import { useColorScheme as useAppColorScheme } from "@/hooks/useColorScheme";
 import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
 import { useQuery } from "convex-helpers/react/cache";
 import { useMutation } from "convex/react";
 import { Image } from "expo-image";
@@ -17,6 +16,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { api } from "../../convex/_generated/api";
@@ -36,7 +36,7 @@ export default function ProfileUpdateScreen() {
     useState<ImagePicker.ImagePickerAsset | null>(null);
   const [loading, setLoading] = useState(false);
   const posthog = usePostHog();
-  const { colorScheme } = useAppColorScheme();
+  const { colorScheme } = useColorScheme();
 
   // Define dynamic colors based on colorScheme
   const textColor = colorScheme === "dark" ? "#fff" : "#000";
@@ -153,7 +153,7 @@ export default function ProfileUpdateScreen() {
   const headerStyle = { backgroundColor: Colors[theme].background };
 
   return (
-    <ThemedView style={styles.container}>
+    <View className="bg-background" style={styles.container}>
       <Stack.Screen
         options={{
           headerShown: true,
@@ -195,7 +195,7 @@ export default function ProfileUpdateScreen() {
         }}
       />
       <ScrollView contentContainerStyle={styles.content} bounces={false}>
-        <ThemedView style={styles.avatarSection}>
+        <View className="bg-background" style={styles.avatarSection}>
           <TouchableOpacity
             style={styles.avatarPlaceholder}
             onPress={handleImagePicker}
@@ -207,16 +207,19 @@ export default function ProfileUpdateScreen() {
               }}
               style={styles.avatarImage}
             />
-            <ThemedView style={styles.cameraIconPlaceholder}>
+            <View
+              className="bg-background"
+              style={styles.cameraIconPlaceholder}
+            >
               <Text style={{ fontSize: 24 }}>📷</Text>
-            </ThemedView>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleImagePicker} disabled={isSubmitting}>
             <Text style={styles.editAvatarText}>Edit</Text>
           </TouchableOpacity>
-        </ThemedView>
+        </View>
 
-        <ThemedView style={styles.formGroup}>
+        <View className="bg-background" style={styles.formGroup}>
           <Controller
             control={control}
             name="firstName"
@@ -239,8 +242,8 @@ export default function ProfileUpdateScreen() {
           {errors.firstName && (
             <Text style={styles.errorText}>{errors.firstName.message}</Text>
           )}
-        </ThemedView>
-        <ThemedView style={styles.formGroup}>
+        </View>
+        <View className="bg-background" style={styles.formGroup}>
           <Controller
             control={control}
             name="lastName"
@@ -263,9 +266,9 @@ export default function ProfileUpdateScreen() {
           {errors.lastName && (
             <Text style={styles.errorText}>{errors.lastName.message}</Text>
           )}
-        </ThemedView>
+        </View>
 
-        <ThemedView style={styles.formGroup}>
+        <View className="bg-background" style={styles.formGroup}>
           <Text style={styles.label}>Location</Text>
           <Controller
             control={control}
@@ -285,11 +288,11 @@ export default function ProfileUpdateScreen() {
               />
             )}
           />
-        </ThemedView>
+        </View>
 
-        <ThemedView style={styles.formGroup}>
+        <View className="bg-background" style={styles.formGroup}>
           <Text style={styles.label}>Bio</Text>
-          <ThemedView style={styles.bioInputContainer}>
+          <View className="bg-background" style={styles.bioInputContainer}>
             <Controller
               control={control}
               name="bio"
@@ -312,10 +315,10 @@ export default function ProfileUpdateScreen() {
               )}
             />
             <Text style={styles.charCount}>{(bioValue || "").length}/150</Text>
-          </ThemedView>
-        </ThemedView>
+          </View>
+        </View>
       </ScrollView>
-    </ThemedView>
+    </View>
   );
 }
 

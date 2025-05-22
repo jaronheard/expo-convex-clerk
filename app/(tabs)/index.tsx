@@ -12,10 +12,10 @@ import {
   TextInput,
   TouchableOpacity,
   useColorScheme,
+  View,
 } from "react-native";
 
 import { TaskItem } from "@/components/TaskItem";
-import { ThemedView } from "@/components/ThemedView";
 import { Text } from "@/components/ui/text";
 import { useDebounce } from "@/hooks/useDebounce";
 import { NAV_THEME } from "@/lib/constants";
@@ -52,13 +52,13 @@ export default function HomeScreen() {
   };
 
   return (
-    <ThemedView style={styles.wrapper}>
-      <ThemedView style={styles.contentContainer}>
-        <ThemedView style={styles.titleContainer}>
+    <View className="bg-background" style={styles.wrapper}>
+      <View className="bg-background" style={styles.contentContainer}>
+        <View className="bg-background" style={styles.titleContainer}>
           <Text className="text-3xl font-bold">Tasks</Text>
-        </ThemedView>
+        </View>
 
-        <ThemedView style={styles.searchContainer}>
+        <View className="bg-background" style={styles.searchContainer}>
           <TextInput
             style={[styles.searchInput, { color: textColor }]}
             placeholder="Search tasks..."
@@ -70,7 +70,7 @@ export default function HomeScreen() {
             value={searchInput}
             onChangeText={setSearchInput}
           />
-        </ThemedView>
+        </View>
 
         <FlatList
           data={results}
@@ -85,7 +85,7 @@ export default function HomeScreen() {
           onEndReached={() => loadMore(20)}
           contentContainerStyle={{ paddingBottom: 80 }}
         />
-      </ThemedView>
+      </View>
 
       <TouchableOpacity
         style={[styles.fab, { backgroundColor: themeColors.primary }]}
@@ -116,7 +116,7 @@ export default function HomeScreen() {
             value={newTaskText}
             onChangeText={setNewTaskText}
           />
-          <ThemedView style={styles.modalButtons}>
+          <View className="bg-background" style={styles.modalButtons}>
             <TouchableOpacity
               onPress={() => bottomSheetRef.current?.dismiss()}
               style={styles.modalButton}
@@ -133,10 +133,10 @@ export default function HomeScreen() {
             >
               <Text style={styles.modalButtonText}>Save Task</Text>
             </TouchableOpacity>
-          </ThemedView>
+          </View>
         </BottomSheetView>
       </BottomSheetModal>
-    </ThemedView>
+    </View>
   );
 }
 
