@@ -1,4 +1,4 @@
-import { ThemedText } from "@/components/ThemedText";
+import { Text } from "@/components";
 import { ThemedView } from "@/components/ThemedView";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -60,15 +60,9 @@ export default function ProfileScreen() {
               <ActivityIndicator color="white" />
             </AvatarFallback>
           </Avatar>
-          <ThemedText className="mb-1 text-center text-2xl font-semibold">
-            {fullName}
-          </ThemedText>
-          <ThemedText className="mb-3 text-center text-base">
-            {user?.location || ""}
-          </ThemedText>
-          <ThemedText className="mb-6 text-center text-base px-5">
-            {user?.bio || ""}
-          </ThemedText>
+          <Text className="mb-1 text-center text-2xl font-semibold">{fullName}</Text>
+          <Text className="mb-3 text-center text-base">{user?.location || ""}</Text>
+          <Text className="mb-6 text-center text-base px-5">{user?.bio || ""}</Text>
           <Button
             variant="outline"
             className="w-full"

@@ -15,7 +15,7 @@ import {
 } from "react-native";
 
 import { TaskItem } from "@/components/TaskItem";
-import { ThemedText } from "@/components/ThemedText";
+import { Text } from "@/components";
 import { ThemedView } from "@/components/ThemedView";
 import { useDebounce } from "@/hooks/useDebounce";
 
@@ -53,7 +53,7 @@ export default function HomeScreen() {
     <ThemedView style={styles.wrapper}>
       <ThemedView style={styles.contentContainer}>
         <ThemedView style={styles.titleContainer}>
-          <ThemedText type="title">Tasks</ThemedText>
+        <Text className="text-3xl font-bold">Tasks</Text>
         </ThemedView>
 
         <ThemedView style={styles.searchContainer}>
@@ -89,7 +89,7 @@ export default function HomeScreen() {
         style={styles.fab}
         onPress={() => bottomSheetRef.current?.present()}
       >
-        <ThemedText style={styles.fabText}>+</ThemedText>
+        <Text style={styles.fabText}>+</Text>
       </TouchableOpacity>
 
       <BottomSheetModal
@@ -99,7 +99,7 @@ export default function HomeScreen() {
         backgroundStyle={{ backgroundColor: modalBackgroundColor }}
       >
         <BottomSheetView style={styles.modalView}>
-          <ThemedText style={styles.modalText}>Add New Task</ThemedText>
+          <Text style={styles.modalText}>Add New Task</Text>
           <BottomSheetTextInput
             style={[
               styles.modalInput,
@@ -119,17 +119,17 @@ export default function HomeScreen() {
               onPress={() => bottomSheetRef.current?.dismiss()}
               style={styles.modalButton}
             >
-              <ThemedText
+              <Text
                 style={[styles.modalButtonText, styles.inactiveModalButtonText]}
               >
                 Cancel
-              </ThemedText>
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleAddTask}
               style={styles.modalButton}
             >
-              <ThemedText style={styles.modalButtonText}>Save Task</ThemedText>
+              <Text style={styles.modalButtonText}>Save Task</Text>
             </TouchableOpacity>
           </ThemedView>
         </BottomSheetView>
