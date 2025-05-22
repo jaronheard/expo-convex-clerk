@@ -42,7 +42,7 @@ This template integrates [Expo](https://expo.dev) for the client, [Convex](https
    - Go to API Keys page to get your Publishable Key
    - Set the JWT template to include `sub` and `useId` in User Claims section
 
-4. Create a `.env.local` file with the following:
+4. Copy `env.example` to `.env.local` and fill in the values:
 
    ```
    # Convex
@@ -50,7 +50,20 @@ This template integrates [Expo](https://expo.dev) for the client, [Convex](https
 
    # Clerk
    EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+
    EXPO_PUBLIC_CLERK_FRONTEND_API_URL=your_clerk_frontend_api
+
+   # Sentry
+   EXPO_PUBLIC_SENTRY_DSN=your_sentry_dsn
+   SENTRY_AUTH_TOKEN=your_sentry_auth_token
+   SENTRY_ORG=your_sentry_org
+   SENTRY_PROJECT=your_sentry_project
+
+   # Optional API keys
+   OPENAI_API_KEY=your_openai_api_key
+
+   # Optional: override Expo platform detection
+   EXPO_OS=ios
    ```
 
 5. Start development server
@@ -84,6 +97,20 @@ The template includes example code for:
 - `convex/users.ts`: User data management
 - `convex/upload.ts`: File upload handling
 - `convex/schema.ts`: Database schema definition
+
+### UI components
+
+The `components/ui` directory wraps primitives from
+[React Native Reusables](https://github.com/rn-primitives/rn-primitives). These
+provide cross-platform building blocks such as `Avatar`, `Checkbox` and
+slot-based button primitives that you can style with NativeWind classes.
+
+### Themes
+
+Light and dark colors are defined in `lib/constants.ts`. The theme logic in
+`hooks/useColorScheme.ts` syncs with the device, and `app/_layout.tsx` applies
+the appropriate `ThemeProvider` so the UI automatically switches between light
+and dark mode.
 
 ## Learn more
 
