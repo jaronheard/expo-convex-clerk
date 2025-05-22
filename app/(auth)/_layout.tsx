@@ -27,10 +27,14 @@ export default function AuthLayout() {
   return (
     <>
       <Unauthenticated>
-        {/* Stack for unauthenticated users, primarily showing the intro screen */}
-        <Stack initialRouteName="intro" screenOptions={{ headerShown: false }}>
+        {/* Stack for unauthenticated users */}
+        <Stack
+          initialRouteName="guest-tasks"
+          screenOptions={{ headerShown: false }}
+        >
+          <Stack.Screen name="guest-tasks" />
           <Stack.Screen name="intro" />
-          {/* onboarding/ routes are not part of this stack, 
+          {/* onboarding/ routes are not part of this stack,
               they are handled after authentication based on user.onboarded status */}
         </Stack>
       </Unauthenticated>
