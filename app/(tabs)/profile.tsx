@@ -1,12 +1,14 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 import { useAuth } from "@clerk/clerk-expo";
 import { useQuery } from "convex-helpers/react/cache";
-import { Image } from "expo-image";
 import { Stack, useRouter } from "expo-router";
 import { usePostHog } from "posthog-react-native";
 import { useState } from "react";
-import { ActivityIndicator, StyleSheet, TouchableOpacity } from "react-native";
+import { ActivityIndicator, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { api } from "../../convex/_generated/api";
 
@@ -32,7 +34,13 @@ export default function ProfileScreen() {
   const fullName = user
     ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
     : "Loading...";
-  const avatarUrl = user?.avatarUrl || "https://placehold.co/200x200?text=User";
+  const avatarUrl = user?.avatarUrl;
+  const initials = fullName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
 
   return (
     <ThemedView style={styles.container}>
@@ -43,33 +51,41 @@ export default function ProfileScreen() {
       />
       <ScrollView bounces={false} contentContainerStyle={styles.scrollContent}>
         <ThemedView style={styles.profileHeader}>
-          <Image source={{ uri: avatarUrl }} style={styles.userAvatar} />
+          <Avatar
+            alt={`${fullName}'s avatar`}
+            className="h-24 w-24 self-center mb-4"
+          >
+            <AvatarImage source={{ uri: avatarUrl ?? "" }} />
+            <AvatarFallback className="bg-foreground">
+              <ActivityIndicator color="white" />
+            </AvatarFallback>
+          </Avatar>
           <ThemedText style={styles.userName}>{fullName}</ThemedText>
           <ThemedText style={styles.userLocation}>
             {user?.location || ""}
           </ThemedText>
           <ThemedText style={styles.userBio}>{user?.bio || ""}</ThemedText>
-          <TouchableOpacity
-            style={styles.editProfileButton}
+          <Button
+            variant="outline"
+            className="w-full"
             onPress={() => router.push("/profile-update")}
           >
-            <ThemedText style={styles.editProfileButtonText}>
-              Edit Profile
-            </ThemedText>
-          </TouchableOpacity>
+            <Text>Edit Profile</Text>
+          </Button>
         </ThemedView>
         <ThemedView style={styles.content}>
-          <TouchableOpacity
-            style={styles.signOutButton}
+          <Button
+            variant="destructive"
+            className="w-full"
             onPress={handleSignOut}
             disabled={isSigningOut}
           >
             {isSigningOut ? (
-              <ActivityIndicator color="#FF3B30" />
+              <ActivityIndicator color="white" />
             ) : (
-              <ThemedText style={styles.buttonText}>Sign Out</ThemedText>
+              <Text>Sign Out</Text>
             )}
-          </TouchableOpacity>
+          </Button>
         </ThemedView>
       </ScrollView>
     </ThemedView>
@@ -88,13 +104,6 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 20,
   },
-  userAvatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 16,
-    alignSelf: "center",
-  },
   userName: {
     fontSize: 24,
     fontWeight: "600",
@@ -112,37 +121,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     paddingHorizontal: 20,
   },
-  editProfileButton: {
-    backgroundColor: "rgba(0, 122, 255, 0.1)",
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    marginTop: 10,
-    width: "100%",
-    alignItems: "center",
-  },
-  editProfileButtonText: {
-    color: "#007AFF",
-    fontSize: 16,
-    fontWeight: "500",
-  },
   content: {
     marginTop: 10,
-  },
-  signOutButton: {
-    backgroundColor: "rgba(255, 59, 48, 0.1)",
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10,
-    marginBottom: 20,
-    width: "100%",
-  },
-  buttonText: {
-    color: "#FF3B30",
-    fontSize: 16,
-    fontWeight: "500",
   },
 });

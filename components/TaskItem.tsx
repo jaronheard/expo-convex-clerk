@@ -1,19 +1,14 @@
-import { Colors } from "@/constants/Colors";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { cn } from "@/lib/utils";
 import { WorkflowId } from "@convex-dev/workflow";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useMutation } from "convex/react";
 import { useQuery } from "convex-helpers/react/cache";
+import { useMutation } from "convex/react";
 import { useState } from "react";
-import {
-  ActivityIndicator,
-  StyleSheet,
-  TouchableOpacity,
-  useColorScheme,
-} from "react-native";
-import { ThemedText } from "./ThemedText";
-import { ThemedView } from "./ThemedView";
+import { ActivityIndicator, View } from "react-native";
+import { Button } from "./ui/button";
+import { Checkbox } from "./ui/checkbox";
+import { Text } from "./ui/text";
 
 interface TaskItemProps {
   id: Id<"tasks">;
@@ -29,7 +24,6 @@ interface TaskType {
 }
 
 export function TaskItem({ id, text, isCompleted }: TaskItemProps) {
-  const colorScheme = useColorScheme();
   const toggleTask = useMutation(api.tasks.toggleTask).withOptimisticUpdate(
     (localStore, args) => {
       const { id, isCompleted } = args;
@@ -74,70 +68,30 @@ export function TaskItem({ id, text, isCompleted }: TaskItemProps) {
   const isWorkflowCompleted = workflowStatus?.type === "completed";
 
   return (
-    <ThemedView style={styles.taskItem}>
-      <TouchableOpacity
-        onPress={() => toggleTask({ id, isCompleted: !isCompleted })}
-        style={styles.checkbox}
-      >
-        <MaterialIcons
-          name={isCompleted ? "check-box" : "check-box-outline-blank"}
-          size={24}
-          color={colorScheme === "dark" ? Colors.dark.icon : Colors.light.icon}
-        />
-      </TouchableOpacity>
-      <ThemedText style={isCompleted ? styles.completedTask : undefined}>
+    <View className="flex-row items-center p-4 rounded-lg bg-background">
+      <Checkbox
+        checked={isCompleted}
+        onCheckedChange={() => toggleTask({ id, isCompleted: !isCompleted })}
+        className="mr-3"
+      />
+      <Text className={cn(isCompleted && "line-through opacity-50")}>
         {text}
-      </ThemedText>
-      <TouchableOpacity
-        onPress={() => handleSplitTask()}
-        style={[
-          styles.splitButton,
-          isWorkflowLoading && styles.splitButtonLoading,
-        ]}
+      </Text>
+      <Button
+        onPress={handleSplitTask}
         disabled={isWorkflowLoading}
+        variant="secondary"
+        size="sm"
+        className="ml-auto"
       >
-        {isWorkflowLoading && <ActivityIndicator size="small" color="#fff" />}
-        {isWorkflowCompleted && (
-          <ThemedText style={styles.splitButtonText}>Completed</ThemedText>
+        {isWorkflowLoading ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : isWorkflowCompleted ? (
+          "Completed"
+        ) : (
+          "Split"
         )}
-        {!isWorkflowLoading && !isWorkflowCompleted && (
-          <ThemedText style={styles.splitButtonText}>Split</ThemedText>
-        )}
-      </TouchableOpacity>
-    </ThemedView>
+      </Button>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  taskItem: {
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    marginBottom: 8,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  checkbox: {
-    marginRight: 12,
-  },
-  completedTask: {
-    textDecorationLine: "line-through",
-    opacity: 0.7,
-  },
-  splitButton: {
-    marginLeft: "auto",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    backgroundColor: "#007AFF",
-    borderRadius: 4,
-    minWidth: 48,
-    alignItems: "center",
-  },
-  splitButtonLoading: {
-    opacity: 0.7,
-  },
-  splitButtonText: {
-    color: "#fff",
-    fontSize: 12,
-  },
-});
