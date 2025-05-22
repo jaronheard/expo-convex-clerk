@@ -8,6 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
+    "typecheck": "tsc --noEmit",
     "update": "eas update --branch preview && npx sentry-expo-upload-sourcemaps dist"
   },
   "dependencies": {

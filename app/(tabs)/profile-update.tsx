@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  useColorScheme,
 } from "react-native";
 import { Text } from "@/components/ui/text";
 import { useQuery } from "convex-helpers/react/cache";
@@ -35,7 +34,7 @@ export default function ProfileUpdateScreen() {
     useState<ImagePicker.ImagePickerAsset | null>(null);
   const [loading, setLoading] = useState(false);
   const posthog = usePostHog();
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useAppColorScheme();
 
   // Define dynamic colors based on colorScheme
   const textColor = colorScheme === "dark" ? "#fff" : "#000";
@@ -148,10 +147,8 @@ export default function ProfileUpdateScreen() {
     "https://placehold.co/100x100/e0e0e0/a0a0a0?text=%20";
 
   // Adjusted headerStyle to use dynamic background color or be transparent
-  const headerStyle =
-    colorScheme === "dark"
-      ? { backgroundColor: "#1c1c1e" }
-      : { backgroundColor: "#f2f2f7" };
+  const theme = colorScheme ?? "light";
+  const headerStyle = { backgroundColor: Colors[theme].background };
 
   return (
     <View className="bg-background" style={styles.container}>
