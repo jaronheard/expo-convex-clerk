@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -7,7 +7,6 @@ import { useQuery } from "convex-helpers/react/cache";
 import { Stack, useRouter } from "expo-router";
 import { usePostHog } from "posthog-react-native";
 import { useState } from "react";
-import { ActivityIndicator } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { api } from "../../convex/_generated/api";
 

@@ -12,10 +12,10 @@ import {
   TextInput,
   TouchableOpacity,
   useColorScheme,
+  View,
 } from "react-native";
 
 import { TaskItem } from "@/components/TaskItem";
-import { View } from "react-native";
 import { Text } from "@/components/ui/text";
 import { useDebounce } from "@/hooks/useDebounce";
 import { NAV_THEME } from "@/lib/constants";

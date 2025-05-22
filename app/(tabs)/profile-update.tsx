@@ -1,4 +1,13 @@
-import { View } from "react-native";
+import {
+  View,
+  ActivityIndicator,
+  Alert,
+  Platform,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  useColorScheme,
+} from "react-native";
 import { Text } from "@/components/ui/text";
 import { useQuery } from "convex-helpers/react/cache";
 import { useMutation } from "convex/react";
@@ -8,15 +17,6 @@ import { Stack, useRouter } from "expo-router";
 import { usePostHog } from "posthog-react-native";
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import {
-  ActivityIndicator,
-  Alert,
-  Platform,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  useColorScheme,
-} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
@@ -208,7 +208,10 @@ export default function ProfileUpdateScreen() {
               }}
               style={styles.avatarImage}
             />
-            <View className="bg-background" style={styles.cameraIconPlaceholder}>
+            <View
+              className="bg-background"
+              style={styles.cameraIconPlaceholder}
+            >
               <Text style={{ fontSize: 24 }}>📷</Text>
             </View>
           </TouchableOpacity>

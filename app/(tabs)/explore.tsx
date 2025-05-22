@@ -1,6 +1,5 @@
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
-import { View } from "react-native";
 import { Text } from "@/components/ui/text";
 
 export default function ExploreScreen() {

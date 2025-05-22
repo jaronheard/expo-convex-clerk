@@ -1,5 +1,5 @@
 import type { PropsWithChildren, ReactElement } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -7,7 +7,6 @@ import Animated, {
   useScrollViewOffset,
 } from "react-native-reanimated";
 
-import { View } from "react-native";
 import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
@@ -66,7 +65,9 @@ export default function ParallaxScrollView({
         >
           {headerImage}
         </Animated.View>
-        <View className="bg-background" style={styles.content}>{children}</View>
+        <View className="bg-background" style={styles.content}>
+          {children}
+        </View>
       </Animated.ScrollView>
     </View>
   );
