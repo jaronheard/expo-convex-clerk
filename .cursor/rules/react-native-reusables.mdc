@@ -1,0 +1,11 @@
+---
+description: Encourage use of @rn-primitives components for reusable cross-platform UI elements.
+globs:
+alwaysApply: false
+---
+# React Native Reusables
+
+- Prefer primitives from `@rn-primitives` (e.g., `Slot`, `Avatar`, `Checkbox`) instead of reinventing common UI building blocks.
+- Wrap these primitives with NativeWind classes to style them consistently.
+- Use the `asChild`/slot pattern to customize underlying elements while preserving accessibility.
+- Avoid duplicating functionality that already exists in the primitives library.

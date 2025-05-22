@@ -1,0 +1,12 @@
+---
+description: Guidelines for styling with NativeWind to maintain consistent cross-platform design.
+globs:
+alwaysApply: false
+---
+# NativeWind Usage Guidelines
+
+- Prefer `className` with NativeWind over inline `style` declarations.
+- Compose dynamic classes using the `cn` utility from `@/lib/utils`.
+- Use `web:` and `native:` prefixes for platform-specific styling.
+- Keep shared design tokens in `tailwind.config.js` and avoid hard-coded values.
+- Avoid other styling libraries when a NativeWind solution suffices.
