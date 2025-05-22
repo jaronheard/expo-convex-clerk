@@ -2,14 +2,9 @@ import { useMutation } from "convex/react";
 import { useQuery } from "convex-helpers/react/cache";
 import { Stack, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { SafeAreaView, TextInput, View } from "react-native";
+import { Text } from "@/components/ui/text";
+import { Button } from "@/components/ui/button";
 import { api } from "../../convex/_generated/api";
 
 export default function OnboardingLocation() {
@@ -30,17 +25,19 @@ export default function OnboardingLocation() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className="flex-1 bg-white dark:bg-black">
       <Stack.Screen options={{ headerShown: false }} />
-      <View style={styles.content}>
-        <Text style={styles.title}>Where are you located?</Text>
+      <View className="flex-1 items-center justify-center p-6">
+        <Text className="mb-6 text-2xl font-semibold">
+          Where are you located?
+        </Text>
         <Controller
           control={control}
           name="location"
           rules={{ required: "Location is required" }}
           render={({ field: { onChange, value } }) => (
             <TextInput
-              style={styles.input}
+              className="mb-3 w-full rounded-lg border border-gray-300 p-4 text-lg"
               placeholder="City, Country"
               value={value}
               onChangeText={onChange}
@@ -49,44 +46,12 @@ export default function OnboardingLocation() {
           )}
         />
         {errors.location && (
-          <Text style={styles.error}>{errors.location.message}</Text>
+          <Text className="mb-2 text-red-500">{errors.location.message}</Text>
         )}
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleSubmit(onSubmit)}
-        >
-          <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity>
+        <Button className="w-full" onPress={handleSubmit(onSubmit)}>
+          <Text className="text-lg font-medium text-white">Next</Text>
+        </Button>
       </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
-  content: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 24,
-  },
-  title: { fontSize: 24, fontWeight: "600", marginBottom: 24 },
-  input: {
-    borderWidth: 1,
-    borderColor: "#E0E0E0",
-    borderRadius: 8,
-    padding: 16,
-    fontSize: 18,
-    width: "100%",
-    marginBottom: 12,
-  },
-  button: {
-    backgroundColor: "#007AFF",
-    borderRadius: 8,
-    padding: 16,
-    alignItems: "center",
-    width: "100%",
-  },
-  buttonText: { color: "#fff", fontSize: 18, fontWeight: "500" },
-  error: { color: "red", marginBottom: 8 },
-});
