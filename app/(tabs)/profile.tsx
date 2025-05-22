@@ -8,7 +8,7 @@ import { useQuery } from "convex-helpers/react/cache";
 import { Stack, useRouter } from "expo-router";
 import { usePostHog } from "posthog-react-native";
 import { useState } from "react";
-import { ActivityIndicator, StyleSheet } from "react-native";
+import { ActivityIndicator } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { api } from "../../convex/_generated/api";
 
@@ -43,14 +43,14 @@ export default function ProfileScreen() {
     .slice(0, 2);
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView className="flex-1">
       <Stack.Screen
         options={{
           headerShown: false,
         }}
       />
-      <ScrollView bounces={false} contentContainerStyle={styles.scrollContent}>
-        <ThemedView style={styles.profileHeader}>
+      <ScrollView bounces={false} className="flex-grow p-4">
+        <ThemedView className="pb-5 pt-10">
           <Avatar
             alt={`${fullName}'s avatar`}
             className="h-24 w-24 self-center mb-4"
@@ -60,11 +60,15 @@ export default function ProfileScreen() {
               <ActivityIndicator color="white" />
             </AvatarFallback>
           </Avatar>
-          <ThemedText style={styles.userName}>{fullName}</ThemedText>
-          <ThemedText style={styles.userLocation}>
+          <ThemedText className="mb-1 text-center text-2xl font-semibold">
+            {fullName}
+          </ThemedText>
+          <ThemedText className="mb-3 text-center text-base">
             {user?.location || ""}
           </ThemedText>
-          <ThemedText style={styles.userBio}>{user?.bio || ""}</ThemedText>
+          <ThemedText className="mb-6 text-center text-base px-5">
+            {user?.bio || ""}
+          </ThemedText>
           <Button
             variant="outline"
             className="w-full"
@@ -73,7 +77,7 @@ export default function ProfileScreen() {
             <Text>Edit Profile</Text>
           </Button>
         </ThemedView>
-        <ThemedView style={styles.content}>
+        <ThemedView className="mt-2">
           <Button
             variant="destructive"
             className="w-full"
@@ -91,37 +95,3 @@ export default function ProfileScreen() {
     </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    padding: 16,
-  },
-  profileHeader: {
-    paddingTop: 40,
-    paddingBottom: 20,
-  },
-  userName: {
-    fontSize: 24,
-    fontWeight: "600",
-    marginBottom: 4,
-    textAlign: "center",
-  },
-  userLocation: {
-    fontSize: 16,
-    marginBottom: 12,
-    textAlign: "center",
-  },
-  userBio: {
-    fontSize: 16,
-    textAlign: "center",
-    marginBottom: 24,
-    paddingHorizontal: 20,
-  },
-  content: {
-    marginTop: 10,
-  },
-});
