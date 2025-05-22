@@ -1,0 +1,67 @@
+import { ConfigContext, ExpoConfig } from "expo/config";
+
+export default ({ config }: ConfigContext): ExpoConfig => ({
+  ...config,
+  name: "Expo Convex Clerk Template",
+  slug: "expo-convex-clerk-template",
+  version: "1.0.0",
+  orientation: "portrait",
+  icon: "./assets/images/icon.png",
+  scheme: "expo-convex-clerk-template",
+  userInterfaceStyle: "automatic",
+  newArchEnabled: true,
+  updates: {
+    checkAutomatically: "ON_ERROR_RECOVERY",
+  },
+  ios: {
+    supportsTablet: true,
+    bundleIdentifier: "com.jaronheard.expoconvexclerktemplate",
+    infoPlist: {
+      ITSAppUsesNonExemptEncryption: false,
+    },
+  },
+  android: {
+    adaptiveIcon: {
+      foregroundImage: "./assets/images/adaptive-icon.png",
+      backgroundColor: "#ffffff",
+    },
+    edgeToEdgeEnabled: true,
+  },
+  web: {
+    bundler: "metro",
+    output: "static",
+    favicon: "./assets/images/favicon.png",
+  },
+  plugins: [
+    "expo-router",
+    [
+      "expo-splash-screen",
+      {
+        image: "./assets/images/splash-icon.png",
+        imageWidth: 200,
+        resizeMode: "contain",
+        backgroundColor: "#ffffff",
+      },
+    ],
+    "expo-localization",
+    [
+      "@sentry/react-native/expo",
+      {
+        organization: process.env.SENTRY_ORG,
+        project: process.env.SENTRY_PROJECT,
+        url: "https://sentry.io/",
+        note: "Use SENTRY_AUTH_TOKEN env to authenticate with Sentry, and SENTRY_ORG and SENTRY_PROJECT to set the organization and project.",
+      },
+    ],
+  ],
+  experiments: {
+    typedRoutes: true,
+  },
+  extra: {
+    criticalIndex: 0,
+    router: {},
+    eas: {
+      projectId: "c69d86f9-5820-4628-aca5-37c5b69a46ca",
+    },
+  },
+});
