@@ -18,6 +18,7 @@ import { TaskItem } from "@/components/TaskItem";
 import { ThemedView } from "@/components/ThemedView";
 import { Text } from "@/components/ui/text";
 import { useDebounce } from "@/hooks/useDebounce";
+import { NAV_THEME } from "@/lib/constants";
 
 export default function HomeScreen() {
   const [searchInput, setSearchInput] = useState("");
@@ -28,6 +29,7 @@ export default function HomeScreen() {
     { initialNumItems: 20 },
   );
   const colorScheme = useColorScheme();
+  const themeColors = colorScheme === "dark" ? NAV_THEME.dark : NAV_THEME.light;
   const textColor = colorScheme === "dark" ? "#fff" : "#000";
   const modalBackgroundColor = colorScheme === "dark" ? "#1c1c1e" : "#f2f2f7";
   const inputBackgroundColor =
@@ -86,7 +88,7 @@ export default function HomeScreen() {
       </ThemedView>
 
       <TouchableOpacity
-        style={styles.fab}
+        style={[styles.fab, { backgroundColor: themeColors.primary }]}
         onPress={() => bottomSheetRef.current?.present()}
       >
         <Text style={styles.fabText}>+</Text>
@@ -170,7 +172,6 @@ const styles = StyleSheet.create({
     margin: 16,
     right: 16,
     bottom: 16,
-    backgroundColor: "#007AFF",
     width: 56,
     height: 56,
     borderRadius: 28,
@@ -184,7 +185,6 @@ const styles = StyleSheet.create({
   },
   fabText: {
     fontSize: 24,
-    color: "white",
   },
   modalView: {
     width: "100%",
