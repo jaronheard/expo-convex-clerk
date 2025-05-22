@@ -11,6 +11,7 @@ import { StatusBar } from "expo-status-bar";
 import * as Updates from "expo-updates";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import "../global.css";
 
 import Providers from "@/components/Providers";
 import { useColorScheme } from "@/hooks/useColorScheme";
