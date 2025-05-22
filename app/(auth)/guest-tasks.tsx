@@ -5,9 +5,9 @@ import {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useMutation, usePaginatedQuery } from "convex/react";
+import { useRouter } from "expo-router";
 import { useMemo, useRef, useState } from "react";
 import { FlatList, TouchableOpacity, View, useColorScheme } from "react-native";
-import { useRouter } from "expo-router";
 
 import { TaskItem } from "@/components/TaskItem";
 import { Button } from "@/components/ui/button";
@@ -74,6 +74,7 @@ export default function GuestTasks() {
               isCompleted={item.isCompleted}
             />
           )}
+          ItemSeparatorComponent={() => <View className="h-2" />}
           onEndReached={() => loadMore(20)}
           contentContainerStyle={{ paddingBottom: 120 }}
         />
