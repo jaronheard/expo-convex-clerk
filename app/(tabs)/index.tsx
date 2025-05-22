@@ -29,8 +29,7 @@ export default function HomeScreen() {
     { initialNumItems: 20 },
   );
   const colorScheme = useColorScheme();
-  const themeColors =
-    colorScheme === "dark" ? NAV_THEME.dark : NAV_THEME.light;
+  const themeColors = colorScheme === "dark" ? NAV_THEME.dark : NAV_THEME.light;
   const textColor = colorScheme === "dark" ? "#fff" : "#000";
   const modalBackgroundColor = colorScheme === "dark" ? "#1c1c1e" : "#f2f2f7";
   const inputBackgroundColor =
