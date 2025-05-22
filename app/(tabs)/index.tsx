@@ -8,7 +8,6 @@ import { useMutation, usePaginatedQuery } from "convex/react";
 import { useMemo, useRef, useState } from "react";
 import {
   FlatList,
-  StyleSheet,
   TextInput,
   TouchableOpacity,
   useColorScheme,
@@ -52,15 +51,16 @@ export default function HomeScreen() {
   };
 
   return (
-    <View className="bg-background" style={styles.wrapper}>
-      <View className="bg-background" style={styles.contentContainer}>
-        <View className="bg-background" style={styles.titleContainer}>
+    <View className="flex-1 bg-background">
+      <View className="flex-1 bg-background p-4">
+        <View className="flex-row items-center gap-2 mt-4 mb-4 bg-background">
           <Text className="text-3xl font-bold">Tasks</Text>
         </View>
 
-        <View className="bg-background" style={styles.searchContainer}>
+        <View className="my-4 bg-background">
           <TextInput
-            style={[styles.searchInput, { color: textColor }]}
+            className="rounded-lg p-3 text-base"
+            style={{ backgroundColor: "rgba(255, 255, 255, 0.1)", color: textColor }}
             placeholder="Search tasks..."
             placeholderTextColor={
               colorScheme === "dark"
@@ -88,10 +88,11 @@ export default function HomeScreen() {
       </View>
 
       <TouchableOpacity
-        style={[styles.fab, { backgroundColor: themeColors.primary }]}
+        className="absolute right-4 bottom-4 w-14 h-14 rounded-full justify-center items-center"
+        style={{ backgroundColor: themeColors.primary, elevation: 8, shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84 }}
         onPress={() => bottomSheetRef.current?.present()}
       >
-        <Text style={styles.fabText}>+</Text>
+        <Text className="text-2xl">+</Text>
       </TouchableOpacity>
 
       <BottomSheetModal
@@ -101,7 +102,7 @@ export default function HomeScreen() {
         backgroundStyle={{ backgroundColor: modalBackgroundColor }}
       >
         <BottomSheetView style={styles.modalView}>
-          <Text style={styles.modalText}>Add New Task</Text>
+          <Text className="mb-5 text-center text-xl font-bold">Add New Task</Text>
           <BottomSheetTextInput
             style={[
               styles.modalInput,
@@ -116,7 +117,7 @@ export default function HomeScreen() {
             value={newTaskText}
             onChangeText={setNewTaskText}
           />
-          <View className="bg-background" style={styles.modalButtons}>
+          <View className="flex-row justify-between w-full bg-background">
             <TouchableOpacity
               onPress={() => bottomSheetRef.current?.dismiss()}
               style={styles.modalButton}
@@ -127,11 +128,11 @@ export default function HomeScreen() {
                 Cancel
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={handleAddTask}
-              style={styles.modalButton}
-            >
-              <Text style={styles.modalButtonText}>Save Task</Text>
+              <TouchableOpacity
+                onPress={handleAddTask}
+                style={styles.modalButton}
+              >
+                <Text style={styles.modalButtonText}>Save Task</Text>
             </TouchableOpacity>
           </View>
         </BottomSheetView>
@@ -140,52 +141,7 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-  },
-  contentContainer: {
-    padding: 16,
-    flex: 1,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginTop: 16,
-    marginBottom: 16,
-  },
-  searchContainer: {
-    marginVertical: 16,
-  },
-  searchInput: {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    padding: 12,
-    borderRadius: 8,
-    fontSize: 16,
-  },
-  fab: {
-    position: "absolute",
-    margin: 16,
-    right: 16,
-    bottom: 16,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    justifyContent: "center",
-    alignItems: "center",
-    elevation: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  fabText: {
-    fontSize: 24,
-  },
+const styles = {
   modalView: {
     width: "100%",
     borderTopLeftRadius: 20,
@@ -200,12 +156,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
-  modalText: {
-    marginBottom: 20,
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold",
   },
   modalInput: {
     width: "100%",
@@ -233,4 +183,4 @@ const styles = StyleSheet.create({
   inactiveModalButtonText: {
     color: "#8e8e93",
   },
-});
+} as const;

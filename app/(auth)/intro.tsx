@@ -6,7 +6,6 @@ import {
   ActivityIndicator,
   Image,
   SafeAreaView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -58,21 +57,21 @@ export default function Intro() {
 
   if (!isLoaded) {
     return (
-      <View style={styles.loadingContainer}>
+      <View className="flex-1 items-center justify-center">
         <ActivityIndicator size="large" />
       </View>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Welcome</Text>
-        <Text style={styles.subtitle}>Sign in to get started</Text>
+    <SafeAreaView className="flex-1 bg-white">
+      <View className="flex-1 items-center justify-center px-5">
+        <Text className="text-[32px] font-bold mb-2">Welcome</Text>
+        <Text className="text-lg text-[#666] mb-8">Sign in to get started</Text>
 
-        <View style={styles.buttonContainer}>
+        <View className="w-full gap-4">
           <TouchableOpacity
-            style={styles.socialButton}
+            className="flex-row items-center justify-center bg-[#f5f5f5] rounded-lg p-4 border border-[#e0e0e0]"
             onPress={handleGoogleSignIn}
             disabled={isLoading.google}
           >
@@ -82,15 +81,15 @@ export default function Intro() {
               <>
                 <Image
                   source={require("../../assets/images/google.png")}
-                  style={styles.socialIcon}
+                  className="w-6 h-6 mr-3"
                 />
-                <Text style={styles.buttonText}>Continue with Google</Text>
+                <Text className="text-base font-medium">Continue with Google</Text>
               </>
             )}
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.socialButton}
+            className="flex-row items-center justify-center bg-[#f5f5f5] rounded-lg p-4 border border-[#e0e0e0]"
             onPress={handleAppleSignIn}
             disabled={isLoading.apple}
           >
@@ -102,9 +101,9 @@ export default function Intro() {
                   name="logo-apple"
                   size={24}
                   color="#000"
-                  style={styles.socialIcon}
+                  className="w-6 h-6 mr-3"
                 />
-                <Text style={styles.buttonText}>Continue with Apple</Text>
+                <Text className="text-base font-medium">Continue with Apple</Text>
               </>
             )}
           </TouchableOpacity>
@@ -114,53 +113,3 @@ export default function Intro() {
   );
 }
 
-const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  content: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 18,
-    color: "#666",
-    marginBottom: 32,
-  },
-  buttonContainer: {
-    width: "100%",
-    gap: 16,
-  },
-  socialButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f5f5f5",
-    borderRadius: 8,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-  },
-  socialIcon: {
-    width: 24,
-    height: 24,
-    marginRight: 12,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: "500",
-  },
-});

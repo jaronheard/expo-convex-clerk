@@ -2,7 +2,7 @@ import { Authenticated, Unauthenticated, useConvexAuth } from "convex/react";
 import { useQuery } from "convex-helpers/react/cache";
 import { Redirect, Stack } from "expo-router";
 import React from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { api } from "../../convex/_generated/api";
 
 export default function AuthLayout() {
@@ -18,7 +18,7 @@ export default function AuthLayout() {
   if (isLoading) {
     // This isLoading is from useConvexAuth, indicating Clerk auth state is loading.
     return (
-      <View style={styles.loadingContainer}>
+      <View className="flex-1 items-center justify-center">
         <ActivityIndicator size="large" />
       </View>
     );
@@ -40,7 +40,7 @@ export default function AuthLayout() {
         {/* Now we handle the state of the 'user' query */}
         {user === undefined ? (
           // user query is loading (or was skipped and now isAuthenticated is true, so it's re-fetching)
-          <View style={styles.loadingContainer}>
+          <View className="flex-1 items-center justify-center">
             <ActivityIndicator size="large" />
           </View>
         ) : user === null || !user.onboarded ? (
@@ -54,12 +54,5 @@ export default function AuthLayout() {
   );
 }
 
-const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
 
 // Removed console.log statements and refined logic for user loading and onboarding redirection.

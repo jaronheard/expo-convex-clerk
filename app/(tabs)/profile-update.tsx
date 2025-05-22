@@ -13,7 +13,6 @@ import {
   ActivityIndicator,
   Alert,
   Platform,
-  StyleSheet,
   TextInput,
   TouchableOpacity,
   View,
@@ -152,8 +151,48 @@ export default function ProfileUpdateScreen() {
   const theme = colorScheme ?? "light";
   const headerStyle = { backgroundColor: Colors[theme].background };
 
+  const headerButtonStyle = {
+    paddingHorizontal: Platform.OS === "ios" ? 8 : 16,
+    paddingVertical: 10,
+  };
+  const headerActivityIndicatorStyle = {
+    marginHorizontal: Platform.OS === "ios" ? 8 : 16,
+    paddingVertical: 10,
+  };
+  const headerButtonText = { fontSize: 17, color: "#007AFF" };
+  const saveButtonTextHeader = { fontWeight: "600" };
+  const disabledButtonText = { color: "#BDBDBD" };
+  const contentStyle = { paddingHorizontal: 16, paddingTop: 20, paddingBottom: 40, gap: 16 };
+  const avatarSectionStyle = { alignItems: "center", marginBottom: 24 };
+  const avatarPlaceholderStyle = {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 8,
+    position: "relative",
+  };
+  const avatarImageStyle = { width: 100, height: 100, borderRadius: 50 };
+  const cameraIconPlaceholderStyle = {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.2)",
+    borderRadius: 50,
+  };
+  const editAvatarTextStyle = { fontSize: 16, color: "#007AFF", fontWeight: "500" };
+  const labelStyle = { fontSize: 14, fontWeight: "400", marginBottom: 6, marginLeft: 4 };
+  const inputStyle = { borderRadius: 10, padding: 15, fontSize: 16, width: "100%" };
+  const textAreaStyle = { height: 120, textAlignVertical: "top" };
+  const bioInputContainerStyle = { position: "relative" };
+  const charCountStyle = { position: "absolute", bottom: 10, right: 10, fontSize: 12 };
+  const errorTextStyle = { color: "red", fontSize: 12, marginLeft: 4, marginTop: 4 };
+
   return (
-    <View className="bg-background" style={styles.container}>
+    <View className="flex-1 bg-background">
       <Stack.Screen
         options={{
           headerShown: true,
@@ -162,29 +201,29 @@ export default function ProfileUpdateScreen() {
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => router.navigate("/(tabs)/profile")}
-              style={styles.headerButton}
+              style={headerButtonStyle}
               disabled={loading}
             >
-              <Text style={styles.cancelHeaderButtonText}>Cancel</Text>
+              <Text className="text-[17px] text-[#8e8e93]">Cancel</Text>
             </TouchableOpacity>
           ),
           headerRight: () =>
             loading ? (
               <ActivityIndicator
-                style={styles.headerActivityIndicator}
+                style={headerActivityIndicatorStyle}
                 color="#007AFF"
               />
             ) : (
               <TouchableOpacity
                 onPress={handleSubmit(handleUpdate)}
                 disabled={loading}
-                style={styles.headerButton}
+                style={headerButtonStyle}
               >
                 <Text
                   style={[
-                    styles.headerButtonText,
-                    styles.saveButtonTextHeader,
-                    loading && styles.disabledButtonText,
+                    headerButtonText,
+                    saveButtonTextHeader,
+                    loading && disabledButtonText,
                   ]}
                 >
                   Save
@@ -194,10 +233,10 @@ export default function ProfileUpdateScreen() {
           headerStyle: headerStyle,
         }}
       />
-      <ScrollView contentContainerStyle={styles.content} bounces={false}>
-        <View className="bg-background" style={styles.avatarSection}>
+      <ScrollView contentContainerStyle={contentStyle} bounces={false}>
+        <View className="bg-background" style={avatarSectionStyle}>
           <TouchableOpacity
-            style={styles.avatarPlaceholder}
+            style={avatarPlaceholderStyle}
             onPress={handleImagePicker}
             disabled={isSubmitting}
           >
@@ -205,31 +244,31 @@ export default function ProfileUpdateScreen() {
               source={{
                 uri: avatarUri,
               }}
-              style={styles.avatarImage}
+              style={avatarImageStyle}
             />
             <View
               className="bg-background"
-              style={styles.cameraIconPlaceholder}
+              style={cameraIconPlaceholderStyle}
             >
               <Text style={{ fontSize: 24 }}>📷</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleImagePicker} disabled={isSubmitting}>
-            <Text style={styles.editAvatarText}>Edit</Text>
+            <Text style={editAvatarTextStyle}>Edit</Text>
           </TouchableOpacity>
         </View>
 
-        <View className="bg-background" style={styles.formGroup}>
+        <View className="bg-background">
           <Controller
             control={control}
             name="firstName"
             rules={{ required: "First name is required" }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={[
-                  styles.input,
-                  { color: textColor, backgroundColor: inputBackgroundColor },
-                ]}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={[
+                    inputStyle,
+                    { color: textColor, backgroundColor: inputBackgroundColor },
+                  ]}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -240,20 +279,20 @@ export default function ProfileUpdateScreen() {
             )}
           />
           {errors.firstName && (
-            <Text style={styles.errorText}>{errors.firstName.message}</Text>
+            <Text style={errorTextStyle}>{errors.firstName.message}</Text>
           )}
         </View>
-        <View className="bg-background" style={styles.formGroup}>
+        <View className="bg-background">
           <Controller
             control={control}
             name="lastName"
             rules={{ required: "Last name is required" }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={[
-                  styles.input,
-                  { color: textColor, backgroundColor: inputBackgroundColor },
-                ]}
+                <TextInput
+                  style={[
+                    inputStyle,
+                    { color: textColor, backgroundColor: inputBackgroundColor },
+                  ]}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -264,19 +303,19 @@ export default function ProfileUpdateScreen() {
             )}
           />
           {errors.lastName && (
-            <Text style={styles.errorText}>{errors.lastName.message}</Text>
+            <Text style={errorTextStyle}>{errors.lastName.message}</Text>
           )}
         </View>
 
-        <View className="bg-background" style={styles.formGroup}>
-          <Text style={styles.label}>Location</Text>
+        <View className="bg-background">
+          <Text style={labelStyle}>Location</Text>
           <Controller
             control={control}
             name="location"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
                 style={[
-                  styles.input,
+                  inputStyle,
                   { color: textColor, backgroundColor: inputBackgroundColor },
                 ]}
                 onBlur={onBlur}
@@ -290,17 +329,17 @@ export default function ProfileUpdateScreen() {
           />
         </View>
 
-        <View className="bg-background" style={styles.formGroup}>
-          <Text style={styles.label}>Bio</Text>
-          <View className="bg-background" style={styles.bioInputContainer}>
+        <View className="bg-background">
+          <Text style={labelStyle}>Bio</Text>
+          <View className="bg-background" style={bioInputContainerStyle}>
             <Controller
               control={control}
               name="bio"
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   style={[
-                    styles.input,
-                    styles.textArea,
+                    inputStyle,
+                    textAreaStyle,
                     { color: textColor, backgroundColor: inputBackgroundColor },
                   ]}
                   onBlur={onBlur}
@@ -314,7 +353,7 @@ export default function ProfileUpdateScreen() {
                 />
               )}
             />
-            <Text style={styles.charCount}>{(bioValue || "").length}/150</Text>
+            <Text style={charCountStyle}>{(bioValue || "").length}/150</Text>
           </View>
         </View>
       </ScrollView>
@@ -322,104 +361,3 @@ export default function ProfileUpdateScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  headerButton: {
-    paddingHorizontal: Platform.OS === "ios" ? 8 : 16,
-    paddingVertical: 10,
-  },
-  headerActivityIndicator: {
-    marginHorizontal: Platform.OS === "ios" ? 8 : 16,
-    paddingVertical: 10,
-  },
-  headerButtonText: {
-    fontSize: 17,
-    color: "#007AFF",
-  },
-  cancelHeaderButtonText: {
-    fontSize: 17,
-    color: "#8e8e93",
-  },
-  saveButtonTextHeader: {
-    fontWeight: "600",
-  },
-  disabledButtonText: {
-    color: "#BDBDBD",
-  },
-  content: {
-    paddingHorizontal: 16,
-    paddingTop: 20,
-    paddingBottom: 40,
-    gap: 16,
-  },
-  avatarSection: {
-    alignItems: "center",
-    marginBottom: 24,
-    backgroundColor: "transparent",
-  },
-  avatarPlaceholder: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 8,
-    position: "relative",
-  },
-  avatarImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  cameraIconPlaceholder: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.2)",
-    borderRadius: 50,
-  },
-  editAvatarText: {
-    fontSize: 16,
-    color: "#007AFF",
-    fontWeight: "500",
-  },
-  formGroup: {
-    backgroundColor: "transparent",
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "400",
-    marginBottom: 6,
-    marginLeft: 4,
-  },
-  input: {
-    borderRadius: 10,
-    padding: 15,
-    fontSize: 16,
-    width: "100%",
-  },
-  textArea: {
-    height: 120,
-    textAlignVertical: "top",
-  },
-  bioInputContainer: {
-    position: "relative",
-    backgroundColor: "transparent",
-  },
-  charCount: {
-    position: "absolute",
-    bottom: 10,
-    right: 10,
-    fontSize: 12,
-  },
-  errorText: {
-    color: "red",
-    fontSize: 12,
-    marginLeft: 4,
-    marginTop: 4,
-  },
-});
