@@ -4,9 +4,11 @@ import {
   BottomSheetTextInput,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useMutation, usePaginatedQuery } from "convex/react";
 import { useMemo, useRef, useState } from "react";
 import { FlatList, TouchableOpacity, useColorScheme, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { TaskItem } from "@/components/TaskItem";
 import { Input } from "@/components/ui/input";
@@ -15,6 +17,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { NAV_THEME } from "@/lib/constants";
 
 export default function HomeScreen() {
+  const tabBarHeight = useBottomTabBarHeight();
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce(searchInput, 300);
   const { results, loadMore } = usePaginatedQuery(
@@ -46,7 +49,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <View className="bg-background flex-1">
+    <SafeAreaView className="bg-background flex-1">
       <View className="bg-background flex-1 p-4">
         <View className="bg-background flex-row items-center gap-2 mt-4 mb-4">
           <Text className="text-3xl font-bold">Tasks</Text>
@@ -73,13 +76,13 @@ export default function HomeScreen() {
           )}
           ItemSeparatorComponent={() => <View className="h-2" />}
           onEndReached={() => loadMore(20)}
-          contentContainerStyle={{ paddingBottom: 80 }}
+          contentContainerStyle={{ paddingBottom: tabBarHeight + 64 }}
         />
       </View>
 
       <TouchableOpacity
-        className="absolute m-4 right-4 bottom-4 w-14 h-14 rounded-full justify-center items-center shadow-lg"
-        style={{ backgroundColor: "#007AFF" }}
+        className="absolute m-4 right-4 w-14 h-14 rounded-full justify-center items-center shadow-lg bg-[#007AFF]"
+        style={{ bottom: tabBarHeight + 8 }}
         onPress={() => bottomSheetRef.current?.present()}
       >
         <Text className="text-2xl text-foreground">+</Text>
@@ -127,6 +130,6 @@ export default function HomeScreen() {
           </View>
         </BottomSheetView>
       </BottomSheetModal>
-    </View>
+    </SafeAreaView>
   );
 }
