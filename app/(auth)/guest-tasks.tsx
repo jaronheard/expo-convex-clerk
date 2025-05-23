@@ -4,9 +4,10 @@ import {
   BottomSheetTextInput,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation, usePaginatedQuery } from "convex/react";
 import { useRouter } from "expo-router";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FlatList, TouchableOpacity, View, useColorScheme } from "react-native";
 import {
   SafeAreaView,
@@ -19,6 +20,8 @@ import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { useDebounce } from "@/hooks/useDebounce";
 
+const GUEST_USER_KEY = "soonlist_guest_user_id";
+
 export default function GuestTasks() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -29,22 +32,46 @@ export default function GuestTasks() {
     colorScheme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)";
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce(searchInput, 300);
+  const [guestUserId, setGuestUserId] = useState<string | null>(null);
+
   const { results, loadMore } = usePaginatedQuery(
-    api.tasks.search,
-    { searchQuery: debouncedSearch },
+    api.tasks.searchGuest,
+    { searchQuery: debouncedSearch, guestUserId: guestUserId || "" },
     { initialNumItems: 20 },
   );
   const [newTaskText, setNewTaskText] = useState("");
   const [hasAddedTask, setHasAddedTask] = useState(false);
-  const createTask = useMutation(api.tasks.createTask);
+  const createGuestTask = useMutation(api.tasks.createGuestTask);
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["50%"], []);
 
+  // Initialize or retrieve guest user ID on component mount
+  useEffect(() => {
+    const initializeGuestUser = async () => {
+      try {
+        let guestId = await AsyncStorage.getItem(GUEST_USER_KEY);
+        if (!guestId) {
+          // Create a unique guest ID using timestamp + random string
+          guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+          await AsyncStorage.setItem(GUEST_USER_KEY, guestId);
+        }
+        setGuestUserId(guestId);
+      } catch (error) {
+        console.error("Failed to initialize guest user:", error);
+        // Fallback to a session-based ID if AsyncStorage fails
+        const fallbackId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        setGuestUserId(fallbackId);
+      }
+    };
+
+    initializeGuestUser();
+  }, []);
+
   const handleAddTask = async () => {
-    if (newTaskText.trim() === "") return;
+    if (newTaskText.trim() === "" || !guestUserId) return;
     try {
-      await createTask({ text: newTaskText });
+      await createGuestTask({ text: newTaskText, guestUserId });
       setHasAddedTask(true);
       setNewTaskText("");
       bottomSheetRef.current?.dismiss();
@@ -53,11 +80,20 @@ export default function GuestTasks() {
     }
   };
 
+  const handleSignUp = () => {
+    // Store that we have guest tasks to transfer later
+    if (hasAddedTask) {
+      AsyncStorage.setItem("has_guest_tasks", "true");
+    }
+    router.push("/intro");
+  };
+
   return (
     <SafeAreaView className="bg-background flex-1">
       <View className="bg-background flex-1 p-4">
         <View className="bg-background flex-row items-center gap-2 mt-4 mb-4">
           <Text className="text-3xl font-bold">Tasks</Text>
+          <Text className="text-sm text-muted-foreground">(Guest Mode)</Text>
         </View>
 
         <View className="bg-background my-4">
@@ -95,7 +131,7 @@ export default function GuestTasks() {
 
       {hasAddedTask && (
         <Button
-          onPress={() => router.push("/intro")}
+          onPress={handleSignUp}
           className="absolute left-4 right-4"
           style={{ bottom: insets.bottom + 80 }}
         >
