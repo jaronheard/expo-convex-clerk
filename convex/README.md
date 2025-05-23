@@ -1,17 +1,5 @@
 # Welcome to your Convex functions directory!
 
-## Schema Approach
-
-This project uses **schema inference** instead of an explicit schema file. Convex automatically infers the database schema from your function usage and data structure. This approach still provides full TypeScript type safety through the generated types in `_generated/`, while allowing for more flexible development.
-
-Key benefits:
-
-- Full TypeScript type safety via auto-generated types
-- Flexible schema evolution based on actual usage
-- No need to manually maintain schema definitions
-
-Note: If you need explicit indexes for performance or search functionality, you can add a `schema.ts` file back. See [Convex Schema docs](https://docs.convex.dev/database/schemas) for more details.
-
 Write your Convex functions here.
 See https://docs.convex.dev/functions for more.
 
