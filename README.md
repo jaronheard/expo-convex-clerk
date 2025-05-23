@@ -5,15 +5,6 @@
 - [x] This is an app template starting point
 - [x] Use it as the foundation for building a mobile app with Expo, Convex, and Clerk
 
-## TODO:
-
-- [x] Add apple auth
-- [x] Strip out specific components and make generic
-- [x] Add expo-updates
-- [x] Add posthog
-- [x] Add sentry
-- [ ] Update readme
-- [ ] Scope out next steps
 
 This template integrates [Expo](https://expo.dev) for the client, [Convex](https://convex.dev) for the backend, and [Clerk](https://clerk.com) for authentication.
 
@@ -91,6 +82,10 @@ The template uses **expo-updates** to deliver over-the-air updates. The app
 automatically checks for updates every 10 minutes while running and will
 immediately download and launch a new update if it contains a higher
 `criticalIndex` than the currently running version.
+## Push Notifications
+
+This template includes optional OneSignal integration for push notifications. Follow the steps in [ONESIGNAL_SETUP.md](./ONESIGNAL_SETUP.md) to configure your app.
+
 
 ## Example Profile Features
 
