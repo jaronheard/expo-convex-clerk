@@ -10,6 +10,7 @@ import * as SecureStore from "expo-secure-store";
 import { PostHogProvider, usePostHog } from "posthog-react-native";
 import { JSX, useEffect } from "react";
 import { Platform } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import ErrorBoundary from "react-native-error-boundary";
 import FallbackComponent from "react-native-error-boundary/lib/ErrorBoundary/FallbackComponent";
 
@@ -79,32 +80,34 @@ export default function RootProvider({ children }: Props): JSX.Element {
   }
 
   return (
-    <PostHogProvider
-      apiKey="phc_xFdnzXhdRoS2sHiQziB8NZvDZ3u9VCeJ44eEft1taA3"
-      options={posthogOptions}
-      autocapture
-    >
-      <ClerkProvider
-        publishableKey={clerkPublishableKey}
-        tokenCache={tokenCache}
+    <SafeAreaProvider>
+      <PostHogProvider
+        apiKey="phc_xFdnzXhdRoS2sHiQziB8NZvDZ3u9VCeJ44eEft1taA3"
+        options={posthogOptions}
+        autocapture
       >
-        <ClerkLoaded>
-          {/* eslint-disable-next-line react-compiler/react-compiler */}
-          <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-            <ConvexQueryCacheProvider>
-              <ErrorBoundary
-                FallbackComponent={FallbackComponent}
-                onError={handleErrorConsole}
-              >
-                <PostHogIdentityTracker />
-                <BottomSheetModalProvider>
-                  <ActionSheetProvider>{children}</ActionSheetProvider>
-                </BottomSheetModalProvider>
-              </ErrorBoundary>
-            </ConvexQueryCacheProvider>
-          </ConvexProviderWithClerk>
-        </ClerkLoaded>
-      </ClerkProvider>
-    </PostHogProvider>
+        <ClerkProvider
+          publishableKey={clerkPublishableKey}
+          tokenCache={tokenCache}
+        >
+          <ClerkLoaded>
+            {/* eslint-disable-next-line react-compiler/react-compiler */}
+            <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+              <ConvexQueryCacheProvider>
+                <ErrorBoundary
+                  FallbackComponent={FallbackComponent}
+                  onError={handleErrorConsole}
+                >
+                  <PostHogIdentityTracker />
+                  <BottomSheetModalProvider>
+                    <ActionSheetProvider>{children}</ActionSheetProvider>
+                  </BottomSheetModalProvider>
+                </ErrorBoundary>
+              </ConvexQueryCacheProvider>
+            </ConvexProviderWithClerk>
+          </ClerkLoaded>
+        </ClerkProvider>
+      </PostHogProvider>
+    </SafeAreaProvider>
   );
 }

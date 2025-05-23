@@ -8,6 +8,10 @@ import { useMutation, usePaginatedQuery } from "convex/react";
 import { useRouter } from "expo-router";
 import { useMemo, useRef, useState } from "react";
 import { FlatList, TouchableOpacity, View, useColorScheme } from "react-native";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 import { TaskItem } from "@/components/TaskItem";
 import { Button } from "@/components/ui/button";
@@ -16,6 +20,7 @@ import { Text } from "@/components/ui/text";
 import { useDebounce } from "@/hooks/useDebounce";
 
 export default function GuestTasks() {
+  const insets = useSafeAreaInsets();
   const router = useRouter();
   const colorScheme = useColorScheme();
   const textColor = colorScheme === "dark" ? "#fff" : "#000";
@@ -49,7 +54,7 @@ export default function GuestTasks() {
   };
 
   return (
-    <View className="bg-background flex-1">
+    <SafeAreaView className="bg-background flex-1">
       <View className="bg-background flex-1 p-4">
         <View className="bg-background flex-row items-center gap-2 mt-4 mb-4">
           <Text className="text-3xl font-bold">Tasks</Text>
@@ -76,13 +81,13 @@ export default function GuestTasks() {
           )}
           ItemSeparatorComponent={() => <View className="h-2" />}
           onEndReached={() => loadMore(20)}
-          contentContainerStyle={{ paddingBottom: 120 }}
+          contentContainerStyle={{ paddingBottom: insets.bottom + 104 }}
         />
       </View>
 
       <TouchableOpacity
-        className="absolute m-4 right-4 bottom-4 w-14 h-14 rounded-full justify-center items-center shadow-lg"
-        style={{ backgroundColor: "#007AFF" }}
+        className="absolute m-4 right-4 w-14 h-14 rounded-full justify-center items-center shadow-lg"
+        style={{ backgroundColor: "#007AFF", bottom: insets.bottom + 16 }}
         onPress={() => bottomSheetRef.current?.present()}
       >
         <Text className="text-2xl text-foreground">+</Text>
@@ -91,7 +96,8 @@ export default function GuestTasks() {
       {hasAddedTask && (
         <Button
           onPress={() => router.push("/intro")}
-          className="absolute left-4 right-4 bottom-20"
+          className="absolute left-4 right-4"
+          style={{ bottom: insets.bottom + 80 }}
         >
           <Text>Sign Up to Save Tasks</Text>
         </Button>
@@ -139,6 +145,6 @@ export default function GuestTasks() {
           </View>
         </BottomSheetView>
       </BottomSheetModal>
-    </View>
+    </SafeAreaView>
   );
 }
