@@ -18,7 +18,7 @@ export default function HomeScreen() {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce(searchInput, 300);
   const { results, loadMore } = usePaginatedQuery(
-    api.tasks.search,
+    api.tasks.searchMine,
     { searchQuery: debouncedSearch },
     { initialNumItems: 20 },
   );
