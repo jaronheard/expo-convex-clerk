@@ -14,6 +14,7 @@ import * as Updates from "expo-updates";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { LogLevel, OneSignal } from "react-native-onesignal";
 import "react-native-reanimated";
 
 import Providers from "@/components/Providers";
@@ -97,6 +98,26 @@ function RootLayout() {
   useEffect(() => {
     if (error) throw error;
   }, [error]);
+
+  // Initialize OneSignal
+  useEffect(() => {
+    // Only initialize if OneSignal App ID is available
+    const oneSignalAppId = process.env.EXPO_PUBLIC_ONESIGNAL_APP_ID;
+    if (!oneSignalAppId) {
+      console.warn(
+        "OneSignal App ID not found in environment variables. Please add EXPO_PUBLIC_ONESIGNAL_APP_ID to your .env.local file.",
+      );
+      return;
+    }
+
+    // Enable verbose logging for debugging (remove in production)
+    OneSignal.Debug.setLogLevel(LogLevel.Verbose);
+    // Initialize with your OneSignal App ID
+    OneSignal.initialize(oneSignalAppId);
+    // Use this method to prompt for push notifications.
+    // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
+    OneSignal.Notifications.requestPermission(false);
+  }, []); // Ensure this only runs once on app mount
 
   useIsomorphicLayoutEffect(() => {
     if (hasMounted.current) {
