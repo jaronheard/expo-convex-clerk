@@ -152,6 +152,9 @@ importers:
       react-native:
         specifier: 0.79.2
         version: 0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0)
+      react-native-appsflyer:
+        specifier: ^6.16.2
+        version: 6.16.2
       react-native-error-boundary:
         specifier: ^2.0.0
         version: 2.0.0(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -161,6 +164,9 @@ importers:
       react-native-onesignal:
         specifier: ^5.2.11
         version: 5.2.11
+      react-native-purchases:
+        specifier: ^8.10.1
+        version: 8.10.1(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-reanimated:
         specifier: ~3.17.5
         version: 3.17.5(@babel/core@7.27.1)(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -1553,6 +1559,9 @@ packages:
 
   '@react-navigation/routers@7.3.7':
     resolution: {integrity: sha512-5ffgrefOs2zWqcCVX+OKn+RDx0puopQtxqetegFrTfWQ6pGXdY/5v4kBpPwaOFrNEeE/LPbHt9IJaJuvyhB7RA==}
+
+  '@revenuecat/purchases-typescript-internal@13.32.0':
+    resolution: {integrity: sha512-I5qMjWafuk3gy8QKo1O1qQV8mUxoQ79BdA0j/8d2QSyKeqHIkpRAkTN53uCKEPYXf5pfiEbsGJlVgRZvsQXBYQ==}
 
   '@rn-primitives/avatar@1.2.0':
     resolution: {integrity: sha512-ic029KaJRADdjmjPzpaSaZ9QrtgGF8DnAA7TcQ/gYqUfLXjkbfzsjARKv7NtEoJLjWAcjIAK6R8JkcbMfPtYig==}
@@ -4547,6 +4556,9 @@ packages:
   react-is@19.1.0:
     resolution: {integrity: sha512-Oe56aUPnkHyyDxxkvqtd7KkdQP5uIUfHxd5XTb3wE9d/kRnZLmKbDB0GWk919tdQ+mxxPtG6EAs6RMT6i1qtHg==}
 
+  react-native-appsflyer@6.16.2:
+    resolution: {integrity: sha512-ggMED0/R2Ypj5TLZNZ/HS9SsUorfsTMguRuH0x6inH+KSZqUghVjOAtQYxPPw3ZDgJBEZLhW9CaLTGd8dECtPQ==}
+
   react-native-css-interop@0.1.22:
     resolution: {integrity: sha512-Mu01e+H9G+fxSWvwtgWlF5MJBJC4VszTCBXopIpeR171lbeBInHb8aHqoqRPxmJpi3xIHryzqKFOJYAdk7PBxg==}
     engines: {node: '>=18'}
@@ -4593,6 +4605,12 @@ packages:
 
   react-native-onesignal@5.2.11:
     resolution: {integrity: sha512-Xf/5tUGwt0MtjKawtKC+BIftihXPHFqiu0SnhsC+qjlawdHCUPo9fzKKyDYv5Hshgw6L3ZrbCyC24VPd+j22oA==}
+
+  react-native-purchases@8.10.1:
+    resolution: {integrity: sha512-C0r4MRVj57fA/A1yEdAKOivRlA3QM/uyPxgBGyiWQ+Cp/s8XcPd+8jPPZXkwtdNBQQXmgF6dLvsJnja739mFWQ==}
+    peerDependencies:
+      react: '>= 16.6.3'
+      react-native: '*'
 
   react-native-reanimated@3.17.5:
     resolution: {integrity: sha512-SxBK7wQfJ4UoWoJqQnmIC7ZjuNgVb9rcY5Xc67upXAFKftWg0rnkknTw6vgwnjRcvYThrjzUVti66XoZdDJGtw==}
@@ -7208,6 +7226,8 @@ snapshots:
   '@react-navigation/routers@7.3.7':
     dependencies:
       nanoid: 3.3.11
+
+  '@revenuecat/purchases-typescript-internal@13.32.0': {}
 
   '@rn-primitives/avatar@1.2.0(react-native-web@0.20.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
@@ -10544,6 +10564,8 @@ snapshots:
 
   react-is@19.1.0: {}
 
+  react-native-appsflyer@6.16.2: {}
+
   react-native-css-interop@0.1.22(react-native-reanimated@3.17.5(@babel/core@7.27.1)(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.4.0(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-svg@15.11.2(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@22.15.18)(typescript@5.8.3))):
     dependencies:
       '@babel/helper-module-imports': 7.27.1
@@ -10588,6 +10610,12 @@ snapshots:
   react-native-onesignal@5.2.11:
     dependencies:
       invariant: 2.2.4
+
+  react-native-purchases@8.10.1(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      '@revenuecat/purchases-typescript-internal': 13.32.0
+      react: 19.0.0
+      react-native: 0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0)
 
   react-native-reanimated@3.17.5(@babel/core@7.27.1)(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:

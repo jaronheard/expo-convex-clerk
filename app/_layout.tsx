@@ -13,6 +13,7 @@ import { StatusBar } from "expo-status-bar";
 import * as Updates from "expo-updates";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
+import appsFlyer from "react-native-appsflyer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { LogLevel, OneSignal } from "react-native-onesignal";
 import "react-native-reanimated";
@@ -117,6 +118,36 @@ function RootLayout() {
     // Use this method to prompt for push notifications.
     // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
     OneSignal.Notifications.requestPermission(false);
+  }, []); // Ensure this only runs once on app mount
+
+  // Initialize AppsFlyer
+  useEffect(() => {
+    const appsFlyerDevKey = process.env.EXPO_PUBLIC_APPSFLYER_DEV_KEY;
+    const appsFlyerAppId = process.env.EXPO_PUBLIC_APPSFLYER_APP_ID;
+
+    if (!appsFlyerDevKey || !appsFlyerAppId) {
+      console.warn(
+        "AppsFlyer credentials not found in environment variables. Please add EXPO_PUBLIC_APPSFLYER_DEV_KEY and EXPO_PUBLIC_APPSFLYER_APP_ID to your .env.local file.",
+      );
+      return;
+    }
+
+    appsFlyer.initSdk(
+      {
+        devKey: appsFlyerDevKey,
+        isDebug: __DEV__,
+        appId: appsFlyerAppId,
+        onInstallConversionDataListener: true, // Optional
+        onDeepLinkListener: true, // Optional
+        timeToWaitForATTUserAuthorization: 10,
+      },
+      (result) => {
+        console.log("AppsFlyer SDK initialization result:", result);
+      },
+      (error) => {
+        console.error("AppsFlyer SDK initialization error:", error);
+      },
+    );
   }, []); // Ensure this only runs once on app mount
 
   useIsomorphicLayoutEffect(() => {

@@ -99,6 +99,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         mode: "development",
       },
     ],
+    "react-native-appsflyer",
   ],
   experiments: {
     typedRoutes: true,

@@ -5,7 +5,6 @@
 - [x] This is an app template starting point
 - [x] Use it as the foundation for building a mobile app with Expo, Convex, and Clerk
 
-
 This template integrates [Expo](https://expo.dev) for the client, [Convex](https://convex.dev) for the backend, and [Clerk](https://clerk.com) for authentication.
 
 ## Get started
@@ -50,6 +49,10 @@ This template integrates [Expo](https://expo.dev) for the client, [Convex](https
    SENTRY_ORG=your_sentry_org
    SENTRY_PROJECT=your_sentry_project
 
+   # AppsFlyer
+   EXPO_PUBLIC_APPSFLYER_DEV_KEY=your_appsflyer_dev_key
+   EXPO_PUBLIC_APPSFLYER_APP_ID=your_appsflyer_app_id
+
    # Set the app variant (development, preview, production)
    APP_VARIANT=development
 
@@ -69,7 +72,7 @@ This template integrates [Expo](https://expo.dev) for the client, [Convex](https
    # In another terminal
    pnpm run dev
    # This script sets APP_VARIANT=development so the correct app id is used
-```
+   ```
 
 ## Deploying Convex to Vercel
 
@@ -77,15 +80,46 @@ This template integrates [Expo](https://expo.dev) for the client, [Convex](https
 2. Commit `vercel.json` and a `build` script that runs `pnpm run deploy:convex`.
 3. Push your repository to Vercel and it will deploy Convex using the build command.
 
-
 The template uses **expo-updates** to deliver over-the-air updates. The app
 automatically checks for updates every 10 minutes while running and will
 immediately download and launch a new update if it contains a higher
 `criticalIndex` than the currently running version.
+
 ## Push Notifications
 
 This template includes optional OneSignal integration for push notifications. Follow the steps in [ONESIGNAL_SETUP.md](./ONESIGNAL_SETUP.md) to configure your app.
 
+## AppsFlyer Integration
+
+This template includes AppsFlyer SDK integration for attribution tracking and deep linking. To set up AppsFlyer:
+
+1. **Create an AppsFlyer account** at [appsflyer.com](https://www.appsflyer.com)
+
+2. **Get your credentials**:
+
+   - **Dev Key**: Found in your AppsFlyer dashboard under App Settings
+   - **App ID**: Your app's identifier (e.g., iOS Bundle ID or Android Package Name)
+
+3. **Add environment variables** to your `.env.local` file:
+
+   ```
+   EXPO_PUBLIC_APPSFLYER_DEV_KEY=your_dev_key_from_appsflyer_dashboard
+   EXPO_PUBLIC_APPSFLYER_APP_ID=your_app_bundle_id_or_package_name
+   ```
+
+4. **Configuration details**:
+
+   - The SDK is automatically initialized in `app/_layout.tsx`
+   - Debug mode is enabled in development (`__DEV__`)
+   - Install conversion data and deep link listeners are enabled
+   - iOS ATT (App Tracking Transparency) timeout is set to 10 seconds
+
+5. **Testing**:
+   - AppsFlyer requires native builds (use EAS Build)
+   - Test attribution and deep links on physical devices
+   - Check AppsFlyer dashboard for attribution data
+
+For advanced features like custom events, user identification, and deep link handling, refer to the [AppsFlyer React Native documentation](https://dev.appsflyer.com/hc/docs/react-native-plugin).
 
 ## Example Profile Features
 
@@ -130,3 +164,7 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+```
+
+```
