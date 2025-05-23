@@ -102,6 +102,12 @@ function RootLayout() {
 
   // Initialize OneSignal
   useEffect(() => {
+    // Skip initialization on web since OneSignal is a native module
+    if (Platform.OS === "web") {
+      console.log("OneSignal: Skipping initialization on web platform");
+      return;
+    }
+
     // Only initialize if OneSignal App ID is available
     const oneSignalAppId = process.env.EXPO_PUBLIC_ONESIGNAL_APP_ID;
     if (!oneSignalAppId) {
@@ -122,6 +128,12 @@ function RootLayout() {
 
   // Initialize AppsFlyer
   useEffect(() => {
+    // Skip initialization on web since AppsFlyer is a native module
+    if (Platform.OS === "web") {
+      console.log("AppsFlyer: Skipping initialization on web platform");
+      return;
+    }
+
     const appsFlyerDevKey = process.env.EXPO_PUBLIC_APPSFLYER_DEV_KEY;
     const appsFlyerAppId = process.env.EXPO_PUBLIC_APPSFLYER_APP_ID;
 
