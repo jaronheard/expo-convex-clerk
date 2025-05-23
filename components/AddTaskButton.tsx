@@ -1,20 +1,19 @@
-import { useMemo, useRef, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import {
   BottomSheetModal,
   BottomSheetTextInput,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { useMemo, useRef, useState } from "react";
+import { TouchableOpacity, View } from "react-native";
 
 import { Text } from "@/components/ui/text";
 
 interface AddTaskButtonProps {
   onAddTask: (text: string) => Promise<void>;
-  bottom: number;
 }
 
-export function AddTaskButton({ onAddTask, bottom }: AddTaskButtonProps) {
+export function AddTaskButton({ onAddTask }: AddTaskButtonProps) {
   const { colorScheme } = useColorScheme();
   const textColor = colorScheme === "dark" ? "#fff" : "#000";
   const modalBackgroundColor = colorScheme === "dark" ? "#1c1c1e" : "#f2f2f7";
@@ -35,8 +34,7 @@ export function AddTaskButton({ onAddTask, bottom }: AddTaskButtonProps) {
   return (
     <>
       <TouchableOpacity
-        className="absolute m-4 right-4 w-14 h-14 rounded-full justify-center items-center shadow-lg bg-[#007AFF]"
-        style={{ bottom }}
+        className="absolute m-4 right-2 bottom-2 w-14 h-14 rounded-full justify-center items-center shadow-lg bg-[#007AFF]"
         onPress={() => bottomSheetRef.current?.present()}
       >
         <Text className="text-2xl text-foreground">+</Text>

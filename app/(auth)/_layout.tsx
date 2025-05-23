@@ -2,13 +2,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "convex-helpers/react/cache";
 import {
   Authenticated,
-  Unauthenticated,
   AuthLoading,
+  Unauthenticated,
   useConvexAuth,
   useMutation,
 } from "convex/react";
 import { Redirect, Stack } from "expo-router";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { api } from "../../convex/_generated/api";
 

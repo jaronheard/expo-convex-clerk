@@ -1,5 +1,4 @@
 import * as Sentry from "@sentry/react-native";
-import React from "react";
 import { View } from "react-native";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";

@@ -32,7 +32,7 @@ export default function HomeScreen() {
         />
       </View>
 
-      <AddTaskButton onAddTask={handleAddTask} bottom={tabBarHeight + 8} />
+      <AddTaskButton onAddTask={handleAddTask} />
     </SafeAreaView>
   );
 }

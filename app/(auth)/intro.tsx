@@ -1,7 +1,7 @@
 import { useSSO, useSignIn } from "@clerk/clerk-expo";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as WebBrowser from "expo-web-browser";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   ActivityIndicator,
   Image,
