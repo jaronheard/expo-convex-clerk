@@ -79,10 +79,16 @@ export default function RootProvider({ children }: Props): JSX.Element {
     posthogOptions.storage = AsyncStorage;
   }
 
+  const posthogApiKey = process.env.EXPO_PUBLIC_POSTHOG_API_KEY || "";
+
+  if (!posthogApiKey) {
+    throw new Error("Missing EXPO_PUBLIC_POSTHOG_API_KEY");
+  }
+
   return (
     <SafeAreaProvider>
       <PostHogProvider
-        apiKey="phc_xFdnzXhdRoS2sHiQziB8NZvDZ3u9VCeJ44eEft1taA3"
+        apiKey={posthogApiKey}
         options={posthogOptions}
         autocapture
       >
