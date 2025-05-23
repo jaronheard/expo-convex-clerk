@@ -59,6 +59,9 @@ This template integrates [Expo](https://expo.dev) for the client, [Convex](https
    SENTRY_ORG=your_sentry_org
    SENTRY_PROJECT=your_sentry_project
 
+   # Set the app variant (development, preview, production)
+   APP_VARIANT=development
+
    # Optional API keys
    OPENAI_API_KEY=your_openai_api_key
 
@@ -76,7 +79,8 @@ This template integrates [Expo](https://expo.dev) for the client, [Convex](https
    npx convex dev
 
    # In another terminal
-   pnpm start
+   pnpm run dev
+   # This script sets APP_VARIANT=development so the correct app id is used
 ```
 
 ## Deploying Convex to Vercel

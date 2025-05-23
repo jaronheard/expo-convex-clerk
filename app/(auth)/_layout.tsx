@@ -1,12 +1,21 @@
-import { Authenticated, Unauthenticated, useConvexAuth } from "convex/react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "convex-helpers/react/cache";
+import {
+  Authenticated,
+  Unauthenticated,
+  useConvexAuth,
+  useMutation,
+} from "convex/react";
 import { Redirect, Stack } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { api } from "../../convex/_generated/api";
 
+const GUEST_USER_KEY = "soonlist_guest_user_id";
+
 export default function AuthLayout() {
   const { isLoading, isAuthenticated } = useConvexAuth();
+  const transferGuestTasks = useMutation(api.tasks.transferGuestTasks);
 
   // Fetch user data only when authenticated.
   // Pass "skip" to useQuery to prevent it from running if not authenticated.
@@ -14,6 +23,31 @@ export default function AuthLayout() {
     api.users.getCurrentUser,
     isAuthenticated ? {} : "skip",
   );
+
+  // Handle guest task transfer when user becomes authenticated
+  useEffect(() => {
+    const handleGuestTaskTransfer = async () => {
+      if (isAuthenticated && user?.onboarded) {
+        try {
+          const hasGuestTasks = await AsyncStorage.getItem("has_guest_tasks");
+          const guestUserId = await AsyncStorage.getItem(GUEST_USER_KEY);
+
+          if (hasGuestTasks === "true" && guestUserId) {
+            console.log("Transferring guest tasks for user:", guestUserId);
+            const transferredCount = await transferGuestTasks({ guestUserId });
+            console.log(`Transferred ${transferredCount} guest tasks`);
+
+            // Clean up guest data after successful transfer
+            await AsyncStorage.multiRemove(["has_guest_tasks", GUEST_USER_KEY]);
+          }
+        } catch (error) {
+          console.error("Failed to transfer guest tasks:", error);
+        }
+      }
+    };
+
+    handleGuestTaskTransfer();
+  }, [isAuthenticated, user?.onboarded, transferGuestTasks]);
 
   if (isLoading) {
     // This isLoading is from useConvexAuth, indicating Clerk auth state is loading.
@@ -27,10 +61,14 @@ export default function AuthLayout() {
   return (
     <>
       <Unauthenticated>
-        {/* Stack for unauthenticated users, primarily showing the intro screen */}
-        <Stack initialRouteName="intro" screenOptions={{ headerShown: false }}>
+        {/* Stack for unauthenticated users */}
+        <Stack
+          initialRouteName="guest-tasks"
+          screenOptions={{ headerShown: false }}
+        >
+          <Stack.Screen name="guest-tasks" />
           <Stack.Screen name="intro" />
-          {/* onboarding/ routes are not part of this stack, 
+          {/* onboarding/ routes are not part of this stack,
               they are handled after authentication based on user.onboarded status */}
         </Stack>
       </Unauthenticated>
