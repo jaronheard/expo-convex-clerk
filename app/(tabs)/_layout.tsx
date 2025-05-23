@@ -7,13 +7,17 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { NAV_THEME } from "@/lib/constants";
-import { useAuth } from "@clerk/clerk-expo";
+import { useConvexAuth } from "convex/react";
 
 export default function TabLayout() {
   const { colorScheme } = useColorScheme();
-  const { isSignedIn } = useAuth();
+  const { isAuthenticated, isLoading } = useConvexAuth();
 
-  if (!isSignedIn) {
+  if (isLoading) {
+    return null;
+  }
+
+  if (!isAuthenticated) {
     return <Redirect href={"/intro"} />;
   }
 
