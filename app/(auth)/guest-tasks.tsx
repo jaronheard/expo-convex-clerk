@@ -110,6 +110,7 @@ export default function GuestTasks() {
               isCompleted={item.isCompleted}
             />
           )}
+          ItemSeparatorComponent={() => <View className="h-2" />}
           onEndReached={() => loadMore(20)}
           contentContainerStyle={{ paddingBottom: 120 }}
         />

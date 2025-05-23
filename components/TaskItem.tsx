@@ -68,7 +68,7 @@ export function TaskItem({ id, text, isCompleted }: TaskItemProps) {
   const isWorkflowCompleted = workflowStatus?.type === "completed";
 
   return (
-    <View className="flex-row items-center p-4 rounded-lg bg-background">
+    <View className="flex-row items-center p-2 rounded-lg bg-muted">
       <Checkbox
         checked={isCompleted}
         onCheckedChange={() => toggleTask({ id, isCompleted: !isCompleted })}

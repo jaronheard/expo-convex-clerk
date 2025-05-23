@@ -71,6 +71,7 @@ export default function HomeScreen() {
               isCompleted={item.isCompleted}
             />
           )}
+          ItemSeparatorComponent={() => <View className="h-2" />}
           onEndReached={() => loadMore(20)}
           contentContainerStyle={{ paddingBottom: 80 }}
         />
