@@ -5,18 +5,16 @@ import {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useMutation, usePaginatedQuery } from "convex/react";
-import { useRouter } from "expo-router";
 import { useMemo, useRef, useState } from "react";
 import { FlatList, TouchableOpacity, View, useColorScheme } from "react-native";
 
 import { TaskItem } from "@/components/TaskItem";
-import { Button } from "@/components/ui/button";
+import { SignInButtons } from "@/components/SignInButtons";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { useDebounce } from "@/hooks/useDebounce";
 
 export default function GuestTasks() {
-  const router = useRouter();
   const colorScheme = useColorScheme();
   const textColor = colorScheme === "dark" ? "#fff" : "#000";
   const modalBackgroundColor = colorScheme === "dark" ? "#1c1c1e" : "#f2f2f7";
@@ -89,12 +87,7 @@ export default function GuestTasks() {
       </TouchableOpacity>
 
       {hasAddedTask && (
-        <Button
-          onPress={() => router.push("/intro")}
-          className="absolute left-4 right-4 bottom-20"
-        >
-          <Text>Sign Up to Save Tasks</Text>
-        </Button>
+        <SignInButtons className="absolute left-4 right-4 bottom-20" />
       )}
 
       <BottomSheetModal
