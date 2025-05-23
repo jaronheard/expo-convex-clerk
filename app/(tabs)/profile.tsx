@@ -1,4 +1,3 @@
-import { View, ActivityIndicator } from "react-native";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -7,7 +6,9 @@ import { useQuery } from "convex-helpers/react/cache";
 import { Stack, useRouter } from "expo-router";
 import { usePostHog } from "posthog-react-native";
 import { useState } from "react";
+import { ActivityIndicator, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { api } from "../../convex/_generated/api";
 
 export default function ProfileScreen() {
@@ -35,7 +36,7 @@ export default function ProfileScreen() {
   const avatarUrl = user?.avatarUrl;
 
   return (
-    <View className="flex-1 bg-background">
+    <SafeAreaView className="flex-1 bg-background">
       <Stack.Screen
         options={{
           headerShown: false,
@@ -84,6 +85,6 @@ export default function ProfileScreen() {
           </Button>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

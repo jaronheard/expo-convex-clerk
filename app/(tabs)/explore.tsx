@@ -1,10 +1,11 @@
 import { ScrollView, View } from "react-native";
 
 import { Text } from "@/components/ui/text";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ExploreScreen() {
   return (
-    <View className="bg-background flex-1">
+    <SafeAreaView className="bg-background flex-1">
       <ScrollView className="flex-1">
         <View className="bg-background p-4">
           <View className="bg-background flex-row gap-2 mt-4 mb-4">
@@ -15,6 +16,6 @@ export default function ExploreScreen() {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
