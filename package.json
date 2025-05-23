@@ -8,6 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "dev": "APP_VARIANT=development npx expo start",
     "build": "pnpm run deploy:convex",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",

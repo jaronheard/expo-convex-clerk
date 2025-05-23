@@ -1,8 +1,38 @@
 import { ConfigContext, ExpoConfig } from "expo/config";
 
+const APP_VARIANT = process.env.APP_VARIANT;
+const IS_DEV = APP_VARIANT === "development";
+const IS_PREVIEW = APP_VARIANT === "preview";
+
+const baseIdentifier = "com.jaronheard.expoconvexclerktemplate";
+
+const getUniqueIdentifier = () => {
+  if (IS_DEV) {
+    return `${baseIdentifier}.dev`;
+  }
+
+  if (IS_PREVIEW) {
+    return `${baseIdentifier}.preview`;
+  }
+
+  return baseIdentifier;
+};
+
+const getAppName = () => {
+  if (IS_DEV) {
+    return "Expo Convex Clerk Template (Dev)";
+  }
+
+  if (IS_PREVIEW) {
+    return "Expo Convex Clerk Template (Preview)";
+  }
+
+  return "Expo Convex Clerk Template";
+};
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "Expo Convex Clerk Template",
+  name: getAppName(),
   slug: "expo-convex-clerk-template",
   version: "1.0.0",
   orientation: "portrait",
@@ -14,18 +44,21 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     checkAutomatically: "ON_ERROR_RECOVERY",
   },
   ios: {
+    ...config.ios,
     supportsTablet: true,
-    bundleIdentifier: "com.jaronheard.expoconvexclerktemplate",
+    bundleIdentifier: getUniqueIdentifier(),
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
     },
   },
   android: {
+    ...config.android,
     adaptiveIcon: {
       foregroundImage: "./assets/images/adaptive-icon.png",
       backgroundColor: "#ffffff",
     },
     edgeToEdgeEnabled: true,
+    package: getUniqueIdentifier(),
   },
   web: {
     bundler: "metro",

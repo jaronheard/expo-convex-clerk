@@ -27,6 +27,7 @@ const navigationIntegration = Sentry.reactNavigationIntegration({
 // Initialize Sentry
 Sentry.init({
   dsn: process.env.EXPO_PUBLIC_SENTRY_DSN, // Set this in .env.local
+  environment: process.env.APP_VARIANT,
   // Add more context data to events (IP address, cookies, user, etc.)
   sendDefaultPii: true,
   // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring
