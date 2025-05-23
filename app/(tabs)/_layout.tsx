@@ -11,7 +11,11 @@ import { useConvexAuth } from "convex/react";
 
 export default function TabLayout() {
   const { colorScheme } = useColorScheme();
-  const { isAuthenticated } = useConvexAuth();
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
+  if (isLoading) {
+    return null;
+  }
 
   if (!isAuthenticated) {
     return <Redirect href={"/intro"} />;

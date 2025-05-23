@@ -106,6 +106,9 @@ export default function ProfileUpdateScreen() {
       if (imagePickerAsset) {
         const url = await generateUploadUrl();
         const response = await fetch(imagePickerAsset.uri);
+        if (!response.ok) {
+          throw new Error("Failed to read selected image");
+        }
         const blob = await response.blob();
 
         const result = await fetch(url, {
@@ -115,6 +118,9 @@ export default function ProfileUpdateScreen() {
             : {},
           body: blob,
         });
+        if (!result.ok) {
+          throw new Error("Image upload failed");
+        }
 
         const { storageId } = await result.json();
         await sendImage({ storageId });

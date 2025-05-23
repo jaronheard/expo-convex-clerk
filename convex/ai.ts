@@ -27,6 +27,9 @@ export const generateSteps = action({
         temperature: 0.2,
       }),
     });
+    if (!response.ok) {
+      throw new Error(`OpenAI request failed: ${response.status}`);
+    }
 
     const data = await response.json();
     const text: string = data.choices?.[0]?.message?.content || "";

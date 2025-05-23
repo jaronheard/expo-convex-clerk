@@ -52,9 +52,13 @@ export default function GuestTasks() {
     }
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (hasAddedTask) {
-      AsyncStorage.setItem("has_guest_tasks", "true");
+      try {
+        await AsyncStorage.setItem("has_guest_tasks", "true");
+      } catch (error) {
+        console.error("Failed to persist guest tasks flag:", error);
+      }
     }
     router.push("/intro");
   };
