@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
-import { TouchableOpacity, useColorScheme, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import { useColorScheme } from "@/hooks/useColorScheme";
 import {
   BottomSheetModal,
   BottomSheetTextInput,
@@ -14,7 +15,7 @@ interface AddTaskButtonProps {
 }
 
 export function AddTaskButton({ onAddTask, bottom }: AddTaskButtonProps) {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const textColor = colorScheme === "dark" ? "#fff" : "#000";
   const modalBackgroundColor = colorScheme === "dark" ? "#1c1c1e" : "#f2f2f7";
   const inputBackgroundColor =
