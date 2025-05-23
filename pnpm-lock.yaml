@@ -161,6 +161,9 @@ importers:
       react-native-gesture-handler:
         specifier: ~2.24.0
         version: 2.24.0(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-onesignal:
+        specifier: ^5.2.11
+        version: 5.2.11
       react-native-reanimated:
         specifier: ~3.17.5
         version: 3.17.5(@babel/core@7.27.1)(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -4590,6 +4593,9 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
+
+  react-native-onesignal@5.2.11:
+    resolution: {integrity: sha512-Xf/5tUGwt0MtjKawtKC+BIftihXPHFqiu0SnhsC+qjlawdHCUPo9fzKKyDYv5Hshgw6L3ZrbCyC24VPd+j22oA==}
 
   react-native-reanimated@3.17.5:
     resolution: {integrity: sha512-SxBK7wQfJ4UoWoJqQnmIC7ZjuNgVb9rcY5Xc67upXAFKftWg0rnkknTw6vgwnjRcvYThrjzUVti66XoZdDJGtw==}
@@ -10581,6 +10587,10 @@ snapshots:
     dependencies:
       react: 19.0.0
       react-native: 0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0)
+
+  react-native-onesignal@5.2.11:
+    dependencies:
+      invariant: 2.2.4
 
   react-native-reanimated@3.17.5(@babel/core@7.27.1)(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
