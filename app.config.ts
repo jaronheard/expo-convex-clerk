@@ -49,6 +49,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     bundleIdentifier: getUniqueIdentifier(),
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
+      UIBackgroundModes: ["remote-notification"],
+    },
+    entitlements: {
+      "aps-environment": "development",
+      "com.apple.security.application-groups": [
+        `group.${getUniqueIdentifier()}.onesignal`,
+      ],
     },
   },
   android: {
@@ -84,6 +91,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         project: process.env.SENTRY_PROJECT,
         url: "https://sentry.io/",
         note: "Use SENTRY_AUTH_TOKEN env to authenticate with Sentry, and SENTRY_ORG and SENTRY_PROJECT to set the organization and project.",
+      },
+    ],
+    [
+      "onesignal-expo-plugin",
+      {
+        mode: "development",
       },
     ],
   ],
