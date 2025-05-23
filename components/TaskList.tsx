@@ -1,11 +1,10 @@
-import { api } from "@/convex/_generated/api";
 import { usePaginatedQuery } from "convex/react";
 import { useState } from "react";
 import { FlatList, View } from "react-native";
 
-import { useDebounce } from "@/hooks/useDebounce";
 import { TaskItem } from "@/components/TaskItem";
 import { Input } from "@/components/ui/input";
+import { useDebounce } from "@/hooks/useDebounce";
 
 interface TaskListProps {
   query: any;

@@ -16,6 +16,12 @@ const convexQueryImportsRule = {
             message:
               "Import useQuery and useQueries from convex-helpers/react/cache instead of convex/react",
           },
+          {
+            name: "@react-navigation/bottom-tabs",
+            importNames: ["useBottomTabBarHeight"],
+            message:
+              "Import useBottomTabBarHeight from @/hooks/useBottomTabBarHeight instead of @react-navigation/bottom-tabs to ensure proper cross-platform behavior",
+          },
         ],
       },
     ],

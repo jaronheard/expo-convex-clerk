@@ -1,5 +1,5 @@
 import { api } from "@/convex/_generated/api";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { useBottomTabBarHeight } from "@/hooks/useBottomTabBarHeight";
 import { useMutation } from "convex/react";
 import { SafeAreaView, View } from "react-native";
 
