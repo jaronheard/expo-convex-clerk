@@ -1,4 +1,4 @@
-import { useOAuth, useSignIn } from "@clerk/clerk-expo";
+import { useSSO, useSignIn } from "@clerk/clerk-expo";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as WebBrowser from "expo-web-browser";
 import React, { useState } from "react";
@@ -20,20 +20,21 @@ export default function Intro() {
     apple?: boolean;
   }>({});
 
-  const { startOAuthFlow: googleAuth } = useOAuth({ strategy: "oauth_google" });
-  const { startOAuthFlow: appleAuth } = useOAuth({ strategy: "oauth_apple" });
+  const { startSSOFlow } = useSSO();
 
   const handleGoogleSignIn = async () => {
     try {
       setIsLoading({ google: true });
 
-      const { createdSessionId, setActive } = await googleAuth();
+      const { createdSessionId, setActive } = await startSSOFlow({
+        strategy: "oauth_google",
+      });
 
       if (createdSessionId) {
         await setActive!({ session: createdSessionId });
       }
     } catch (err) {
-      console.error("OAuth error:", err);
+      console.error("SSO error:", err);
     } finally {
       setIsLoading({ google: false });
     }
@@ -43,13 +44,15 @@ export default function Intro() {
     try {
       setIsLoading({ apple: true });
 
-      const { createdSessionId, setActive } = await appleAuth();
+      const { createdSessionId, setActive } = await startSSOFlow({
+        strategy: "oauth_apple",
+      });
 
       if (createdSessionId) {
         await setActive!({ session: createdSessionId });
       }
     } catch (err) {
-      console.error("OAuth error:", err);
+      console.error("SSO error:", err);
     } finally {
       setIsLoading({ apple: false });
     }
