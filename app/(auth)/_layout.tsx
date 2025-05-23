@@ -3,6 +3,7 @@ import { useQuery } from "convex-helpers/react/cache";
 import {
   Authenticated,
   Unauthenticated,
+  AuthLoading,
   useConvexAuth,
   useMutation,
 } from "convex/react";
@@ -49,17 +50,13 @@ export default function AuthLayout() {
     handleGuestTaskTransfer();
   }, [isAuthenticated, user?.onboarded, transferGuestTasks]);
 
-  if (isLoading) {
-    // This isLoading is from useConvexAuth, indicating Clerk auth state is loading.
-    return (
-      <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
   return (
     <>
+      <AuthLoading>
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" />
+        </View>
+      </AuthLoading>
       <Unauthenticated>
         {/* Stack for unauthenticated users */}
         <Stack
