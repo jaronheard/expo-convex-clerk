@@ -6,6 +6,7 @@ export default defineSchema({
     text: v.string(),
     isCompleted: v.boolean(),
     ownerToken: v.optional(v.string()),
+    isGuest: v.optional(v.boolean()),
   })
     .searchIndex("search_text", {
       searchField: "text",
