@@ -41,6 +41,6 @@ module.exports = defineConfig([
   },
   convexQueryImportsRule,
   {
-    ignores: ["dist/*", "/.expo/**", "node_modules/**"],
+    ignores: ["dist/*", "/.expo/**", "node_modules/**", "reference/**"],
   },
 ]);

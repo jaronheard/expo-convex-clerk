@@ -9,6 +9,7 @@
  */
 
 import type * as ai from "../ai.js";
+import type * as events from "../events.js";
 import type * as splitTaskWorkflow from "../splitTaskWorkflow.js";
 import type * as tasks from "../tasks.js";
 import type * as upload from "../upload.js";
@@ -31,6 +32,7 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   ai: typeof ai;
+  events: typeof events;
   splitTaskWorkflow: typeof splitTaskWorkflow;
   tasks: typeof tasks;
   upload: typeof upload;
